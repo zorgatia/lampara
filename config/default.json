@@ -1,0 +1,7 @@
+{
+    "mongoURI":         "mongodb+srv://Zorgati:Zorgati007@cluster0-bbny3.mongodb.net/SmartBuoy?retryWrites=true&w=majority",
+    "mongolocal":       "mongodb://localhost:27017/smartbuoy",
+    "jwtSecret":        "mysecrettoken",
+    "githubClientId":   "52b821c34b1c0f3df57d",
+    "githubSecret":     "dbcd950196513428d005eb5a7732dbcfe5c8c781"
+}
