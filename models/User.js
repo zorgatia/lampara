@@ -15,22 +15,28 @@ const UserSchema = new Schema({
         type: String,
         required: true
     },
+    nom:{
+        type: String
+    },
+    prenom:{
+        type: String
+    },
+
     image:{
         type: String
     },
-    type:{
+    type:[{
         type: String,
-        //enum: ['asd']
-        
-    },
+        enum: ['USER','ADMIN','SUPER_ADMIN']
+    }],
     lat:{
         type: String
     },
     lng:{
         type: String
     },
-    age:{
-        type: Number
+    dateNaissance:{
+        type: Date
     },
     adress: {
         pays:{

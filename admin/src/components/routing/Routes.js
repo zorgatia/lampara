@@ -8,6 +8,7 @@ import Plages from "../plage/Plages";
 import PrivateRoute from "../routing/PrivateRoute";
 import Navbar from "../layout/Navbars";
 import NotFound from "../layout/NotFound"
+import Profile from "../profile/Profile"
 
 
 
@@ -19,6 +20,7 @@ const Routes = () => {
             <Switch>
                 <Redirect exact from="/" to="/dashboard" />
                 <PrivateRoute exact path="/dashboard" component={Dashboard} />
+                <PrivateRoute exact path="/profile" component={Profile} />
                 <PrivateRoute exact path="/plages" component={Plages} />
                 <Route component={NotFound} />
             </Switch>

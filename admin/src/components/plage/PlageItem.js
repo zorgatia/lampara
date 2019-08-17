@@ -1,14 +1,14 @@
-import React, { Fragment } from "react";
+import React from "react";
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
-import Moment from "react-moment";
+import {Link} from "react-router-dom"
+
 import { connect } from "react-redux";
 
 const PlageItem = ({ auth, plage: { _id, nom, ville, date, mainImage } }) => {
     return (
         <div className="col-lg-4 no-card-border">
             <div className="card">
-                <a href="#">
+                <Link to="#">
                     <img
                         src={mainImage}
                         className="img-fluid"
@@ -36,7 +36,7 @@ const PlageItem = ({ auth, plage: { _id, nom, ville, date, mainImage } }) => {
                             </div>
                         </div>
                     </div>
-                </a>
+                </Link>
             </div>
         </div>
     );

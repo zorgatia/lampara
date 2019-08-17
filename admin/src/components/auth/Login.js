@@ -85,9 +85,9 @@ const Login = ({ login, isAuthenticated }) => {
                                                     </div>
                                                 </div>
                                                 <div className="form-group col-md-6 text-right">
-                                                    <a href="#">
+                                                    <Link to="#">
                                                         Forgot Password?
-                                                    </a>
+                                                    </Link>
                                                 </div>
                                             </div>
                                             <div className="text-center m-b-15 m-t-15">

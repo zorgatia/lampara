@@ -19,7 +19,7 @@ const Navbars = ({ auth: { isAuthenticated, loading }, logout }) => {
             <div className="header">
                 <div className="nav-header">
                     <div className="brand-logo">
-                        <a href="index.html">
+                        <Link to="index.html">
                             <b> {/** a changer ******************************************************************* */}
                                 <img
                                     src="/assets/images/logo.png"
@@ -32,7 +32,7 @@ const Navbars = ({ auth: { isAuthenticated, loading }, logout }) => {
                                     alt=""
                                 />
                             </span>
-                        </a>
+                        </Link>
                     </div>
                     <div className="nav-control">
                         <div className="hamburger">
@@ -45,9 +45,9 @@ const Navbars = ({ auth: { isAuthenticated, loading }, logout }) => {
                     <div className="header-left">
                         <ul>
                             <li className="icons position-relative">
-                                <a href="!#">
+                                <Link to="!#">
                                     <i className="icon-magnifier f-s-16" />
-                                </a>
+                                </Link>
                                 <div className="drop-down animated bounceInDown">
                                     <div className="dropdown-content-body">
                                         <div
@@ -77,13 +77,13 @@ const Navbars = ({ auth: { isAuthenticated, loading }, logout }) => {
                     <div className="header-right">
                         <ul>
                             <li className="icons">
-                                <a href="!#">
+                                <Link to="!#">
                                     <i
                                         className="mdi mdi-bell f-s-18"
                                         aria-hidden="true"
                                     />
                                     <div className="pulse-css" />
-                                </a>
+                                </Link>
                                 <div className="drop-down animated bounceInDown">
                                     <div className="dropdown-content-heading">
                                         <span className="text-left">
@@ -93,7 +93,7 @@ const Navbars = ({ auth: { isAuthenticated, loading }, logout }) => {
                                     <div className="dropdown-content-body">
                                         <ul>
                                             <li>
-                                                <a href="#">
+                                                <Link to="#">
                                                     <img
                                                         className="pull-left m-r-10 avatar-img"
                                                         src="../../assets/images/avatar/1.jpg"
@@ -111,10 +111,10 @@ const Navbars = ({ auth: { isAuthenticated, loading }, logout }) => {
                                                             today
                                                         </div>
                                                     </div>
-                                                </a>
+                                                </Link>
                                             </li>
                                             <li>
-                                                <a href="#">
+                                                <Link to="#">
                                                     <img
                                                         className="pull-left m-r-10 avatar-img"
                                                         src="../../assets/images/avatar/2.jpg"
@@ -131,10 +131,10 @@ const Navbars = ({ auth: { isAuthenticated, loading }, logout }) => {
                                                             likes a photo of you
                                                         </div>
                                                     </div>
-                                                </a>
+                                                </Link>
                                             </li>
                                             <li>
-                                                <a href="#">
+                                                <Link to="#">
                                                     <img
                                                         className="pull-left m-r-10 avatar-img"
                                                         src="../../assets/images/avatar/3.jpg"
@@ -153,10 +153,10 @@ const Navbars = ({ auth: { isAuthenticated, loading }, logout }) => {
                                                             ...
                                                         </div>
                                                     </div>
-                                                </a>
+                                                </Link>
                                             </li>
                                             <li>
-                                                <a href="#">
+                                                <Link to="#">
                                                     <img
                                                         className="pull-left m-r-10 avatar-img"
                                                         src="../../assets/images/avatar/4.jpg"
@@ -175,25 +175,25 @@ const Navbars = ({ auth: { isAuthenticated, loading }, logout }) => {
                                                             ...
                                                         </div>
                                                     </div>
-                                                </a>
+                                                </Link>
                                             </li>
                                             <li className="text-center">
-                                                <a href="#" className="more-link">
+                                                <Link to="#" className="more-link">
                                                     See All
-                                                </a>
+                                                </Link>
                                             </li>
                                         </ul>
                                     </div>
                                 </div>
                             </li>
                             <li className="icons">
-                                <a href="!#">
+                                <Link to="!#">
                                     <i
                                         className="mdi mdi-comment f-s-18"
                                         aria-hidden="true"
                                     />
                                     <div className="pulse-css" />
-                                </a>
+                                </Link>
                                 <div className="drop-down animated bounceInDown">
                                     <div className="dropdown-content-heading">
                                         <span className="text-left">
@@ -203,7 +203,7 @@ const Navbars = ({ auth: { isAuthenticated, loading }, logout }) => {
                                     <div className="dropdown-content-body">
                                         <ul>
                                             <li className="notification-unread">
-                                                <a href="#">
+                                                <Link to="#">
                                                     <img
                                                         className="pull-left m-r-10 avatar-img"
                                                         src="../../assets/images/avatar/1.jpg"
@@ -222,10 +222,10 @@ const Navbars = ({ auth: { isAuthenticated, loading }, logout }) => {
                                                             ...
                                                         </div>
                                                     </div>
-                                                </a>
+                                                </Link>
                                             </li>
                                             <li className="notification-unread">
-                                                <a href="#">
+                                                <Link to="#">
                                                     <img
                                                         className="pull-left m-r-10 avatar-img"
                                                         src="../../assets/images/avatar/2.jpg"
@@ -244,10 +244,10 @@ const Navbars = ({ auth: { isAuthenticated, loading }, logout }) => {
                                                             ...
                                                         </div>
                                                     </div>
-                                                </a>
+                                                </Link>
                                             </li>
                                             <li>
-                                                <a href="#">
+                                                <Link to="#">
                                                     <img
                                                         className="pull-left m-r-10 avatar-img"
                                                         src="../../assets/images/avatar/3.jpg"
@@ -266,10 +266,10 @@ const Navbars = ({ auth: { isAuthenticated, loading }, logout }) => {
                                                             ...
                                                         </div>
                                                     </div>
-                                                </a>
+                                                </Link>
                                             </li>
                                             <li>
-                                                <a href="#">
+                                                <Link to="#">
                                                     <img
                                                         className="pull-left m-r-10 avatar-img"
                                                         src="../../assets/images/avatar/4.jpg"
@@ -288,26 +288,26 @@ const Navbars = ({ auth: { isAuthenticated, loading }, logout }) => {
                                                             ...
                                                         </div>
                                                     </div>
-                                                </a>
+                                                </Link>
                                             </li>
                                             <li className="text-center">
-                                                <a href="#" className="more-link">
+                                                <Link to="#" className="more-link">
                                                     See All
-                                                </a>
+                                                </Link>
                                             </li>
                                         </ul>
                                     </div>
                                 </div>
                             </li>
                             <li className="icons">
-                                <a href="!#">
+                                <Link to="!#">
                                     {" "}
                                     <i
                                         className="mdi mdi-crosshairs-gps f-s-18"
                                         aria-hidden="true"
                                     />
                                     <div className="pulse-css" />
-                                </a>
+                                </Link>
                                 <div className="drop-down dropdown-task animated bounceInDown">
                                     <div className="dropdown-content-heading">
                                         <span className="text-left">
@@ -317,7 +317,7 @@ const Navbars = ({ auth: { isAuthenticated, loading }, logout }) => {
                                     <div className="dropdown-content-body">
                                         <ul>
                                             <li>
-                                                <a href="#">
+                                                <Link to="#">
                                                     <div className="notification-content">
                                                         <small className="notification-timestamp pull-right">
                                                             85% Complete
@@ -336,10 +336,10 @@ const Navbars = ({ auth: { isAuthenticated, loading }, logout }) => {
                                                             />
                                                         </div>
                                                     </div>
-                                                </a>
+                                                </Link>
                                             </li>
                                             <li>
-                                                <a href="#">
+                                                <Link to="#">
                                                     <div className="notification-content">
                                                         <small className="notification-timestamp pull-right">
                                                             60% Complete
@@ -358,10 +358,10 @@ const Navbars = ({ auth: { isAuthenticated, loading }, logout }) => {
                                                             />
                                                         </div>
                                                     </div>
-                                                </a>
+                                                </Link>
                                             </li>
                                             <li>
-                                                <a href="#">
+                                                <Link to="#">
                                                     <div className="notification-content">
                                                         <small className="notification-timestamp pull-right">
                                                             25% Complete
@@ -380,10 +380,10 @@ const Navbars = ({ auth: { isAuthenticated, loading }, logout }) => {
                                                             />
                                                         </div>
                                                     </div>
-                                                </a>
+                                                </Link>
                                             </li>
                                             <li>
-                                                <a href="#">
+                                                <Link to="#">
                                                     <div className="notification-content">
                                                         <small className="notification-timestamp pull-right">
                                                             75% Complete
@@ -402,24 +402,24 @@ const Navbars = ({ auth: { isAuthenticated, loading }, logout }) => {
                                                             />
                                                         </div>
                                                     </div>
-                                                </a>
+                                                </Link>
                                             </li>
                                             <li className="text-center">
-                                                <a href="#" className="more-link">
+                                                <Link to="#" className="more-link">
                                                     See All
-                                                </a>
+                                                </Link>
                                             </li>
                                         </ul>
                                     </div>
                                 </div>
                             </li>
                             <li className="icons">
-                                <a href="/login" onClick={logout}>
+                                <Link to="/login" onClick={logout}>
                                     <i
                                         className="icon-power f-s-20"
                                         aria-hidden="true"
                                     />
-                                </a>
+                                </Link>
                                 
                             </li>
                         </ul>
