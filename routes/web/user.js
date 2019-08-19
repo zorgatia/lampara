@@ -156,32 +156,25 @@ router.delete("/", auth, async (req, res) => {
 // @desc    delete profile ,user & posts
 // @access  Private
 router.put(
-  "/profile",
-  [
-    auth,
-    [
-      check("age", "age is required")
-        .not()
-        .isEmpty()
-    ]
-  ],
+  "/profile",auth,
   async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-    const { age, pays, ville, cite, zip } = req.body;
+    
+    
+    const { dateNaissance, adress, region, cite, zip,nom,prenom } = req.body;
 
     const newAddress = {
-      pays,
-      ville,
+      adress,
+      region,
       cite,
       zip
     };
 
     try {
       const user = await User.findById(req.user.id);
-      user.age = age;
+      
+      user.nom = nom;
+      user.prenom = prenom;
+      user.dateNaissance = dateNaissance;
       user.adress = newAddress;
       await user.save();
       res.json(user);

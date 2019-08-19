@@ -2,7 +2,8 @@ import axios from 'axios';
 
 import {
     GET_PROFILE,
-    PROFILE_ERROR
+    PROFILE_ERROR,
+    SET_PROFILE
 }from './types';
 
 // getcurrent users profile
@@ -11,6 +12,32 @@ export const getCurrentProfile = () => async dispatch =>{
         const res = await axios.get('/web/user/me');
         dispatch({
             type: GET_PROFILE,
+            payload: res.data
+        });
+    } catch (err) {
+        dispatch({
+            type: PROFILE_ERROR,
+            payload: { msg: err.response.statusText, status:err.response.status}
+        });
+    }
+}
+
+export const updateCurrentProfile = ({username,dateNaissance,nom,prenom,region,cite,zip,adress}) => async dispatch =>{
+    try {
+
+        const config = {
+            headers: {
+                "Content-Type": "Application/json"
+            }
+        };
+    
+        const body = JSON.stringify({username,dateNaissance,nom,prenom,region,cite,zip,adress});
+
+
+
+        const res = await axios.put('/web/user/profile', body, config);
+        dispatch({
+            type: SET_PROFILE,
             payload: res.data
         });
     } catch (err) {

@@ -8,6 +8,7 @@ import Plages from "../plage/Plages";
 import PrivateRoute from "../routing/PrivateRoute";
 import Navbar from "../layout/Navbars";
 import NotFound from "../layout/NotFound"
+import Swal from "../layout/Swal"
 import Profile from "../profile/Profile"
 
 
@@ -15,6 +16,7 @@ import Profile from "../profile/Profile"
 const Routes = () => {
     return (
         <Fragment>
+            <div className="show">
             <Navbar />
             <SideBar />
             <Switch>
@@ -24,7 +26,8 @@ const Routes = () => {
                 <PrivateRoute exact path="/plages" component={Plages} />
                 <Route component={NotFound} />
             </Switch>
-            
+            <Swal/>
+            </div>
         </Fragment>
     );
 };

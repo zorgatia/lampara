@@ -2,7 +2,8 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import SweetAlert from "sweetalert2-react";
-import removeAlert from "../../actions/alert";
+
+import { removeAlert } from "../../actions/alert";
 
 const Swal = ({ alerts }) =>
     alerts !== null &&
@@ -13,11 +14,11 @@ const Swal = ({ alerts }) =>
             title="Demo"
             text={alert.msg}
             key={alert.id}
-            onConfirm={removeAlert(alert.id)}
+            
         />
     ));
 
-Alert.propTypes = {
+Swal.propTypes = {
     alerts: PropTypes.array.isRequired
 };
 const mapStateToProps = state => ({

@@ -41,8 +41,9 @@ const UserSchema = new Schema({
     adress: {
         pays:{
             type: String,
+            default: "Tunisie"
         },
-        ville:{
+        region:{
             type: String,
         },
         cite:{
@@ -50,6 +51,9 @@ const UserSchema = new Schema({
         },
         zip:{
             type: Number,
+        },
+        adress:{
+            type: String
         }
     },
     follows:[{
