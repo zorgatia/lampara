@@ -32,6 +32,20 @@ router.get("/", async (req, res) => {
     }
 });
 
+// @route   Get mob/plage/location
+// @desc    Get All  plages with location
+// @access  Public
+
+router.get("/location", async (req, res) => {
+    try {
+        const plages = await Plage.find().select('_id nom ville lat lng');
+        res.json(plages);
+    } catch (err) {
+        console.log(err.message);
+        res.status(500).send("server error");
+    }
+});
+
 // @route   Get api/plage/id
 // @desc    Get plage with id
 // @access  Public

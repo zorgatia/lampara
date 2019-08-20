@@ -1,16 +1,17 @@
 import React, { Fragment, useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { getCurrentProfile,updateCurrentProfile } from "../../actions/profile";
+import { getCurrentProfile,updateCurrentProfile ,changePassword } from "../../actions/profile";
 import { setAlert } from "../../actions/alert";
 import Spinner from "../layout/Spinner";
-import DatePicker from "react-datepicker";
+import moment from 'moment'
 import "react-datepicker/dist/react-datepicker.css";
 
 const Profile = ({
     setAlert,
     getCurrentProfile,
     updateCurrentProfile,
+    changePassword,
     auth: { user },
     profile: { profile, loading }
 }) => {
@@ -67,14 +68,14 @@ const Profile = ({
     const onSubmit = async e => {
         e.preventDefault();
 
-        if(e.target.value === "Modifier"){
+        if(e.target.name === "fModifier"){
             if (newPassword !== newPassword2) {
                
                 setAlert("error password don t match", "danger");
             } else {
-                // register({username,email,password})
+                changePassword({oldPassword,newPassword});
             }
-        }else{
+        }else if(e.target.name==="fProfile"){
             updateCurrentProfile({username,dateNaissance,nom,prenom,region,cite,zip,adress});
         }
         
@@ -92,7 +93,7 @@ const Profile = ({
                                 <div className="card-body">
                                     <h4 className="card-title">Mon Profile</h4>
                                     <div className="basic-form">
-                                        <form onSubmit={e => onSubmit(e)}>
+                                        <form onSubmit={e => onSubmit(e)} name="fProfile">
                                             <div className="form-row">
                                                 <div className="form-group col-md-6">
                                                     <label>Username</label>
@@ -116,7 +117,7 @@ const Profile = ({
                                                         name="dateNaissance"
                                                         className="form-control"
                                                         placeholder="dateNaissance"
-                                                        value={dateNaissance}
+                                                        value={moment(dateNaissance).format("YYYY-MM-DD")}
                                                         onChange={e =>
                                                             onChange(e)
                                                         }
@@ -227,7 +228,7 @@ const Profile = ({
                                 <div className="card-body" >
                                 <h4>Changer mot de passe</h4>
                                     <div className="basic-form">
-                                        <form onSubmit={e => onSubmit(e)}>
+                                        <form onSubmit={e => onSubmit(e)} name="fModifier">
                                             <div className="form-row">
                                                 <div className="form-group col-md-4">
                                                     <label>
@@ -296,18 +297,18 @@ const Profile = ({
 
 Profile.propTypes = {
     getCurrentProfile: PropTypes.func.isRequired,
+    updateCurrentProfile: PropTypes.func.isRequired,
+    changePassword: PropTypes.func.isRequired,
     auth: PropTypes.object.isRequired,
     profile: PropTypes.object.isRequired
 };
 
 const mapstateToProps = state => ({
-    getCurrentProfile: PropTypes.func.isRequired,
-    updateCurrentProfile: PropTypes.func.isRequired,
     auth: state.auth,
     profile: state.profile
 });
 
 export default connect(
     mapstateToProps,
-    { setAlert, getCurrentProfile ,updateCurrentProfile}
+    { setAlert, getCurrentProfile ,updateCurrentProfile,changePassword}
 )(Profile);

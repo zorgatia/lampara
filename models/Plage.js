@@ -8,6 +8,12 @@ const PlageSchema = new Schema({
     ville:{
         type: String
     },
+    lat:{
+        type: Number
+    },
+    lng:{
+        type: Number
+    },
     mainImage:{
         type: String
     },

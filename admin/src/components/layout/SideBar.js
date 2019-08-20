@@ -27,7 +27,7 @@ const SideBar = () => {
                             </Link>
                         </li>
                         <li>
-                            <Link to="/bouee">
+                            <Link to="/map">
                                 <i className=" mdi mdi-view-dashboard" />{" "}
                                 <span className="nav-text">Bouee</span>
                             </Link>

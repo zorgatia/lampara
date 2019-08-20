@@ -213,4 +213,32 @@ router.put("/follow/:id", auth, async (req, res) => {
     res.status(500).send("server error");
   }
 });
+
+// @route   POST web/user/changepassword
+// @desc    change password
+// @access  Private
+router.post("/changepassword",auth, async (req,res)=>{
+
+  try {
+   // console.log('bla')
+    const user = await User.findById(req.user.id).select('password')
+    const isMatch = await bcrypt.compare(req.body.oldPassword,user.password);
+    if(!isMatch){
+      return res
+          .status(400)
+          .json({errors : [{msg: 'mot de passe incorrect'}] })
+    }
+    const salt = await bcrypt.genSalt(10);
+    user.password = await bcrypt.hash(req.body.newPassword, salt);
+   
+    await user.save();
+    res.json({msg: 'mot de passe change avec success'})
+
+  }  catch (err) {
+    console.log(err.message);
+    res.status(500).send("server error");
+  }
+
+
+})
 module.exports = router;

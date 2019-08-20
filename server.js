@@ -20,9 +20,13 @@ app.use('/mob/plage',require('./routes/mob/plage'));
 app.use('/web/plage',require('./routes/web/plage'));
 app.use('/web/user',require('./routes/web/user'));
 app.use('/web/auth',require('./routes/web/auth'));
+app.use('/web/buoy',require('./routes/web/buoy'));
 
 
 app1.use('/emb/buoy',require('./routes/emb/buoy'));
+
+app1.use('/ds/rate',require('./routes/ds/rate'));
+
 
 
 

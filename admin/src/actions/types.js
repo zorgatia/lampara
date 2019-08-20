@@ -13,6 +13,10 @@ export const GET_PROFILE = 'GET_PROFILE';
 export const CLEAR_PROFILE = 'CLEAR_PROFILE';
 export const PROFILE_ERROR = 'PROFILE_ERROR';
 export const SET_PROFILE = 'SET_PROFILE';
+export const PASSWORD_CHANGED = 'PASSWORD_CHANGED';
 
 export const GET_PLAGE = 'GET_PLAGE';
 export const PLAGE_ERROR = 'PLAGE_ERROR';
+
+export const GET_BUOYS = 'GET_BUOYS';
+export const BUOY_ERROR = 'BUOY_ERROR';

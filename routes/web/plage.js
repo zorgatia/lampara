@@ -13,6 +13,8 @@ router.post("/", async (req, res) => {
             nom: req.body.nom,
             ville: req.body.ville,
             etat: req.body.etat,
+            lat: req.body.lat,
+            lng: req.body.lng,
             capacite: req.body.capacite,
             mainImage: req.body.mainImage
         });

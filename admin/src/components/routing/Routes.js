@@ -10,6 +10,7 @@ import Navbar from "../layout/Navbars";
 import NotFound from "../layout/NotFound"
 import Swal from "../layout/Swal"
 import Profile from "../profile/Profile"
+import Mapp from "../plage/Map"
 
 
 
@@ -24,6 +25,7 @@ const Routes = () => {
                 <PrivateRoute exact path="/dashboard" component={Dashboard} />
                 <PrivateRoute exact path="/profile" component={Profile} />
                 <PrivateRoute exact path="/plages" component={Plages} />
+                <PrivateRoute exact path="/map" component={Mapp} />
                 <Route component={NotFound} />
             </Switch>
             <Swal/>
