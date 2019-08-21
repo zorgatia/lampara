@@ -1,5 +1,8 @@
 const express = require("express");
+
 const router = express.Router();
+const email= require("../../config/email");
+
 
 const { check, validationResult } = require("express-validator");
 const jwt = require("jsonwebtoken");
@@ -76,7 +79,7 @@ router.post(
         (err, token) => {
           if (err) throw err;
 
-          res.json({token});
+          res.json({ token });
         }
       );
     } catch (err) {
@@ -109,7 +112,7 @@ router.get("/me", auth, async (req, res) => {
 
 router.get("/all", async (req, res) => {
   try {
-    const users = await User.find().select("username image");
+    const users = await User.find();
     res.json(users);
   } catch (err) {
     console.log(err.message);
@@ -155,35 +158,31 @@ router.delete("/", auth, async (req, res) => {
 // @route   PUT api/user/profile
 // @desc    delete profile ,user & posts
 // @access  Private
-router.put(
-  "/profile",auth,
-  async (req, res) => {
-    
-    
-    const { dateNaissance, adress, region, cite, zip,nom,prenom } = req.body;
+router.put("/profile", auth, async (req, res) => {
+  const { dateNaissance, adress, region, cite, zip, nom, prenom,image } = req.body;
 
-    const newAddress = {
-      adress,
-      region,
-      cite,
-      zip
-    };
+  const newAddress = {
+    adress,
+    region,
+    cite,
+    zip
+  };
 
-    try {
-      const user = await User.findById(req.user.id);
-      
-      user.nom = nom;
-      user.prenom = prenom;
-      user.dateNaissance = dateNaissance;
-      user.adress = newAddress;
-      await user.save();
-      res.json(user);
-    } catch (err) {
-      console.log(err.message);
-      res.status(500).send("server error");
-    }
+  try {
+    const user = await User.findById(req.user.id);
+
+    user.nom = nom;
+    user.prenom = prenom;
+    user.dateNaissance = dateNaissance;
+    user.adress = newAddress;
+    user.image = image;
+    await user.save();
+    res.json(user);
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).send("server error");
   }
-);
+});
 
 // @route   PUT api/user/follow
 // @desc    put follow on plage
@@ -195,19 +194,16 @@ router.put("/follow/:id", auth, async (req, res) => {
     if (!plage) return res.status(404).json({ msg: "Plage don t found" });
     // test if user have already followed plage
     const user = await User.findById(req.user.id);
-    const index = user.follows.map(p=>p.id).indexOf(plage.id);
-    if(index !== -1){
-        user.follows.splice(index,1);
-        user.save();
-        res.json({msg: "deleted"})
-    }else{
-        user.follows.unshift(plage);
-        user.save();
-        res.json({msg: "added"})
+    const index = user.follows.map(p => p.id).indexOf(plage.id);
+    if (index !== -1) {
+      user.follows.splice(index, 1);
+      user.save();
+      res.json({ msg: "deleted" });
+    } else {
+      user.follows.unshift(plage);
+      user.save();
+      res.json({ msg: "added" });
     }
-    
-
-
   } catch (err) {
     console.log(err.message);
     res.status(500).send("server error");
@@ -217,28 +213,51 @@ router.put("/follow/:id", auth, async (req, res) => {
 // @route   POST web/user/changepassword
 // @desc    change password
 // @access  Private
-router.post("/changepassword",auth, async (req,res)=>{
-
+router.post("/changepassword", auth, async (req, res) => {
   try {
-   // console.log('bla')
-    const user = await User.findById(req.user.id).select('password')
-    const isMatch = await bcrypt.compare(req.body.oldPassword,user.password);
-    if(!isMatch){
+    // console.log('bla')
+    const user = await User.findById(req.user.id).select("password");
+    const isMatch = await bcrypt.compare(req.body.oldPassword, user.password);
+    if (!isMatch) {
       return res
-          .status(400)
-          .json({errors : [{msg: 'mot de passe incorrect'}] })
+        .status(400)
+        .json({ errors: [{ msg: "mot de passe incorrect" }] });
     }
     const salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(req.body.newPassword, salt);
-   
-    await user.save();
-    res.json({msg: 'mot de passe change avec success'})
 
-  }  catch (err) {
+    await user.save();
+    res.json({ msg: "mot de passe change avec success" });
+  } catch (err) {
     console.log(err.message);
     res.status(500).send("server error");
   }
+});
+
+// @route   POST web/user/changepassword
+// @desc    change password
+// @access  Private
+
+router.post("/mdpoublier", async (req, res) => {
+  try {
+
+    let user = await User.findOne({ email });
+    if (user) {
+      return res
+        .status(400)
+        .json({ errors: [{ msg: "User already exists" }] });
+    }
+    email("zorgati.achraf@gmail.com", "recuperation mot de passe", "http://localhost:3000");
+    
+  
+    res.json({ test: "set" });
+  } catch (err) {
+    console.log(err);
+
+    res.json({ test: "tesasdt" });
+  }
+});
 
 
-})
+
 module.exports = router;

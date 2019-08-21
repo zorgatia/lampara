@@ -25,10 +25,10 @@ const UserSchema = new Schema({
     image:{
         type: String
     },
-    type:[{
+    type:{
         type: String,
         enum: ['USER','ADMIN','SUPER_ADMIN']
-    }],
+    },
     lat:{
         type: String
     },
@@ -56,6 +56,16 @@ const UserSchema = new Schema({
             type: String
         }
     },
+    goings:[{
+        plage:{
+            type: Schema.Types.ObjectId,
+            ref: 'plage'
+        },
+        date:{
+            type: Date,
+        }
+
+    }],
     follows:[{
         plage:{
             type: Schema.Types.ObjectId,

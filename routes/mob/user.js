@@ -16,7 +16,7 @@ const Plage = require("../../models/Plage");
 // @desc    Register user
 // @access  Public
 
- /*[
+/*[
     check("username", "username is required")
     .not()
     .isEmpty(),
@@ -28,67 +28,67 @@ check(
 ]*/
 
 router.post(
-    "/",
-    
-    async (req, res) => {
-        /* const errors = validationResult(req);
+  "/",
+
+  async (req, res) => {
+    /* const errors = validationResult(req);
         if (!errors.isEmpty()) {
             return res.status(400).json({ errors: errors.array() });
         }*/
-        const { username, email, password, age, lat, lng, type } = req.body;
+    const { username, email, password, age, lat, lng, type } = req.body;
 
-        try {
-            // See if user exists
-            let user = await User.findOne({ email });
-            if (user) {
-                return res
-                    .status(400)
-                    .json({ errors: [{ msg: "User already exists" }] });
-            }
+    try {
+      // See if user exists
+      let user = await User.findOne({ email });
+      if (user) {
+        return res
+          .status(400)
+          .json({ errors: [{ msg: "User already exists" }] });
+      }
 
-            const image = gravatar.url(email, {
-                s: "200",
-                r: "pg",
-                d: "mm"
-            });
+      const image = gravatar.url(email, {
+        s: "200",
+        r: "pg",
+        d: "mm"
+      });
 
-            user = new User({
-                username,
-                email,
-                image,
-                password,
-                age,
-                lat,
-                lng,
-                type
-            });
+      user = new User({
+        username,
+        email,
+        image,
+        password,
+        age,
+        lat,
+        lng,
+        type
+      });
 
-            const salt = await bcrypt.genSalt(10);
-            user.password = await bcrypt.hash(password, salt);
-            await user.save();
+      const salt = await bcrypt.genSalt(10);
+      user.password = await bcrypt.hash(password, salt);
+      await user.save();
 
-            //Return jsonwebtoken
+      //Return jsonwebtoken
 
-            const payload = {
-                user: {
-                    id: user.id
-                }
-            };
-            user.password = null;
-            jwt.sign(
-                payload,
-                config.get("jwtSecret"),
-                { expiresIn: 360000 },
-                (err, token) => {
-                    if (err) throw err;
-                    res.json(user);
-                }
-            );
-        } catch (err) {
-            console.error(err.message);
-            res.status(500).send("Server error");
+      const payload = {
+        user: {
+          id: user.id
         }
+      };
+      user.password = null;
+      jwt.sign(
+        payload,
+        config.get("jwtSecret"),
+        { expiresIn: 360000 },
+        (err, token) => {
+          if (err) throw err;
+          res.json(user);
+        }
+      );
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send("Server error");
     }
+  }
 );
 
 // @route   GET mob/user/me
@@ -96,16 +96,16 @@ router.post(
 // @access  Private
 
 router.get("/me", auth, async (req, res) => {
-    try {
-        const user = await User.findById(req.user.id).select("-password");
-        if (!user) {
-            return res.status(400).json({ msg: "There is no user" });
-        }
-        res.json(user);
-    } catch (err) {
-        console.log(err.message);
-        res.status(500).send("Server Error");
+  try {
+    const user = await User.findById(req.user.id).select("-password");
+    if (!user) {
+      return res.status(400).json({ msg: "There is no user" });
     }
+    res.json(user);
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).send("Server Error");
+  }
 });
 
 // @route   GET mob/user/all
@@ -113,25 +113,23 @@ router.get("/me", auth, async (req, res) => {
 // @access  Public
 
 router.get("/all", async (req, res) => {
-    try {
-        const users = await User.find().select("username image");
-        res.json(users);
-    } catch (err) {
-        console.log(err.message);
-        res.status(500).send("error server");
-    }
+  try {
+    const users = await User.find().select("username image");
+    res.json(users);
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).send("error server");
+  }
 });
-
-
 
 // @route   GET api/user/verifyemail
 // @desc    check if email exist
 // @access  Public
 router.get("/verifyemail/:email", async (req, res) => {
-    const email =req.params.email
-    let user = await User.findOne({ email });
-    if (user) return res.json({ exist: true });
-    res.json({ exist: false });
+  const email = req.params.email;
+  let user = await User.findOne({ email });
+  if (user) return res.json({ exist: true });
+  res.json({ exist: false });
 });
 
 // @route   GET mob/user/:user_id
@@ -139,23 +137,19 @@ router.get("/verifyemail/:email", async (req, res) => {
 // @access  Public
 
 router.get("/:user_id", async (req, res) => {
-    try {
-        const user = await User.findById(req.params.user_id).select(
-            "-password"
-        );
+  try {
+    const user = await User.findById(req.params.user_id).select("-password");
 
-        if (!user)
-            return res
-                .status(404)
-                .json({ mgs: "there is no profile for this user" });
-        res.json(user);
-    } catch (err) {
-        console.log(err.message);
-        if (err.kind == "ObjectId") {
-            return res.status(400).json({ msg: "profile not found" });
-        }
-        res.status(500).send("error server");
+    if (!user)
+      return res.status(404).json({ mgs: "there is no profile for this user" });
+    res.json(user);
+  } catch (err) {
+    console.log(err.message);
+    if (err.kind == "ObjectId") {
+      return res.status(400).json({ msg: "profile not found" });
     }
+    res.status(500).send("error server");
+  }
 });
 
 // @route   DELETE api/profile
@@ -163,54 +157,54 @@ router.get("/:user_id", async (req, res) => {
 // @access  Private
 
 router.delete("/", auth, async (req, res) => {
-    try {
-        // remove user
-        await User.findOneAndRemove({ _id: req.user.id });
-        res.json({ msg: " user removed" });
-    } catch (err) {
-        console.log(err.message);
-        res.status(500).send("error server");
-    }
+  try {
+    // remove user
+    await User.findOneAndRemove({ _id: req.user.id });
+    res.json({ msg: " user removed" });
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).send("error server");
+  }
 });
 
 // @route   PUT api/user/profile
 // @desc    delete profile ,user & posts
 // @access  Private
 router.put(
-    "/profile",
+  "/profile",
+  [
+    auth,
     [
-        auth,
-        [
-            check("age", "age is required")
-                .not()
-                .isEmpty()
-        ]
-    ],
-    async (req, res) => {
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            return res.status(400).json({ errors: errors.array() });
-        }
-        const { age, pays, ville, cite, zip } = req.body;
-
-        const newAddress = {
-            pays,
-            ville,
-            cite,
-            zip
-        };
-
-        try {
-            const user = await User.findById(req.user.id);
-            user.age = age;
-            user.adress = newAddress;
-            await user.save();
-            res.json(user);
-        } catch (err) {
-            console.log(err.message);
-            res.status(500).send("server error");
-        }
+      check("age", "age is required")
+        .not()
+        .isEmpty()
+    ]
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
     }
+    const { age, pays, ville, cite, zip } = req.body;
+
+    const newAddress = {
+      pays,
+      ville,
+      cite,
+      zip
+    };
+
+    try {
+      const user = await User.findById(req.user.id);
+      user.age = age;
+      user.adress = newAddress;
+      await user.save();
+      res.json(user);
+    } catch (err) {
+      console.log(err.message);
+      res.status(500).send("server error");
+    }
+  }
 );
 
 // @route   PUT api/user/follow
@@ -218,26 +212,98 @@ router.put(
 // @access  Private
 
 router.put("/follow/:id", auth, async (req, res) => {
-    try {
-        const plage = await Plage.findById(req.params.id);
-        if (!plage) return res.status(404).json({ msg: "Plage don t found" });
-        // test if user have already followed plage
-        const user = await User.findById(req.user.id);
-        const index = user.follows.map(p => p.id).indexOf(plage.id);
-        if (index !== -1) {
-            user.follows.splice(index, 1);
-            user.save();
-            res.json({ msg: "deleted" });
-        } else {
-            user.follows.unshift(plage);
-            user.save();
-            res.json({ msg: "added" });
-        }
-    } catch (err) {
-        console.log(err.message);
-        res.status(500).send("server error");
+  try {
+    const plage = await Plage.findById(req.params.id);
+    if (!plage) return res.status(404).json({ msg: "Plage don t found" });
+    // test if user have already followed plage
+    const user = await User.findById(req.user.id);
+    const index = user.follows.map(p => p.id).indexOf(plage.id);
+    if (index !== -1) {
+      user.follows.splice(index, 1);
+      user.save();
+      res.json({ msg: "deleted" });
+    } else {
+      user.follows.unshift(plage);
+      user.save();
+      res.json({ msg: "added" });
     }
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).send("server error");
+  }
 });
 
+// @route   PUT mob/user/going
+// @desc    change password
+// @access  Private
+
+router.put("/going", async (req, res) => {
+  try {
+    const plage = await Plage.findById(req.body.plage);
+    if (!plage) return res.status(404).json({ msg: "plage mich mayjouda" });
+
+    const user = await User.findById(req.body.user).select("goings");
+    // user.going.sort((a,b)=>a.date.getTime()-b.date.getTime());
+
+    if (user.goings.filter(going => going.date === req.body.date).length > 0)
+      return res.status(404).json({ msg: "dejat mech plage o5ra" });
+    const newGoing = {
+      user: req.body.user,
+      plage: req.body.plage,
+      date: req.body.date
+    };
+
+    user.goings.unshift(newGoing);
+    await user.save();
+    res.json(user);
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).send("server error");
+  }
+});
+
+// @route   PUT mob/user/going/future/:id
+// @desc    change password
+// @access  Private
+
+router.get("/going/future/:id", async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id)
+      .select("goings")
+      .populate("goings.plage", "nom ville mainImage");
+    result = [];
+    user.goings.forEach(going => {
+      result.push({
+        idPlan: going._id,
+        idPlage: going.plage._id,
+        nomPlage: going.plage.nom,
+        villePlage: going.plage.ville,
+        mainImage: going.plage.mainImage,
+        date: going.date
+      });
+    });
+    res.json(result);
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).send("server error");
+  }
+});
+
+// @route   DELETE mob/user/going/:user/:id
+// @desc    delete going
+// @access  Private
+
+
+router.delete("/going/:id", async (req, res) => {
+    const user =await User.findById(req.params.user).select('goings');
+    const index=user.goings.map(g => g.id).indexOf(req.params.id);
+    if(index===-1){
+        res.json({ msg: "errrorrrrrrrrrrrrrrrrrr" });
+    }else{
+        user.goings.splice(index, 1);
+        user.save();
+        res.json({ msg: "deleted" });
+    }
+});
 
 module.exports = router;

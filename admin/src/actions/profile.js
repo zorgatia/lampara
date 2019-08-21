@@ -23,7 +23,7 @@ export const getCurrentProfile = () => async dispatch =>{
     }
 }
 
-export const updateCurrentProfile = ({username,dateNaissance,nom,prenom,region,cite,zip,adress}) => async dispatch =>{
+export const updateCurrentProfile = ({username,dateNaissance,nom,prenom,region,cite,zip,adress,image}) => async dispatch =>{
     try {
 
         const config = {
@@ -31,7 +31,7 @@ export const updateCurrentProfile = ({username,dateNaissance,nom,prenom,region,c
                 "Content-Type": "Application/json"
             }
         };
-        const body = JSON.stringify({username,dateNaissance,nom,prenom,region,cite,zip,adress});
+        const body = JSON.stringify({username,dateNaissance,nom,prenom,region,cite,zip,adress,image});
         const res = await axios.put('/web/user/profile', body, config);
         dispatch({
             type: SET_PROFILE,

@@ -63,7 +63,7 @@ const Login = ({ login, isAuthenticated }) => {
                                                     className="form-control"
                                                     placeholder="Password"
                                                     name="password"
-                                                    minLength="6"
+                                                     
                                                     value={password}
                                                     onChange={e => onChange(e)}
                                                 />
