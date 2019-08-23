@@ -39,9 +39,9 @@ const SideBar = () => {
                             </Link>
                         </li>
                         <li>
-                            <Link to="/plage">
+                            <Link to="/members">
                                 <i className=" mdi mdi-view-dashboard" />{" "}
-                                <span className="nav-text">Utilisateur</span>
+                                <span className="nav-text">Members</span>
                             </Link>
                         </li>
                         <li>

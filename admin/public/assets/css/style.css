@@ -359,8 +359,8 @@ h6 {
 }
 
 .loader {
-  position: absolute;
-  width: 50px;
+  position: fixed;
+  
   height: 100px;
   top: 50%;
   margin: 0 auto;
@@ -368,7 +368,8 @@ h6 {
   right: 0;
   transform: translateY(-50%);
 }
-
+/*width: 50px;
+absolute*/
 .circular {
   animation: rotate 2s linear infinite;
   height: 100%;

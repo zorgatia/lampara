@@ -8,7 +8,8 @@ const BuoySchema = new Schema({
         default: "OFF_LIGNE"
     },
     num: {
-        type: String
+        type: String,
+        unique: true
     },
     lat: {
         type: Number,

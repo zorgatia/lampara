@@ -20,3 +20,13 @@ export const PLAGE_ERROR = 'PLAGE_ERROR';
 
 export const GET_BUOYS = 'GET_BUOYS';
 export const BUOY_ERROR = 'BUOY_ERROR';
+
+export const GET_MEMBER = 'GET_MEMBER';
+export const GET_MEMBERS = 'GET_MEMBERS';
+export const MEMBER_ERROR = 'MEMBER_ERROR';
+export const ADD_MEMBER = 'ADD_MEMBER';
+export const DEL_MEMBER = 'DEL_MEMBER';
+
+
+
+

@@ -77,23 +77,8 @@ const PlageSchema = new Schema({
     }],
     events:[
         {
-            nom:{
-                type: String
-            },
-            from:{
-                type: Date
-            },
-            to:{
-                type: Date
-            },
-            participants:[
-                {
-                    user: {
-                        type: Schema.Types.ObjectId,
-                        ref: 'user'
-                    }
-                }
-            ]
+            type: Schema.Types.ObjectId,
+            ref : 'event'
         }
     ],
 

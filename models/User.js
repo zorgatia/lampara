@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const UserSchema = new Schema({
     username: {
         type:       String,
-        required:   true,
+        
     },
     email: {
         type: String,
@@ -23,7 +23,8 @@ const UserSchema = new Schema({
     },
 
     image:{
-        type: String
+        type: String,
+        default: "https://res.cloudinary.com/orange-odc/image/upload/v1566554496/users/default.jpg"
     },
     type:{
         type: String,
@@ -37,6 +38,9 @@ const UserSchema = new Schema({
     },
     dateNaissance:{
         type: Date
+    },
+    comfirmed:{
+        type: Boolean
     },
     adress: {
         pays:{

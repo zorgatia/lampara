@@ -35,7 +35,7 @@ router.post(
         if (!errors.isEmpty()) {
             return res.status(400).json({ errors: errors.array() });
         }*/
-    const { username, email, password, age, lat, lng, type } = req.body;
+    const { username, email, password, lat, lng } = req.body;
 
     try {
       // See if user exists
@@ -46,21 +46,14 @@ router.post(
           .json({ errors: [{ msg: "User already exists" }] });
       }
 
-      const image = gravatar.url(email, {
-        s: "200",
-        r: "pg",
-        d: "mm"
-      });
 
       user = new User({
         username,
         email,
-        image,
         password,
-        age,
         lat,
         lng,
-        type
+        type: 'USER'
       });
 
       const salt = await bcrypt.genSalt(10);
@@ -220,11 +213,11 @@ router.put("/follow/:id", auth, async (req, res) => {
     const index = user.follows.map(p => p.id).indexOf(plage.id);
     if (index !== -1) {
       user.follows.splice(index, 1);
-      user.save();
+      await user.save();
       res.json({ msg: "deleted" });
     } else {
       user.follows.unshift(plage);
-      user.save();
+      await user.save();
       res.json({ msg: "added" });
     }
   } catch (err) {

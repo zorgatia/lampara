@@ -14,8 +14,8 @@ module.exports = (to, subject, text) => {
   let mailOptions = {
     from: '"Smart Buoy" <smart.buoy.odc@gmail.com>', // sender address
     to: to, // list of receivers
-    subject: "req.body.subject", // Subject line
-    text: "req.body.body" // plain text body
+    subject: subject, // Subject line
+    text: text // plain text body
   };
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {

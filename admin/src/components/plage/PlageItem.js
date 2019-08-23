@@ -13,6 +13,7 @@ const PlageItem = ({ auth, plage: { _id, nom, ville, date, mainImage } }) => {
                         src={mainImage}
                         className="img-fluid"
                         alt=""
+                        
                     />
                     <div className="card-body">
                         <h5 className="m-b-0">{nom}</h5>

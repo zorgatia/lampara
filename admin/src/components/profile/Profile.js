@@ -82,6 +82,7 @@ const Profile = ({
         changePassword({ oldPassword, newPassword });
       }
     } else if (e.target.name === "fProfile") {
+      console.log(image)
       updateCurrentProfile({
         username,
         dateNaissance,
@@ -110,8 +111,8 @@ const Profile = ({
         (error, result) => {
           if (!error && result && result.event === "success") {
 
-
-            image=result.info.secure_url;
+            setFormData({ ...formData, image: result.info.secure_url });
+            
             document.getElementById('imgprof').src=result.info.secure_url
 
             console.log("Done! Here is the image info: ", result.info);
@@ -154,7 +155,7 @@ const Profile = ({
                           id="imgprof"
                             alt=""
                             className="rounded-circle"
-                            src={image?image:'/assets/icons/persone.jpg'}
+                            src={image}
                             width='60%'
                             height="60%"
                           />

@@ -11,6 +11,7 @@ import NotFound from "../layout/NotFound"
 import Swal from "../layout/Swal"
 import Profile from "../profile/Profile"
 import Mapp from "../plage/Map"
+import Members from "../member/Members"
 
 
 
@@ -26,6 +27,7 @@ const Routes = () => {
                 <PrivateRoute exact path="/profile" component={Profile} />
                 <PrivateRoute exact path="/plages" component={Plages} />
                 <PrivateRoute exact path="/map" component={Mapp} />
+                <PrivateRoute exact path="/members" component={Members} />
                 <Route component={NotFound} />
             </Switch>
             <Swal/>

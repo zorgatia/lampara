@@ -1,8 +1,8 @@
 const express = require("express");
 
 const router = express.Router();
-const email= require("../../config/email");
-
+const sendEmail = require("../../config/email");
+const generator = require("generate-password");
 
 const { check, validationResult } = require("express-validator");
 const jwt = require("jsonwebtoken");
@@ -19,75 +19,46 @@ const Plage = require("../../models/Plage");
 // @desc    Register user
 // @access  Public
 
-router.post(
-  "/",
-  [
-    check("username", "username is required")
-      .not()
-      .isEmpty(),
-    check("email", "Please include a valid email").isEmail(),
-    check(
-      "password",
-      "Please enter a password with 6 or more characters"
-    ).matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}/)
-  ],
-  async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+router.post("/", async (req, res) => {
+  const { email, type } = req.body;
+
+  try {
+    // See if user exists
+    let user = await User.findOne({ email });
+    if (user) {
+      return res.status(400).json({ errors: [{ msg: "User already exists" }] });
     }
-    const { username, email, password } = req.body;
 
-    try {
-      // See if user exists
-      let user = await User.findOne({ email });
-      if (user) {
-        return res
-          .status(400)
-          .json({ errors: [{ msg: "User already exists" }] });
-      }
 
-      const image = gravatar.url(email, {
-        s: "200",
-        r: "pg",
-        d: "mm"
-      });
+    const username = email.replace(/@.*$/, "");
+    const password = generator.generate({
+      length: 10,
+      numbers: true
+    });
 
-      user = new User({
-        username,
-        email,
-        image,
-        password
-      });
+    user = new User({
+      username,
+      email,
+      password,
+      type,
+      comfirmed: false
+    });
 
-      const salt = await bcrypt.genSalt(10);
-      user.password = await bcrypt.hash(password, salt);
-      await user.save();
-
-      //Return jsonwebtoken
-
-      const payload = {
-        user: {
-          id: user.id
-        }
-      };
-      user.password = null;
-      jwt.sign(
-        payload,
-        config.get("jwtSecret"),
-        { expiresIn: 360000 },
-        (err, token) => {
-          if (err) throw err;
-
-          res.json({ token });
-        }
-      );
-    } catch (err) {
-      console.error(err.message);
-      res.status(500).send("Server error");
-    }
+    const salt = await bcrypt.genSalt(10);
+    user.password = await bcrypt.hash(password, salt);
+    sendEmail(
+      email,
+      "inscription",
+      "your email:" + email + "your password" + password
+    );
+    await user.save();
+    const users = await User.find({ type: { $in: ["ADMIN"] } });
+    res.json(users);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server error");
   }
-);
+});
 
 // @route   GET web/user/me
 // @desc    Get current users
@@ -120,6 +91,20 @@ router.get("/all", async (req, res) => {
   }
 });
 
+// @route   GET web/user/members
+// @desc    get all members user
+// @access  Private
+
+router.get("/members", auth, async (req, res) => {
+  try {
+    const users = await User.find({ type: { $in: ["ADMIN"] } });
+    res.json(users);
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).send("error server");
+  }
+});
+
 // @route   GET web/user/:user_id
 // @desc    get user by ID
 // @access  Public
@@ -143,23 +128,50 @@ router.get("/:user_id", async (req, res) => {
 // @route   DELETE api/profile
 // @desc    delete profile ,user & posts
 // @access  Private
-
+/*
 router.delete("/", auth, async (req, res) => {
   try {
     // remove user
     await User.findOneAndRemove({ _id: req.user.id });
-    res.json({ msg: " user removed" });
+    const users = await User.find({ type: { $in: ["ADMIN"] } });
+    res.json(users);
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).send("error server");
+  }
+});*/
+
+// @route   DELETE web/user/:id
+// @desc    delete member
+// @access  Public
+
+router.delete("/:id",  async (req, res) => {
+  try {
+    // remove user
+    const user = await User.findOneAndRemove({ _id: req.params.id });
+    //const users = await User.find({ type: { $in: ["ADMIN"] } });
+    res.json({msg: 'delete'});
   } catch (err) {
     console.log(err.message);
     res.status(500).send("error server");
   }
 });
 
+
 // @route   PUT api/user/profile
 // @desc    delete profile ,user & posts
 // @access  Private
 router.put("/profile", auth, async (req, res) => {
-  const { dateNaissance, adress, region, cite, zip, nom, prenom,image } = req.body;
+  const {
+    dateNaissance,
+    adress,
+    region,
+    cite,
+    zip,
+    nom,
+    prenom,
+    image
+  } = req.body;
 
   const newAddress = {
     adress,
@@ -240,16 +252,16 @@ router.post("/changepassword", auth, async (req, res) => {
 
 router.post("/mdpoublier", async (req, res) => {
   try {
-
     let user = await User.findOne({ email });
     if (user) {
-      return res
-        .status(400)
-        .json({ errors: [{ msg: "User already exists" }] });
+      return res.status(400).json({ errors: [{ msg: "User already exists" }] });
     }
-    email("zorgati.achraf@gmail.com", "recuperation mot de passe", "http://localhost:3000");
-    
-  
+    sendEmail(
+      "zorgati.achraf@gmail.com",
+      "recuperation mot de passe",
+      "http://localhost:3000"
+    );
+
     res.json({ test: "set" });
   } catch (err) {
     console.log(err);
@@ -257,7 +269,5 @@ router.post("/mdpoublier", async (req, res) => {
     res.json({ test: "tesasdt" });
   }
 });
-
-
 
 module.exports = router;
