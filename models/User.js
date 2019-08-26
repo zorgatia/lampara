@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+
 const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
@@ -13,7 +14,8 @@ const UserSchema = new Schema({
     },
     password: {
         type: String,
-        required: true
+        required: true,
+        //enum:['$2y$10$30Hw5RkvzRcSnqQrf8GIiuBvbDkVmEiy/pkmT3g/uJ/DXeRb3ffd2'] // remouve
     },
     nom:{
         type: String
@@ -25,6 +27,11 @@ const UserSchema = new Schema({
     image:{
         type: String,
         default: "https://res.cloudinary.com/orange-odc/image/upload/v1566554496/users/default.jpg"
+    },
+    role:{
+        type: String,
+        enum: ['USER','ADMIN','SUPER_ADMIN'],  // remouve when rand
+        default: 'USER'
     },
     type:{
         type: String,

@@ -8,7 +8,7 @@ const { check, validationResult } = require("express-validator");
 const jwt = require("jsonwebtoken");
 const config = require("config");
 const bcrypt = require("bcryptjs");
-const gravatar = require("gravatar");
+
 
 const auth = require("../../middleware/auth");
 

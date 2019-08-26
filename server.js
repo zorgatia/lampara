@@ -1,7 +1,9 @@
 const express = require('express')
 const connectDB = require('./config/db')
-const mqtt = require('mqtt')
 const path = require('path');
+
+/*
+const mqtt = require('mqtt');
 const option={
     port: 17901,
     host: 'mqtt://farmer.cloudmqtt.com',
@@ -26,17 +28,15 @@ client.on('connect', () => {
         })
     })
   })
-  
+  */
 const app = express();
 
 
 connectDB();
 
 app.use(express.json({ extended: false}));
-app.use(express.json({ extended: false}));
 
-app.get('/',(req,res)=> res.send('API Running'));
-app.get('/',(req,res)=> res.send('API Running'));
+
 
 app.use('/mob/user',require('./routes/mob/user'));
 app.use('/mob/auth',require('./routes/mob/auth'));
@@ -53,6 +53,10 @@ app.use('/web/buoy',require('./routes/web/buoy'));
 app.use('/emb/buoy',require('./routes/emb/buoy'));
 
 app.use('/ds/rate',require('./routes/ds/rate'));
+
+app.use('/rand/user',require('./routes/rand/user'));
+app.use('/rand/rates',require('./routes/rand/rates'));
+
 
 
 //Server static assest in production

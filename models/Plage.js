@@ -3,10 +3,14 @@ const Schema = mongoose.Schema
 
 const PlageSchema = new Schema({
     nom:{
-        type: String
+        type: String,
+      //  enum: ['test']
     },
     ville:{
         type: String
+    },
+    region:{
+        type: String,
     },
     lat:{
         type: Number
@@ -72,7 +76,9 @@ const PlageSchema = new Schema({
             ref: 'user'
         },
         rate:{
-            type: Number
+            type: Number,
+            min:0,
+            max:5
         }
     }],
     events:[

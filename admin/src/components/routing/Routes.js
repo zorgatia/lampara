@@ -5,6 +5,7 @@ import { Route, Switch, Redirect } from "react-router-dom";
 import SideBar from "../layout/SideBar";
 import Dashboard from "../dashboard/Dashboard";
 import Plages from "../plage/Plages";
+import PlageForm from "../plage/PlageForm";
 import PrivateRoute from "../routing/PrivateRoute";
 import Navbar from "../layout/Navbars";
 import NotFound from "../layout/NotFound"
@@ -26,8 +27,10 @@ const Routes = () => {
                 <PrivateRoute exact path="/dashboard" component={Dashboard} />
                 <PrivateRoute exact path="/profile" component={Profile} />
                 <PrivateRoute exact path="/plages" component={Plages} />
+                <PrivateRoute exact path="/addplage" component={PlageForm} />
                 <PrivateRoute exact path="/map" component={Mapp} />
                 <PrivateRoute exact path="/members" component={Members} />
+                
                 <Route component={NotFound} />
             </Switch>
             <Swal/>
