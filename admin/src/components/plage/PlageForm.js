@@ -1,7 +1,28 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState, useEffect } from "react";
+import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
-const PlageForm = props => {
+import { getCurrentPlage, updateCurrentPlage } from "../../actions/plage";
+import { setAlert } from "../../actions/alert";
+import Spinner from "../layout/Spinner";
+import Profile from "../profile/Profile";
+
+const PlageForm = ({
+  getCurrentPlage,
+  updateCurrentPlage,
+  plage: { plage, loading }
+}) => {
+
+  useEffect(() => {
+    if(plage !== null){
+      getCurrentPlage(plage.id);
+      setFormData({
+        nom: loading || !plage.nom ? "" : plage.nom
+      })
+    } 
+    console.log(plage)
+  }, [loading])
+
   const [formData, setFormData] = useState({
     nom: "",
     ville: "",
@@ -23,7 +44,34 @@ const PlageForm = props => {
   const onSubmit = async e => {
     e.preventDefault();
   };
-  return (
+
+  const uploadWidget = e => {
+    // if(delToken!==""){
+    //  window.cloudinary.delete_by_token(delToken)  }
+    // console.log(window.cloudinary)
+    window.cloudinary
+      .createUploadWidget(
+        {
+          cloudName: "orange-odc",
+          uploadPreset: "ml_default",
+          googleApiKey: "AIzaSyAu_NOKqvOUmQMB5XJtnNfysTeRt90L56c",
+          searchBySites: ["all", "cloudinary.com"],
+          searchByRights: true,
+          folder: "users"
+        },
+        (error, result) => {
+          if (!error && result && result.event === "success") {
+            //delToken=result.info.delete_token
+
+            console.log("Done! Here is the image info: ", result.info);
+          }
+        }
+      )
+      .open();
+  };
+  return loading && plage === null ? (
+    <Spinner />
+  ) : (
     <Fragment>
       <div className="content-body">
         <div className="container">
@@ -159,6 +207,17 @@ const PlageForm = props => {
   );
 };
 
-PlageForm.propTypes = {};
+PlageForm.propTypes = {
+  getCurrentPlage: PropTypes.func.isRequired,
+  updateCurrentPlage: PropTypes.func.isRequired,
+  plage: PropTypes.object.isRequired
+};
 
-export default PlageForm;
+const mapStateToProps = state => ({
+  plage: state.plage
+});
+
+export default connect(
+  mapStateToProps,
+  { getCurrentPlage, updateCurrentPlage }
+)(PlageForm);

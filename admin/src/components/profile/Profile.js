@@ -10,7 +10,7 @@ import { setAlert } from "../../actions/alert";
 import Spinner from "../layout/Spinner";
 import moment from "moment";
 import styled from 'styled-components';
-import "react-datepicker/dist/react-datepicker.css";
+//import "react-datepicker/dist/react-datepicker.css";
 
 const Profile = ({
   setAlert,
@@ -32,7 +32,8 @@ const Profile = ({
     cite: "",
     region: "",
     zip: "",
-    image:""
+    image:"",
+    delToken:""
   });
 
   useEffect(() => {
@@ -66,7 +67,8 @@ const Profile = ({
     cite,
     region,
     zip,
-    image
+    image,
+    delToken
 
   } = formData;
   const onChange = e =>
@@ -98,6 +100,9 @@ const Profile = ({
   };
 
   const uploadWidget = e => {
+   // if(delToken!==""){
+    //  window.cloudinary.delete_by_token(delToken)  }
+    console.log(window.cloudinary)
     window.cloudinary
       .createUploadWidget(
         {
@@ -114,6 +119,8 @@ const Profile = ({
             setFormData({ ...formData, image: result.info.secure_url });
             
             document.getElementById('imgprof').src=result.info.secure_url
+
+            //delToken=result.info.delete_token
 
             console.log("Done! Here is the image info: ", result.info);
           }

@@ -3,17 +3,22 @@ import PropTypes from "prop-types";
 import {Link} from "react-router-dom"
 
 import { connect } from "react-redux";
+import { getCurrentPlage } from "../../actions/plage"
 
-const PlageItem = ({ auth, plage: { _id, nom, ville, date, mainImage } }) => {
+const PlageItem = ({ getCurrentPlage, plage: { _id, nom, ville, date, mainImage } }) => {
+    const onClick = (e) => {
+        //console.log('asdasdasd')
+        getCurrentPlage(_id)
+    }
     return (
         <div className="col-lg-4 no-card-border">
             <div className="card">
-                <Link to="#">
+                <Link to="/addplage">
                     <img
                         src={mainImage}
                         className="img-fluid"
                         alt=""
-                        
+                        onClick={e=>onClick(e)}
                     />
                     <div className="card-body">
                         <h5 className="m-b-0">{nom}</h5>
@@ -45,14 +50,11 @@ const PlageItem = ({ auth, plage: { _id, nom, ville, date, mainImage } }) => {
 
 PlageItem.propTypes = {
     plage: PropTypes.object.isRequired,
-    auth: PropTypes.object.isRequired
+    getCurrentPlage:PropTypes.func.isRequired,
 };
 
-const mapStateToProps = state => ({
-    auth: state.auth
-});
 
 export default connect(
-    mapStateToProps,
-    {}
+    null,
+    {getCurrentPlage}
 )(PlageItem);

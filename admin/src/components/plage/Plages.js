@@ -9,6 +9,9 @@ const Plages = ({ getPlages, plage: { plages, loading } }) => {
     useEffect(() => {
         getPlages();
     }, [getPlages]);
+
+    
+
     return loading ? <Spinner /> : (
         <Fragment>
              <div className="content-body">
@@ -24,7 +27,7 @@ const Plages = ({ getPlages, plage: { plages, loading } }) => {
             <div className="row">
                 {
                     plages.map(plage => (
-                        <PlageItem key={plage._id} plage={plage}/>
+                        <PlageItem key={plage._id} plage={plage} />
                     ))
                 }
             </div>
