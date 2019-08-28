@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import SweetAlert from "sweetalert2-react";
 
-import { removeAlert } from "../../actions/alert";
+
 
 const Swal = ({ alerts }) =>
     alerts !== null &&

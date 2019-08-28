@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, {  useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import MemberItem from "./MemberItem";
@@ -55,7 +55,7 @@ const Members = ({ getMembers,registerMember, member: { members, loading } }) =>
           <div className="col p-0">
             <ol className="breadcrumb">
               <li className="breadcrumb-item">
-                <a href="">Widget</a>
+                
               </li>
               <li className="breadcrumb-item active">Stats</li>
             </ol>

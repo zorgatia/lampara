@@ -2,6 +2,7 @@ const express = require('express')
 const connectDB = require('./config/db')
 const path = require('path');
 
+
 /*
 const mqtt = require('mqtt');
 const option={
@@ -29,6 +30,7 @@ client.on('connect', () => {
     })
   })
   */
+
 const app = express();
 
 
@@ -67,6 +69,7 @@ if(process.env.NODE_ENV === 'production'){
         res.sendFile(path.resolve(__dirname,'admin','build','index.html'))
     })
 }
+
 
 const PORT =  process.env.PORT || 5002;
 

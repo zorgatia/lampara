@@ -15,4 +15,9 @@ router.post('/',async(req,res)=>{
     res.json(users);
 })
 
+router.delete('/',async(req,res)=>{
+    await User.deleteMany({role:'USER'})
+    res.json('asd')
+})
+
 module.exports = router

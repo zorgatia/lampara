@@ -1,7 +1,7 @@
 import axios from "axios";
 import {setAlert} from './alert'
 
-import { GET_MEMBERS, MEMBER_ERROR, ADD_MEMBER, DEL_MEMBER, SET_ALERT } from "./types";
+import { GET_MEMBERS, MEMBER_ERROR, ADD_MEMBER, DEL_MEMBER } from "./types";
 
 export const getMembers = () => async dispatch => {
   try {
@@ -37,7 +37,7 @@ export const registerMember = ({ email, type }) => async dispatch => {
 
 export const removeMember = id => async dispatch => {
   try {
-    const res = await axios.delete(`/web/user/${id}`);
+    await axios.delete(`/web/user/${id}`);
     dispatch({
       type: DEL_MEMBER,
       payload: id

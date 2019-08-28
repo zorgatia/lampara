@@ -2,7 +2,7 @@ import {
   GET_PLAGE,
   SET_PLAGE,
   GET_PLAGES,
-  PLAGE_ERROR,ADD_PLAGE, PLAGE_LOADING
+  PLAGE_ERROR,ADD_PLAGE
 } from "../actions/types";
 
 const initialState = {
@@ -15,22 +15,15 @@ const initialState = {
 export default function(state = initialState, action) {
   const { type, payload } = action;
   switch (type) {
-      case PLAGE_LOADING:
-          return{
-              ...state,
-              loading:true
-          }
     case GET_PLAGE:
       return {
         ...state,
         plage: payload,
-        plages: null,
         loading: false
       };
     case GET_PLAGES:
       return {
         ...state,
-        plage: null,
         plages: payload,
         loading: false
       };
@@ -43,9 +36,14 @@ export default function(state = initialState, action) {
     case ADD_PLAGE:
       return {
         ...state,
-        plage: null,
+        plages: [...state.plages,payload],
         loading: false
       };
+    case SET_PLAGE:
+      return{
+        ...state,
+        plages: state.plages.map(plage=> plage._id=== payload.id ? payload : plage)
+      }
     default:
       return state;
   }

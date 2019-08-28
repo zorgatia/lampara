@@ -236,8 +236,9 @@ router.put("/going", async (req, res) => {
     if (!plage) return res.status(404).json({ msg: "plage mich mayjouda" });
 
     const user = await User.findById(req.body.user).select("goings");
+    if(!user) return res.status(404).json({msg:'user 8alit'})
     // user.going.sort((a,b)=>a.date.getTime()-b.date.getTime());
-
+    if(!user.goings) return res.status(404).json({msg:'user ma3andouch going'})
     if (user.goings.filter(going => going.date === req.body.date).length > 0)
       return res.status(404).json({ msg: "dejat mech plage o5ra" });
     const newGoing = {
@@ -264,6 +265,7 @@ router.get("/going/future/:id", async (req, res) => {
     const user = await User.findById(req.params.id)
       .select("goings")
       .populate("goings.plage", "nom ville mainImage");
+      if(!user) return res.status(404).json({msg:'user 8alit'})
     result = [];
     user.goings.forEach(going => {
       result.push({

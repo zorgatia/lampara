@@ -5,9 +5,7 @@ import {
     GET_PLAGES,
     GET_PLAGE,
     SET_PLAGE,
-    ADD_PLAGE,
-    PLAGE_LOADING
-
+    ADD_PLAGE
 }from './types';
 
 
@@ -29,7 +27,7 @@ export const getPlages = () => async dispatch => {
     }
 }
 
-export const getCurrentPlage = (id) => async dispatch => {
+export const getPlage = (id) => async dispatch => {
     try{
         const res = await axios.get(`/web/plage/${id}`);
 
@@ -46,22 +44,10 @@ export const getCurrentPlage = (id) => async dispatch => {
     }
 }
 
-export const addPlage = () => async dispatch => {
-    try{
-        dispatch({
-            type: ADD_PLAGE
-        })
 
-    }catch(err){
-        dispatch({
-            type: PLAGE_ERROR,
-            payload: { msg: err.response.statusText, status: err.response.status}
-        })
-    }
-}
-export const updateCurrentPlage = () => async dispatch => {
+export const updatePlage = () => async dispatch => {
     try{
-        const res = await axios.get('/web/plage');
+        //const res = await axios.get('/web/plage');
 
         dispatch({
             type: SET_PLAGE,
@@ -75,13 +61,21 @@ export const updateCurrentPlage = () => async dispatch => {
         })
     }
 }
-export const loadPlage = () => async dispatch=>{
+
+export const addPlage = () => async dispatch => {
     try {
+        const config = {
+            headers: {
+                "Content-Type": "Application/json"
+            }
+        };
+        const body = JSON.stringify({});
+        const res = await axios.post('/web/plage', body, config);
         dispatch({
-            type: PLAGE_LOADING,
-          //  payload: res.data
+            type: ADD_PLAGE,
+            payload: res.data
         })
-    }catch(err){
+    } catch(err){
         dispatch({
             type: PLAGE_ERROR,
             payload: { msg: err.response.statusText, status: err.response.status}

@@ -68,7 +68,7 @@ const Profile = ({
     region,
     zip,
     image,
-    delToken
+    //delToken
 
   } = formData;
   const onChange = e =>

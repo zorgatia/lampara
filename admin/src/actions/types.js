@@ -20,7 +20,7 @@ export const SET_PLAGE = 'SET_PLAGE';
 export const GET_PLAGES = 'GET_PLAGES';
 export const PLAGE_ERROR = 'PLAGE_ERROR';
 export const ADD_PLAGE = 'ADD_PLAGE';
-export const PLAGE_LOADING = 'PLAGE_LOADING'
+
 
 export const GET_BUOYS = 'GET_BUOYS';
 export const BUOY_ERROR = 'BUOY_ERROR';

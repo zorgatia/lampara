@@ -94,7 +94,9 @@ router.get('/',async(req,res)=>{
 router.get('/:id',async(req,res)=>{
     try{
         const event = await Event.findById(req.params.id);
-        res.json(event)
+        let ev = event.toObject();
+        ev.simEvent=event;
+        res.json(ev)
     }catch (err) {
         console.log(err.message)
         res.status(500).send('server error')

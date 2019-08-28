@@ -2,26 +2,14 @@ import React, { Fragment, useState, useEffect } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
-import { getCurrentPlage, updateCurrentPlage } from "../../actions/plage";
-import { setAlert } from "../../actions/alert";
-import Spinner from "../layout/Spinner";
-import Profile from "../profile/Profile";
+import { addPlage } from "../../actions/plage";
+//import { setAlert } from "../../actions/alert";
+//import Spinner from "../layout/Spinner";
+//import Profile from "../profile/Profile";
 
-const PlageForm = ({
-  getCurrentPlage,
-  updateCurrentPlage,
-  plage: { plage, loading }
+const AddPlageForm = ({
+  addPlage
 }) => {
-
-  useEffect(() => {
-    if(plage !== null){
-      getCurrentPlage(plage.id);
-      setFormData({
-        nom: loading || !plage.nom ? "" : plage.nom
-      })
-    } 
-    console.log(plage)
-  }, [loading])
 
   const [formData, setFormData] = useState({
     nom: "",
@@ -69,9 +57,7 @@ const PlageForm = ({
       )
       .open();
   };
-  return loading && plage === null ? (
-    <Spinner />
-  ) : (
+  return  (
     <Fragment>
       <div className="content-body">
         <div className="container">
@@ -207,17 +193,11 @@ const PlageForm = ({
   );
 };
 
-PlageForm.propTypes = {
-  getCurrentPlage: PropTypes.func.isRequired,
-  updateCurrentPlage: PropTypes.func.isRequired,
-  plage: PropTypes.object.isRequired
+AddPlageForm.propTypes = {
+  addPlage: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = state => ({
-  plage: state.plage
-});
-
 export default connect(
-  mapStateToProps,
-  { getCurrentPlage, updateCurrentPlage }
-)(PlageForm);
+  null,
+  { addPlage }
+)(AddPlageForm);
