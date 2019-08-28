@@ -14,5 +14,9 @@ router.post('/',async(req,res)=>{
     }
     res.json(plages);
 })
+router.delete('/',async(req,res)=>{
+    await Plage.deleteMany({nom:'test'})
+    res.json('asd')
+})
 
 module.exports = router

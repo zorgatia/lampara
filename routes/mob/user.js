@@ -204,12 +204,12 @@ router.put(
 // @desc    put follow on plage
 // @access  Private
 
-router.put("/follow/:id", auth, async (req, res) => {
+router.put("/follow", async (req, res) => {
   try {
-    const plage = await Plage.findById(req.params.id);
+    const plage = await Plage.findById(req.body.idPlage);
     if (!plage) return res.status(404).json({ msg: "Plage don t found" });
     // test if user have already followed plage
-    const user = await User.findById(req.user.id);
+    const user = await User.findById(req.body.idUser);
     const index = user.follows.map(p => p.id).indexOf(plage.id);
     if (index !== -1) {
       user.follows.splice(index, 1);
@@ -300,5 +300,38 @@ router.delete("/going/:id", async (req, res) => {
         res.json({ msg: "deleted" });
     }
 });
+
+// @route   GET mob/user/follows
+// @desc    change password
+// @access  Private
+router.get('/follows/:idUser',async (req,res)=>{
+  try{
+    const user = await User.findById(req.params.idUser);
+    if (!user) return res.status(404).json({ msg: "pas de user" });
+    
+
+    const plages = await Plage.find({_id:{ "$in" : user.follows.map(f=>f.id)}}).select("_id nom ville mainImage rates");
+    
+    p = [];
+    plages.forEach(plage => {
+      //plage = plage.toObject;
+      const rates = plage.rates.map(rate => rate.rate);
+      const rate =
+        rates.reduce((previous, current) => (current += previous), 0) /
+        rates.length;
+      plage = plage.toObject();
+      plage.rate = rate;
+      delete plage.rates;
+      p.unshift(plage);
+    });
+    // const obj = plages.rates.map(rate=>rate.rate).reduce((previous, current) => current += previous)/palge.rates.length();
+
+    res.json(p);
+
+  }catch (err) {
+    console.log(err.message);
+    res.status(500).send("server error");
+  }
+})
 
 module.exports = router;
