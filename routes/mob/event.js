@@ -48,11 +48,11 @@ router.post('/',async(req,res)=>{
 
 router.put('/participer',async(req,res)=>{
     try {
-        const user = await User.findById(req.body.event);
+        const user = await User.findById(req.body.user);
         if(!user){
             res.status(400).json({msg:'mafamech user'})
         }
-        const event = await Plage.findById(req.body.event);
+        const event = await Event.findById(req.body.event);
         if(!event){
             res.status(400).json({msg:'mafamech event'})
         }
