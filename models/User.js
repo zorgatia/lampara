@@ -33,10 +33,14 @@ const UserSchema = new Schema({
         enum: ['USER','ADMIN','SUPER_ADMIN'],  // remouve when rand
         default: 'USER'
     },
-    type:{
+    proffession:{
         type: String,
-        enum: ['USER','ADMIN','SUPER_ADMIN']
+        enum: ['Student','Jobless','Worker',null]
     },
+    type:[{
+        type: String,
+        enum: ['Swimming','Surfing','Diving','Fishing','Kayaking']
+    }],
     lat:{
         type: String
     },
