@@ -95,7 +95,12 @@ router.get("/", async (req, res) => {
 router.get("/prev", async (req, res) => {
     try {
       const events = await Event.find({date:{$lt: new Date()}}).populate('plage','nom').sort({date:-1});
-      res.json(events);
+    const evs = events.map(e=>{
+        let ev = e.toObject();
+        ev.plage=ev.plage.nom;
+        return ev;
+    })
+      res.json(evs);
     } catch (err) {
       console.log(err.message);
       res.status(500).send("server error");
@@ -109,7 +114,12 @@ router.get("/prev", async (req, res) => {
 router.get("/upcome", async (req, res) => {
     try {
       const events = await Event.find({date:{$gte: new Date()}}).populate('plage','nom').sort({date: 1});
-      res.json(events);
+      const evs = events.map(e=>{
+        let ev = e.toObject();
+        ev.plage=ev.plage.nom;
+        return ev;
+    })
+      res.json(evs);
     } catch (err) {
       console.log(err.message);
       res.status(500).send("server error");
