@@ -16,12 +16,16 @@ router.get("/", async (req, res) => {
     plages.forEach(plage => {
       //plage = plage.toObject;
       const rates = plage.rates.map(rate => rate.rate);
-      const rate =
-        rates.reduce((previous, current) => (current += previous), 0) /
-        rates.length;
+      let rate = 2.5;
+      rates.length !== 0
+        ? (rate =
+            rates.reduce((previous, current) => (current += previous), 0) /
+            rates.length)
+        : (rate = 2.5);
       plage = plage.toObject();
-      plage.rate = rate;
+      //console.log(rate);
       delete plage.rates;
+      plage.rate = rate;
       p.unshift(plage);
     });
     // const obj = plages.rates.map(rate=>rate.rate).reduce((previous, current) => current += previous)/palge.rates.length();
@@ -105,7 +109,7 @@ router.get("/:id/:idUser", async (req, res) => {
     }
     const Oplage = plage.toObject();
     Oplage.meteo = meteo;
-    Oplage.favoris= user.follows.filter(f=> f.id === plage.id).length > 0;
+    Oplage.favoris = user.follows.filter(f => f.id === plage.id).length > 0;
 
     return res.json(Oplage);
   } catch (err) {
