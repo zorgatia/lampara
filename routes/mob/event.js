@@ -135,11 +135,12 @@ router.get("/:id/:idUser", async (req, res) => {
     const user = await User.findById(req.params.idUser);
     if (!user) return res.status(404).json({ msg: "user 8alit" });
     const event = await Event.findById(req.params.id);
-    let simEvent = await Event.find({ plage: event.plage }).populate("plage");
+    let simEvent = await Event.find({ plage: event.plage });
     simEvent = simEvent.filter(e=>e.id!==event.id)
     let ev = event.toObject();
+    
     if (!simEvent) {
-      simEvent = await Event.find({ type: event.type }).populate("plage");
+      simEvent = await Event.find({ type: event.type });
       ev.simEvent = simEvent.indexOf(0);
     } else {
       const simType = simEvent.find(e => e.type === event.type);

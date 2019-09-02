@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { getPlage } from "../../actions/plage";
 import Spinner from "../layout/Spinner";
 
-const EditPlageForm = ({ getPlage, plage }) => {
+const EditPlageForm = ({ getPlage, plage:{plage,loading} }) => {
   useEffect(() => {
     getPlage("5d55b1533a2d0c236c12290b");
     console.log(plage)
@@ -14,7 +14,7 @@ const EditPlageForm = ({ getPlage, plage }) => {
       region: plage.region
     })*/
     
-  }, []);
+  }, [loading]);
 
   const [formData, setFormData] = useState({
     nom: "",
@@ -28,7 +28,7 @@ const EditPlageForm = ({ getPlage, plage }) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   const onSubmit = e => e.preventDefault;
 
-  return plage===null ? <Spinner></Spinner> : (
+  return loading || plage===null ? <Spinner></Spinner> : (
     <Fragment>
       <div className="content-body">
         <div className="container">
@@ -241,7 +241,7 @@ EditPlageForm.propTypes = {
   getPlage: PropTypes.func.isRequired
 };
 const mapStateToProps = state => ({
-  plage: state.plage.plage
+  plage: state.plage
 });
 
 export default connect(
