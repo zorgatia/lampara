@@ -29,7 +29,7 @@ const Routes = () => {
                 <PrivateRoute exact path="/profile" component={Profile} />
                 <PrivateRoute exact path="/plages" component={Plages} />
                 <PrivateRoute exact path="/add-plage" component={AddPlageForm} />
-                <PrivateRoute exact path="/edit-plage" component={EditPlageForm} />
+                <PrivateRoute exact path="/editplage" component={EditPlageForm} />
                 <PrivateRoute exact path="/map" component={Mapp} />
                 <PrivateRoute exact path="/members" component={Members} />
                 

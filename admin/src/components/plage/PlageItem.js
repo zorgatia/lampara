@@ -37,7 +37,7 @@ const PlageItem = ({ getPlage, plage: { _id, nom, ville, date, mainImage } }) =>
                     <div className="card-footer">
                         <div className="row justify-content-end">
                             <div className="col-4">
-                                <Link to="/edit-plage" className="btn" onClick={e=>onEdit(e)}>Edit</Link>
+                                <Link to="/editplage" className="btn" onClick={e=>onEdit(e)}>Edit</Link>
                             </div>
                             <div className="col-4">
                                <button className="btn" onClick={e=>onDetails(e)}>details</button>

@@ -121,7 +121,7 @@ router.get("/verifyemail/:email", async (req, res) => {
 
 router.get("/:user_id", async (req, res) => {
   try {
-    const user = await User.findById(req.params.user_id).select("-password");
+    const user = await User.findById(req.params.user_id).select("-password -adress");
 
     if (!user)
       return res.status(404).json({ mgs: "there is no profile for this user" });

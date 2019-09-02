@@ -37,7 +37,7 @@ const PlageSchema = new Schema({
             type: Boolean,
             default: false
         },
-        douche: {
+        shower: {
             type: Boolean,
             default: false
         },

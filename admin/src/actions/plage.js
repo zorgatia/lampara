@@ -30,7 +30,7 @@ export const getPlages = () => async dispatch => {
 export const getPlage = (id) => async dispatch => {
     try{
         const res = await axios.get(`/web/plage/${id}`);
-
+        
         dispatch({
             type: GET_PLAGE,
             payload: res.data

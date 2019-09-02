@@ -1,75 +1,34 @@
-import React, { Fragment, useState, useEffect } from "react";
-import { connect } from "react-redux";
+import React, { Fragment, useEffect, useState } from "react";
 import PropTypes from "prop-types";
-
-import { getPlage, updatePlage } from "../../actions/plage";
-//import { setAlert } from "../../actions/alert";
+import { connect } from "react-redux";
+import { getPlage } from "../../actions/plage";
 import Spinner from "../layout/Spinner";
-//import Profile from "../profile/Profile";
 
-const EditPlageForm = ({ updatePlage , plage }) => {
+const EditPlageForm = ({ getPlage, plage }) => {
+  useEffect(() => {
+    getPlage("5d55b1533a2d0c236c12290b");
+    console.log(plage)
+   /* setFormData({
+      nom: plage.nom,
+      ville: plage.ville,
+      region: plage.region
+    })*/
+    
+  }, []);
+
   const [formData, setFormData] = useState({
     nom: "",
     ville: "",
-    region: "",
-    mainImage: "",
-    //images: []
+    region: ""
   });
-/*
-  useEffect(() => {
-    //console.log(plage);
-    setFormData({
-      nom: "",
-      ville: "",
-      region: "",
-       mainImage: "",
-    });
 
-    //console.log(plage);
-  });
-*/
-  let {
-    nom,
-    ville,
-    region,
-    mainImage,
-    images: []
-  } = formData;
+  let { nom, ville, region } = formData;
 
   const onChange = e =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  const onSubmit = e => e.preventDefault;
 
-  const onSubmit = async e => {
-    e.preventDefault();
-  };
-/*
-  const uploadWidget = e => {
-    // if(delToken!==""){
-    //  window.cloudinary.delete_by_token(delToken)  }
-    // console.log(window.cloudinary)
-    window.cloudinary
-      .createUploadWidget(
-        {
-          cloudName: "orange-odc",
-          uploadPreset: "ml_default",
-          googleApiKey: "AIzaSyAu_NOKqvOUmQMB5XJtnNfysTeRt90L56c",
-          searchBySites: ["all", "cloudinary.com"],
-          searchByRights: true,
-          folder: "users"
-        },
-        (error, result) => {
-          if (!error && result && result.event === "success") {
-            //delToken=result.info.delete_token
-
-            console.log("Done! Here is the image info: ", result.info);
-          }
-        }
-      )
-      .open();
-  };*/
-  return plage === null ? (
-    <Spinner />
-  ) : (
+  return plage===null ? <Spinner></Spinner> : (
     <Fragment>
       <div className="content-body">
         <div className="container">
@@ -77,42 +36,114 @@ const EditPlageForm = ({ updatePlage , plage }) => {
             <div className="col-lg-12">
               <div className="card">
                 <div className="card-body">
-                  <h4 className="card-title">Mon Profile</h4>
+                  <h4 className="card-title">Edit Beach</h4>
                   <div className="basic-form">
                     <form onSubmit={e => onSubmit(e)} name="fProfile">
                       <div className="form-row">
                         <div className="form-group col-md-6">
-                          <label>nom</label>
+                          <label>name</label>
                           <input
                             type="text"
                             name="nom"
                             className="form-control"
-                            placeholder="nom"
+                            placeholder="name"
                             value={nom}
                             onChange={e => onChange(e)}
                           />
                         </div>
                         <div className="form-group col-md-6">
-                          <label>ville</label>
+                          <label>City</label>
                           <input
                             type="text"
                             name="ville"
                             className="form-control"
-                            placeholder="ville"
+                            placeholder="City"
                             value={ville}
                             onChange={e => onChange(e)}
                           />
                         </div>
                         <div className="form-group col-md-6">
-                          <label>region</label>
+                          <label>State</label>
                           <input
                             type="text"
                             name="region"
                             className="form-control"
-                            placeholder="region"
+                            placeholder="state"
                             value={region}
                             onChange={e => onChange(e)}
                           />
+                        </div>
+                      </div>
+                      <div className="form-group">
+                        <div className="form-check form-check-inline">
+                          <label className="form-check-label">
+                            <input
+                              type="checkbox"
+                              className="form-check-input"
+                              value="parking"
+                            />
+                            Parking
+                          </label>
+                        </div>
+                        <div className="form-check form-check-inline">
+                          <label className="form-check-label">
+                            <input
+                              type="checkbox"
+                              className="form-check-input"
+                              value="shower"
+                            />
+                            Shower
+                          </label>
+                        </div>
+                        <div className="form-check form-check-inline">
+                          <label className="form-check-label">
+                            <input
+                              type="checkbox"
+                              className="form-check-input"
+                              value="resto"
+                            />
+                            resto
+                          </label>
+                        </div>
+                        <div className="form-check form-check-inline">
+                          <label className="form-check-label">
+                            <input
+                              type="checkbox"
+                              className="form-check-input"
+                              value="wc"
+                            />
+                            wc
+                          </label>
+                        </div>
+                        <div className="form-check form-check-inline">
+                          <label className="form-check-label">
+                            <input
+                              type="checkbox"
+                              className="form-check-input"
+                              value="bar"
+                            />
+                            bar
+                          </label>
+                        </div>
+                        <div className="form-check form-check-inline">
+                          <label className="form-check-label">
+                            <input
+                              type="checkbox"
+                              className="form-check-input"
+                              value="cafe"
+                            />
+                            cafe
+                          </label>
+                        </div>
+                        <div className="form-check form-check-inline">
+                          <label className="form-check-label">
+                            <input
+                              type="checkbox"
+                              className="form-check-input"
+                              value="beachTennis"
+                            />
+                            beach Tennis
+                          </label>
                         </div>
                       </div>
                       <div className="form-row ">
@@ -206,16 +237,14 @@ const EditPlageForm = ({ updatePlage , plage }) => {
 };
 
 EditPlageForm.propTypes = {
- // getPlage: PropTypes.func.isRequired,
-  updatePlage: PropTypes.func.isRequired,
-  plage: PropTypes.object.isRequired
+  plage: PropTypes.object.isRequired,
+  getPlage: PropTypes.func.isRequired
 };
-
 const mapStateToProps = state => ({
   plage: state.plage.plage
 });
 
 export default connect(
   mapStateToProps,
-  { updatePlage }
+  { getPlage }
 )(EditPlageForm);
