@@ -7,32 +7,27 @@ import { getPlage, updatePlage } from "../../actions/plage";
 import Spinner from "../layout/Spinner";
 //import Profile from "../profile/Profile";
 
-const EditPlageForm = ({
-  getPlage,
-  updatePlage,
-  plage: { plage, loading }
-}) => {
-
+const EditPlageForm = ({ updatePlage , plage }) => {
   const [formData, setFormData] = useState({
     nom: "",
     ville: "",
     region: "",
     mainImage: "",
-    images: []
+    //images: []
   });
-  
-    useEffect(() => {
-      getPlage(plage.id);
-      setFormData({
-        nom: loading || !plage.nom ? "" : plage.nom
-      });
+/*
+  useEffect(() => {
+    //console.log(plage);
+    setFormData({
+      nom: "",
+      ville: "",
+      region: "",
+       mainImage: "",
+    });
 
-      console.log(plage);
-      
-
-    }, []);
-  
-
+    //console.log(plage);
+  });
+*/
   let {
     nom,
     ville,
@@ -40,13 +35,14 @@ const EditPlageForm = ({
     mainImage,
     images: []
   } = formData;
+
   const onChange = e =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
   const onSubmit = async e => {
     e.preventDefault();
   };
-
+/*
   const uploadWidget = e => {
     // if(delToken!==""){
     //  window.cloudinary.delete_by_token(delToken)  }
@@ -70,8 +66,8 @@ const EditPlageForm = ({
         }
       )
       .open();
-  };
-  return loading && plage === null ? (
+  };*/
+  return plage === null ? (
     <Spinner />
   ) : (
     <Fragment>
@@ -210,7 +206,7 @@ const EditPlageForm = ({
 };
 
 EditPlageForm.propTypes = {
-  getPlage: PropTypes.func.isRequired,
+ // getPlage: PropTypes.func.isRequired,
   updatePlage: PropTypes.func.isRequired,
   plage: PropTypes.object.isRequired
 };
@@ -221,5 +217,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getPlage, updatePlage }
+  { updatePlage }
 )(EditPlageForm);

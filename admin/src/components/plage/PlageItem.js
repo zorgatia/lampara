@@ -1,14 +1,15 @@
 import React from "react";
 import PropTypes from "prop-types";
-
-
+import {Link} from 'react-router-dom'
+import {getPlage} from '../../actions/plage'
 import { connect } from "react-redux";
 
 
-const PlageItem = ({  plage: { _id, nom, ville, date, mainImage } }) => {
+const PlageItem = ({ getPlage, plage: { _id, nom, ville, date, mainImage } }) => {
     
     const onEdit = (e) =>{
-
+        //e.preventDefault()
+        //getPlage(_id);
     }
     const onDetails = (e) =>{
 
@@ -36,7 +37,7 @@ const PlageItem = ({  plage: { _id, nom, ville, date, mainImage } }) => {
                     <div className="card-footer">
                         <div className="row justify-content-end">
                             <div className="col-4">
-                                <button className="btn" onClick={e=>onEdit(e)}>Edit</button>
+                                <Link to="/edit-plage" className="btn" onClick={e=>onEdit(e)}>Edit</Link>
                             </div>
                             <div className="col-4">
                                <button className="btn" onClick={e=>onDetails(e)}>details</button>
@@ -51,9 +52,10 @@ const PlageItem = ({  plage: { _id, nom, ville, date, mainImage } }) => {
 
 PlageItem.propTypes = {
     plage: PropTypes.object.isRequired,
+    getPlage: PropTypes.func.isRequired,
 };
 
 
 export default connect(
-    null,
+    null,{getPlage}
 )(PlageItem);

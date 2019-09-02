@@ -45,6 +45,7 @@ export const getPlage = (id) => async dispatch => {
 }
 
 
+
 export const updatePlage = () => async dispatch => {
     try{
         //const res = await axios.get('/web/plage');

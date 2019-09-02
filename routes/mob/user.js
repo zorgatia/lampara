@@ -36,8 +36,9 @@ router.post(
             return res.status(400).json({ errors: errors.array() });
         }*/
     let { username, email, password, interest } = req.body;
+    console.log(req.body)
 
-    interest = interest.split('-')
+   // interest = interest.split('-')
     try {
       // See if user exists
       let user = await User.findOne({ email });
@@ -60,6 +61,8 @@ router.post(
       const salt = await bcrypt.genSalt(10);
       user.password = await bcrypt.hash(password, salt);
       await user.save();
+      
+      delete user.adress;
 
       res.json(user);
         
