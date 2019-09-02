@@ -28,9 +28,7 @@ export const getPlages = () => async dispatch => {
 
 export const getPlage = id => async dispatch => {
   try {
-    dispatch({
-      type: LOAD_PLAGE
-    });
+    
     const res = await axios.get(`/web/plage/${id}`);
     dispatch({
       type: GET_PLAGE,
@@ -80,8 +78,8 @@ export const addPlage = () => async dispatch => {
     });
   }
 };
-export const loadPlage = () =>{
-    return {
+export const loadPlage = () => async dispatch => {
+    dispatch({
         type: LOAD_PLAGE
-      };
+      });
 }

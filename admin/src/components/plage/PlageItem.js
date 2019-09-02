@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import {Link} from 'react-router-dom'
-import {getPlage} from '../../actions/plage'
+import {getPlage, loadPlage} from '../../actions/plage'
 import { connect } from "react-redux";
 
 
@@ -9,7 +9,8 @@ const PlageItem = ({ getPlage, plage: { _id, nom, ville, date, mainImage } }) =>
     
     const onEdit = (e) =>{
         //e.preventDefault()
-        //getPlage(_id);
+        loadPlage();
+        console.log('asd')
     }
     const onDetails = (e) =>{
 

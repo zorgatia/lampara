@@ -8,13 +8,14 @@ const EditPlageForm = ({ getPlage, plage:{plage,loading} }) => {
   useEffect(() => {
     getPlage("5d55b1533a2d0c236c12290b");
     console.log(plage)
+    console.log(loading)
    /* setFormData({
       nom: plage.nom,
       ville: plage.ville,
       region: plage.region
     })*/
     
-  }, [loading]);
+  }, []);
 
   const [formData, setFormData] = useState({
     nom: "",

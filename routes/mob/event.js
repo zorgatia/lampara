@@ -126,6 +126,28 @@ router.get("/upcome", async (req, res) => {
     }
   });
 
+
+// @route   GET /mob/event/upcome
+// @desc    get all my events
+// @access  Public
+
+router.get("/my/:id", async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    if(!user) return res.status(404).json('usre8 alit')
+    const events = await Event.find({user: user.id}).populate('plage','nom').sort({date: 1});
+    const evs = events.map(e=>{
+      let ev = e.toObject();
+      ev.plage=ev.plage.nom;
+      return ev;
+  })
+    res.json(evs);
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).send("server error");
+  }
+});
+
 // @route   GET /mob/event
 // @desc    get all events
 // @access  Public
