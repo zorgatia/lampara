@@ -33,11 +33,8 @@ const UserSchema = new Schema({
         enum: ['USER','ADMIN','SUPER_ADMIN'],  // remouve when rand
         default: 'USER'
     },
-    proffession:{
-        type: String,
-        enum: ['Student','Jobless','Worker',null]
-    },
-    type:[{
+    
+    interest:[{
         type: String,
         enum: ['Swimming','Surfing','Diving','Fishing','Kayaking']
     }],
@@ -46,9 +43,6 @@ const UserSchema = new Schema({
     },
     lng:{
         type: String
-    },
-    dateNaissance:{
-        type: Date
     },
     comfirmed:{
         type: Boolean

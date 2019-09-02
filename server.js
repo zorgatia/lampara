@@ -57,6 +57,8 @@ app.use('/web/buoy',require('./routes/web/buoy'));
 app.use('/emb/buoy',require('./routes/emb/buoy'));
 
 app.use('/ds/rate',require('./routes/ds/rate'));
+app.use('/ds/meteo',require('./routes/ds/meteo'));
+app.use('/ds/dashboard',require('./routes/ds/dashboard'));
 
 app.use('/rand/user',require('./routes/rand/user'));
 app.use('/rand/rates',require('./routes/rand/rates'));

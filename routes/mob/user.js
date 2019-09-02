@@ -2,10 +2,10 @@ const express = require("express");
 const router = express.Router();
 
 const { check, validationResult } = require("express-validator");
-const jwt = require("jsonwebtoken");
+//const jwt = require("jsonwebtoken");
 const config = require("config");
 const bcrypt = require("bcryptjs");
-const gravatar = require("gravatar");
+
 
 const auth = require("../../middleware/auth");
 
@@ -35,8 +35,9 @@ router.post(
         if (!errors.isEmpty()) {
             return res.status(400).json({ errors: errors.array() });
         }*/
-    const { username, email, password, lat, lng } = req.body;
+    let { username, email, password, interest } = req.body;
 
+    interest = interest.split('-')
     try {
       // See if user exists
       let user = await User.findOne({ email });
@@ -51,32 +52,18 @@ router.post(
         username,
         email,
         password,
-        lat,
-        lng,
-        type: 'USER'
+        interest,
+        role: 'USER',
+
       });
 
       const salt = await bcrypt.genSalt(10);
       user.password = await bcrypt.hash(password, salt);
       await user.save();
 
-      //Return jsonwebtoken
-
-      const payload = {
-        user: {
-          id: user.id
-        }
-      };
-      user.password = null;
-      jwt.sign(
-        payload,
-        config.get("jwtSecret"),
-        { expiresIn: 360000 },
-        (err, token) => {
-          if (err) throw err;
-          res.json(user);
-        }
-      );
+      res.json(user);
+        
+      
     } catch (err) {
       console.error(err.message);
       res.status(500).send("Server error");

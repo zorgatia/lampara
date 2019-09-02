@@ -16,7 +16,8 @@ const MeteoSchema = new Schema({
         type: Number
     },
     uv: {
-        type: Number
+        type: Number,
+        default:0
     },
     diVent: {
         type: String,
@@ -42,9 +43,6 @@ const MeteoSchema = new Schema({
     viVent: {
         type: Number
     },
-    visibilite: {
-        type: String
-    },
     ph: {
         type: Number
     },
@@ -52,7 +50,8 @@ const MeteoSchema = new Schema({
         type: Number
     },
     salerite: {
-        type: Number
+        type: Number,
+        default:0
     }
 });
 

@@ -34,36 +34,16 @@ router.post('/',async (req,res) => {
               
                .json({errors: 'Invalid Credentials'});
             }
-
-            
             //Return jsonwebtoken
-
             const isMatch = await bcrypt.compare(password,user.password)
-
             if(!isMatch){
                 return res
                    
                     .json({errors : 'Invalid Credentials' })
             }
-
-            const payload = {
-                user:{
-                    id: user.id
-                }
-            };
-
-            user.password = null;
-
-            jwt.sign(
-                payload,
-                config.get('jwtSecret'),
-                { expiresIn: 360000 },
-                (err,token)=>{
-                    if(err) throw err;
-                    res.json({user,token});
-                } 
-            );
-            
+            user = user.toObject();
+            delete user.password;
+            res.json(user);
         }catch(err){
             console.error(err.message);
             res.status(500).send('Server error');
