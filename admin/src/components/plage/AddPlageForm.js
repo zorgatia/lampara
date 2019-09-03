@@ -1,18 +1,42 @@
 import React, { Fragment, useState, useEffect } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
+import Select from 'react-select'
 
 import { addPlage } from "../../actions/plage";
-import {
-  Carousel,
-  CarouselItem,
-  CarouselControl,
-  CarouselIndicators,
-  CarouselCaption
-} from 'reactstrap';
+import { Carousel } from "react-bootstrap";
 //import { setAlert } from "../../actions/alert";
 //import Spinner from "../layout/Spinner";
 //import Profile from "../profile/Profile";
+
+
+const options = [
+  { value: 'Tunis', label: 'Tunis' },
+  { value: 'Ariana', label: 'Ariana' },
+  { value: 'Ben Arous', label: 'Ben Arous' },
+  { value: 'Manouba', label: 'Manouba' },
+  { value: 'Nabeul', label: 'Nabeul' },
+  //{ value: 'Zaghouan', label: 'Zaghouan' },
+  { value: 'Bizerte', label: 'Bizerte' },
+  { value: 'Béja', label: 'Béja' },
+  { value: 'Jendouba', label: 'Jendouba' },
+ // { value: 'Kef', label: 'Kef' },
+  //{ value: 'Siliana', label: 'Siliana' },
+  { value: 'Sousse', label: 'Sousse' },
+  { value: 'Monastir', label: 'Monastir' },
+  { value: 'Mahdia', label: 'Mahdia' },
+  { value: 'Sfax', label: 'Sfax' },
+  //{ value: 'Kairouan', label: 'Kairouan' },
+  //{ value: 'Kasserine', label: 'Kasserine' },
+//  { value: 'Sidi Bouzid', label: 'Sidi Bouzid' },
+  { value: 'Gabès', label: 'Gabès' },
+  { value: 'Mednine', label: 'Mednine' },
+  { value: 'Tataouine', label: 'Tataouine' },
+  //{ value: 'Gafsa', label: 'Gafsa' },
+//  { value: 'Tozeur', label: 'Tozeur' },
+ // { value: 'Kebili', label: 'Kebili' },
+  
+]
 
 const AddPlageForm = ({ addPlage }) => {
   const [formData, setFormData] = useState({
@@ -21,9 +45,7 @@ const AddPlageForm = ({ addPlage }) => {
     region: "",
     mainImage:
       "https://res.cloudinary.com/orange-odc/image/upload/v1567503140/plages/no-image-selected_e4g058.png",
-    images: [
-      "https://res.cloudinary.com/orange-odc/image/upload/v1567503140/plages/no-image-selected_e4g058.png","https://res.cloudinary.com/orange-odc/image/upload/v1567503140/plages/no-image-selected_e4g058.png"
-    ],
+    images: [],
     detail: {
       parking: false,
       shower: false,
@@ -96,8 +118,10 @@ const AddPlageForm = ({ addPlage }) => {
               images.length === 1 &&
               images[0] ===
                 "https://res.cloudinary.com/orange-odc/image/upload/v1567503140/plages/no-image-selected_e4g058.png"
-            )
-              images.split(0, 1);
+            ) {
+              console.log("test dselele");
+              setFormData({ ...formData, images: [] });
+            }
             setFormData({
               ...formData,
               images: [...images, result.info.secure_url]
@@ -107,6 +131,14 @@ const AddPlageForm = ({ addPlage }) => {
         }
       )
       .open();
+  };
+
+  const [index, setIndex] = useState(0);
+  const [direction, setDirection] = useState(null);
+
+  const handleSelect = (selectedIndex, e) => {
+    setIndex(selectedIndex);
+    setDirection(e.direction);
   };
   return (
     <Fragment>
@@ -144,14 +176,41 @@ const AddPlageForm = ({ addPlage }) => {
                         </div>
                         <div className="form-group col-md-6">
                           <label>region</label>
-                          <input
-                            type="text"
-                            name="region"
-                            className="form-control"
-                            placeholder="region"
+                          <Select options={options} onChange={v => setFormData({ ...formData, region: v.value })} />
+                        </div>
+                        <div className="form-group col-md-6">
+                          <label>region</label>
+                          <select
+                            className="custom-select mr-sm-2-control"
+                            id="inlineFormCustomSelect"
                             value={region}
+                            name="region"
                             onChange={e => onChange(e)}
-                          />
+                          >
+                            <option value="Tunis">Tunis</option>
+                            <option value="Ariana">Ariana</option>
+                            <option value="Ben Arous">Ben Arous</option>
+                            <option value="Manouba">Manouba</option>
+                            <option value="Nabeul">Nabeul</option>
+                            <option value="Zaghouan">Zaghouan</option>
+                            <option value="Bizerte">Bizerte</option>
+                            <option value="Béja">Béja</option>
+                            <option value="Jendouba">Jendouba</option>
+                            <option value="Siliana">Siliana</option>
+                            <option value="Sousse">Sousse</option>
+                            <option value="Monastir">Monastir</option>
+                            <option value="Mahdia">Mahdia</option>
+                            <option value="Sfax">Sfax</option>
+                            <option value="Kairouan">Kairouan</option>
+                            <option value="Kasserine">Kasserine</option>
+                            <option value="Sidi Bouzid">Sidi Bouzid</option>
+                            <option value="Gabès">Gabès</option>
+                            <option value="Mednine">Mednine</option>
+                            <option value="Tataouine">Tataouine</option>
+                            <option value="Gafsa">Gafsa</option>
+                            <option value="Tozeur">Tozeur</option>
+                            <option value="Kebili">Kebili</option>
+                          </select>
                         </div>
                       </div>
                       {/* Detail */}
@@ -256,72 +315,31 @@ const AddPlageForm = ({ addPlage }) => {
 
                       <div className="form-row ">
                         <div className="col-md-8">
-                          <div className="bootstrap-carousel">
-                            <div
-                              data-ride="carousel"
-                              className="carousel slide"
-                              id="carouselExampleCaptions"
-                            >
-                              <ol className="carousel-indicators">
-                                {images.map((img, idx) => {
-                                  return (
-                                    <li
-                                      className={
-                                        idx === images.length - 1
-                                          ? "active"
-                                          : ""
-                                      }
-                                      data-slide-to={idx}
-                                      data-target="#carouselExampleCaptions"
-                                    ></li>
-                                  );
-                                })}
-                              </ol>
-                              <div className="carousel-inner">
-                                {images.map((img, idx) => {
-                                  return (
-                                    <div
-                                      className={
-                                        idx === images.length - 1
-                                          ? "carousel-inner active"
-                                          : "carousel-inner"
-                                      }
-                                    >
-                                      <img
-                                        className="d-block w-100"
-                                        height="300px"
-                                        src={img}
-                                        alt=""
-                                      />
-                                      <div className="carousel-caption d-none d-md-block">
-                                        <h5>hello</h5>
-                                        <p>
-                                          Nulla vitae elit libero, a pharetra
-                                          augue mollis interdum.
-                                        </p>
-                                      </div>
-                                    </div>
-                                  );
-                                })}
-                              </div>
-                              <a
-                                data-slide="prev"
-                                href="#carouselExampleCaptions"
-                                className="carousel-control-prev"
-                              >
-                                <span className="carousel-control-prev-icon"></span>{" "}
-                                <span className="sr-only">Previous</span>{" "}
-                              </a>
-                              <a
-                                data-slide="next"
-                                href="#carouselExampleCaptions"
-                                className="carousel-control-next"
-                              >
-                                <span className="carousel-control-next-icon"></span>{" "}
-                                <span className="sr-only">Next</span>
-                              </a>
-                            </div>
-                          </div>
+                          <Carousel
+                            activeIndex={index}
+                            direction={direction}
+                            onSelect={handleSelect}
+                          >
+                            {images.length === 0 ? (
+                              <Carousel.Item>
+                                <img
+                                  className="d-block w-100"
+                                  src="https://res.cloudinary.com/orange-odc/image/upload/v1567503140/plages/no-image-selected_e4g058.png"
+                                  alt=" "
+                                />
+                              </Carousel.Item>
+                            ) : (
+                              images.map((img, idx) => (
+                                <Carousel.Item>
+                                  <img
+                                    className="d-block w-100"
+                                    src={img}
+                                    alt=" "
+                                  />
+                                </Carousel.Item>
+                              ))
+                            )}
+                          </Carousel>
                         </div>
                         <div className="col-md-4">
                           <button type="button" onClick={e => uploadWidget2(e)}>

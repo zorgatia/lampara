@@ -250,8 +250,28 @@ const Profile = ({
                             onChange={e => onChange(e)}
                           >
                             <option value="Tunis">Tunis</option>
-                            <option value="Bizert">Bizert</option>
-                            <option value="Bizert">Bizert</option>
+                            <option value="Ariana">Ariana</option>
+                            <option value="Ben Arous">Ben Arous</option>
+                            <option value="Manouba">Manouba</option>
+                            <option value="Nabeul">Nabeul</option>
+                            <option value="Zaghouan">Zaghouan</option>
+                            <option value="Bizerte">Bizerte</option>
+                            <option value="Béja">Béja</option>
+                            <option value="Jendouba">Jendouba</option>
+                            <option value="Siliana">Siliana</option>
+                            <option value="Sousse">Sousse</option>
+                            <option value="Monastir">Monastir</option>
+                            <option value="Mahdia">Mahdia</option>
+                            <option value="Sfax">Sfax</option>
+                            <option value="Kairouan">Kairouan</option>
+                            <option value="Kasserine">Kasserine</option>
+                            <option value="Sidi Bouzid">Sidi Bouzid</option>
+                            <option value="Gabès">Gabès</option>
+                            <option value="Mednine">Mednine</option>
+                            <option value="Tataouine">Tataouine</option>
+                            <option value="Gafsa">Gafsa</option>
+                            <option value="Tozeur">Tozeur</option>
+                            <option value="Kebili">Kebili</option>
                           </select>
                         </div>
                         <div className="form-group col-md-2">

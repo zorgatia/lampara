@@ -175,6 +175,7 @@ router.get("/:id/:idUser", async (req, res) => {
         ev.simEvent = simEvent;
       }
     }
+    ev.joined=ev.participants.filter(p=> p !== user._id).length!==0;
     return res.json(ev);
   } catch (err) {
     console.log(err.message);

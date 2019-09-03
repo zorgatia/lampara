@@ -21,8 +21,9 @@ const PlageItem = ({ loadPlage,getPlage, plage: { _id, nom, ville, date, mainIma
                
                     <img
                         src={mainImage}
-                        className="img-fluid"
+                        className="img-thumbnail rounded float-left"
                         alt=""
+                      
                        
                     />
                     <div className="card-body">
