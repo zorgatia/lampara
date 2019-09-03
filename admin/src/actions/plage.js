@@ -79,7 +79,15 @@ export const addPlage = () => async dispatch => {
   }
 };
 export const loadPlage = () => async dispatch => {
+    
+  try {
     dispatch({
         type: LOAD_PLAGE
       });
+    } catch (err) {
+      dispatch({
+        type: PLAGE_ERROR,
+        payload: { msg: err.response.statusText, status: err.response.status }
+      });
+    }
 }

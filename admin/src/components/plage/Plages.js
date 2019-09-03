@@ -23,11 +23,11 @@ const Plages = ({ getPlages, plage: { plages, loading } }) => {
                 Hello, <span>Welcome to plages</span>
               </h4>
             </div>
-            <div>
-                <Link to="/addplage"> Add </Link>
-            </div>
+            
           </div>
-
+          <div>
+                <Link to="/add-plage" className="btn"> Add </Link>
+            </div>
           {/* PlageItem */}
           <div className="row">
             {plages.map(plage => (

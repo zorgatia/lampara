@@ -5,12 +5,12 @@ import {getPlage, loadPlage} from '../../actions/plage'
 import { connect } from "react-redux";
 
 
-const PlageItem = ({ getPlage, plage: { _id, nom, ville, date, mainImage } }) => {
+const PlageItem = ({ loadPlage,getPlage, plage: { _id, nom, ville, date, mainImage } }) => {
     
     const onEdit = (e) =>{
         //e.preventDefault()
         loadPlage();
-        console.log('asd')
+       // console.log('asd')
     }
     const onDetails = (e) =>{
 
@@ -58,5 +58,5 @@ PlageItem.propTypes = {
 
 
 export default connect(
-    null,{getPlage}
+    null,{getPlage,loadPlage}
 )(PlageItem);

@@ -37,6 +37,104 @@ router.get("/", async (req, res) => {
   }
 });
 
+// @route   Get mob/plage/nearyou
+// @desc    Get near ypu
+// @access  Public
+
+router.get("/nearyou/:lat/:lng", async (req, res) => {
+  try {
+    const plages = await Plage.find().select("_id nom ville mainImage rates");
+    p = [];
+    plages.forEach(plage => {
+      //plage = plage.toObject;
+      const rates = plage.rates.map(rate => rate.rate);
+      let rate = 2.5;
+      rates.length !== 0
+        ? (rate =
+            rates.reduce((previous, current) => (current += previous), 0) /
+            rates.length)
+        : (rate = 2.5);
+      plage = plage.toObject();
+      //console.log(rate);
+      delete plage.rates;
+      plage.rate = rate;
+      p.unshift(plage);
+    });
+    // const obj = plages.rates.map(rate=>rate.rate).reduce((previous, current) => current += previous)/palge.rates.length();
+
+    res.json(p);
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).send("server error");
+  }
+});
+
+
+// @route   Get mob/plage/recommanded
+// @desc    Get recommanded
+// @access  Public
+
+router.get("/recommanded/:idUser", async (req, res) => {
+  try {
+    const plages = await Plage.find().select("_id nom ville mainImage rates");
+    p = [];
+    plages.forEach(plage => {
+      //plage = plage.toObject;
+      const rates = plage.rates.map(rate => rate.rate);
+      let rate = 2.5;
+      rates.length !== 0
+        ? (rate =
+            rates.reduce((previous, current) => (current += previous), 0) /
+            rates.length)
+        : (rate = 2.5);
+      plage = plage.toObject();
+      //console.log(rate);
+      delete plage.rates;
+      plage.rate = rate;
+      p.unshift(plage);
+    });
+    // const obj = plages.rates.map(rate=>rate.rate).reduce((previous, current) => current += previous)/palge.rates.length();
+
+    res.json(p);
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).send("server error");
+  }
+});
+
+
+// @route   Get mob/plage/tag
+// @desc    Get tag
+// @access  Public
+
+router.get("/tag/:tag", async (req, res) => {
+  try {
+    const plages = await Plage.find().select("_id nom ville mainImage rates");
+    p = [];
+    plages.forEach(plage => {
+      //plage = plage.toObject;
+      const rates = plage.rates.map(rate => rate.rate);
+      let rate = 2.5;
+      rates.length !== 0
+        ? (rate =
+            rates.reduce((previous, current) => (current += previous), 0) /
+            rates.length)
+        : (rate = 2.5);
+      plage = plage.toObject();
+      //console.log(rate);
+      delete plage.rates;
+      plage.rate = rate;
+      p.unshift(plage);
+    });
+    // const obj = plages.rates.map(rate=>rate.rate).reduce((previous, current) => current += previous)/palge.rates.length();
+
+    res.json(p);
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).send("server error");
+  }
+});
+
 // @route   Get mob/plage/location
 // @desc    Get All  plages with location
 // @access  Public
