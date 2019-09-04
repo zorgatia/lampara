@@ -14,6 +14,7 @@ import Swal from "../layout/Swal"
 import Profile from "../profile/Profile"
 import Mapp from "../plage/Map"
 import Members from "../member/Members"
+import Test from "../plage/Test";
 
 
 
@@ -32,6 +33,7 @@ const Routes = () => {
                 <PrivateRoute exact path="/editplage" component={EditPlageForm} />
                 <PrivateRoute exact path="/map" component={Mapp} />
                 <PrivateRoute exact path="/members" component={Members} />
+                <PrivateRoute exact path="/test" component={Test} />
                 
                 <Route component={NotFound} />
             </Switch>

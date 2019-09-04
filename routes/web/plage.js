@@ -9,17 +9,21 @@ const auth = require("../../middleware/auth");
 // @access  Public
 router.post("/", async (req, res) => {
     try {
+        
         const newPlage = new Plage({
             nom: req.body.nom,
             ville: req.body.ville,
-            etat: req.body.etat,
+            region: req.body.region,
             lat: req.body.lat,
             lng: req.body.lng,
             capacite: req.body.capacite,
-            mainImage: req.body.mainImage
+            mainImage: req.body.mainImage,
+            images: req.body.images,
+            detail: req.body.detail
         });
-
+        
         const plage = await newPlage.save();
+        //console.log(req.body);
         res.json(plage);
     } catch (err) {
         console.log(err.message);

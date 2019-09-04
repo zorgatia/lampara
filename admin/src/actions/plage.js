@@ -1,5 +1,6 @@
 import axios from "axios";
 
+
 import {
   PLAGE_ERROR,
   GET_PLAGES,
@@ -58,19 +59,21 @@ export const updatePlage = () => async dispatch => {
   }
 };
 
-export const addPlage = () => async dispatch => {
+export const addPlage = ({ nom, ville, region, mainImage, images, detail }) => async dispatch => {
   try {
     const config = {
       headers: {
         "Content-Type": "Application/json"
       }
     };
-    const body = JSON.stringify({});
+    const body = JSON.stringify({ nom, ville, region, mainImage, images, detail });
     const res = await axios.post("/web/plage", body, config);
+    console.log(res.data)  
     dispatch({
       type: ADD_PLAGE,
       payload: res.data
     });
+    return true;
   } catch (err) {
     dispatch({
       type: PLAGE_ERROR,

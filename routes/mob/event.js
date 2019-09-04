@@ -4,6 +4,7 @@ const router = express.Router();
 const User = require("../../models/User");
 const Plage = require("../../models/Plage");
 const Event = require("../../models/Event");
+const moment = require('moment')
 
 // @route   POST /mob/event
 // @desc    Add Event
@@ -24,7 +25,7 @@ router.post("/", async (req, res) => {
     const newEvent = new Event({
       titre: req.body.titre,
       desc: req.body.desc,
-      date: req.body.date,
+      date: moment(req.body.date).format('DD-MM-YYYY'),
       type: req.body.type,
       image: req.body.image,
       plage: plage,

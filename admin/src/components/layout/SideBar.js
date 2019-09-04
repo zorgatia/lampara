@@ -52,9 +52,9 @@ const SideBar = () => {
                         </li>
 
                         <li>
-                            <Link to="/plage">
+                            <Link to="/test">
                                 <i className=" mdi mdi-view-dashboard" />{" "}
-                                <span className="nav-text">Ecosystem</span>
+                                <span className="nav-text">Test</span>
                             </Link>
                         </li>
                     </ul>
