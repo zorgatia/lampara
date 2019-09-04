@@ -25,7 +25,7 @@ router.post("/", async (req, res) => {
     const newEvent = new Event({
       titre: req.body.titre,
       desc: req.body.desc,
-      date: moment(req.body.date).format('DD-MM-YYYY'),
+      date: moment(req.body.date).format('l'),
       type: req.body.type,
       image: req.body.image,
       plage: plage,
