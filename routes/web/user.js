@@ -20,7 +20,7 @@ const Plage = require("../../models/Plage");
 // @access  Public
 
 router.post("/", async (req, res) => {
-  const { email, type } = req.body;
+  const { email, role } = req.body;
 
   try {
     // See if user exists
@@ -40,7 +40,7 @@ router.post("/", async (req, res) => {
       username,
       email,
       password,
-      type,
+      role,
       comfirmed: false
     });
 
@@ -48,12 +48,13 @@ router.post("/", async (req, res) => {
     user.password = await bcrypt.hash(password, salt);
     sendEmail(
       email,
-      "inscription",
-      "your email:" + email + "your password" + password
+      "Register to Lampara",
+      "your email: " + email + " , your password: " + password
     );
-    await user.save();
-    const users = await User.find({ type: { $in: ["ADMIN"] } });
-    res.json(users);
+    user=await user.save();
+    res.json(user);
+   // const users = await User.find({ role: { $in: ["ADMIN"] } });
+   // res.json(users);
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server error");
@@ -97,7 +98,7 @@ router.get("/all", async (req, res) => {
 
 router.get("/members", auth, async (req, res) => {
   try {
-    const users = await User.find({ type: { $in: ["ADMIN"] } });
+    const users = await User.find({ role: { $in: ["ADMIN","MUNIC","ECO","TECH"] } });
     res.json(users);
   } catch (err) {
     console.log(err.message);
@@ -257,7 +258,7 @@ router.post("/mdpoublier", async (req, res) => {
       return res.status(400).json({ errors: [{ msg: "User already exists" }] });
     }
     sendEmail(
-      "zorgati.achraf@gmail.com",
+      email,
       "recuperation mot de passe",
       "http://localhost:3000"
     );

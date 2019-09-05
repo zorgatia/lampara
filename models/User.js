@@ -30,7 +30,7 @@ const UserSchema = new Schema({
     },
     role:{
         type: String,
-        enum: ['USER','ADMIN','SUPER_ADMIN'],  // remouve when rand
+        enum: ['USER','ADMIN','SUPER_ADMIN','MUNIC','ECO','TECH'],  // remouve when rand
         default: 'USER'
     },
     

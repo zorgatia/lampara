@@ -12,9 +12,11 @@ const Test = () => {
   const [zoom, setZoom] = useState(11);
 
   const handleApiLoaded = (map, maps) => {
+    let marker = new maps.Marker({map:map,position:maps.LatLng(center)});
     maps.event.addListener(map, "click", function (event) {
       var latitude = event.latLng.lat();
       var longitude = event.latLng.lng();
+      marker.setPosition(event.latLng)
       console.log( latitude + ', ' + longitude );
   });
   };

@@ -3,7 +3,7 @@ const router = express.Router();
 
 const Plage = require("../../models/Plage");
 const Buoy = require("../../models/Buoy");
-const auth = require("../../middleware/auth");
+const Rec = require("../../models/Rec");
 
 // @route   Get api/plages
 // @desc    Get All  plages
@@ -41,24 +41,32 @@ router.get("/", async (req, res) => {
 // @desc    Get near ypu
 // @access  Public
 
-router.get("/nearyou/:lat/:lng", async (req, res) => {
+router.get("/nearyou/:lat/:lng/:dist", async (req, res) => {
   try {
-    const plages = await Plage.find().select("_id nom ville mainImage rates");
+    const lat = req.params.lat;
+    const lng = req.params.lng;
+    const dist = req.params.dist;
+
+    const plages = await Plage.find().select("_id nom ville mainImage rates lat lng  ");
     p = [];
     plages.forEach(plage => {
+      //console.log(plage.lat)
+      console.log(getDistanceFromLatLonInKm(lat, lng, plage.lat, plage.lng))
       //plage = plage.toObject;
-      const rates = plage.rates.map(rate => rate.rate);
-      let rate = 2.5;
-      rates.length !== 0
-        ? (rate =
-            rates.reduce((previous, current) => (current += previous), 0) /
-            rates.length)
-        : (rate = 2.5);
-      plage = plage.toObject();
-      //console.log(rate);
-      delete plage.rates;
-      plage.rate = rate;
-      p.unshift(plage);
+      if (getDistanceFromLatLonInKm(lat, lng, plage.lat, plage.lng) < dist) {
+        const rates = plage.rates.map(rate => rate.rate);
+        let rate = 2.5;
+        rates.length !== 0
+          ? (rate =
+              rates.reduce((previous, current) => (current += previous), 0) /
+              rates.length)
+          : (rate = 2.5);
+        plage = plage.toObject();
+        //console.log(rate);
+        delete plage.rates;
+        plage.rate = rate;
+        p.unshift(plage);
+      }
     });
     // const obj = plages.rates.map(rate=>rate.rate).reduce((previous, current) => current += previous)/palge.rates.length();
 
@@ -68,7 +76,6 @@ router.get("/nearyou/:lat/:lng", async (req, res) => {
     res.status(500).send("server error");
   }
 });
-
 
 // @route   Get mob/plage/recommanded
 // @desc    Get recommanded
@@ -76,9 +83,17 @@ router.get("/nearyou/:lat/:lng", async (req, res) => {
 
 router.get("/recommanded/:idUser", async (req, res) => {
   try {
-    const plages = await Plage.find().select("_id nom ville mainImage rates");
+    
+    const plages = await Rec.findOne({id: req.params.idUser}).populate({path:'plages',options:{limit:5}}).select("_id nom ville mainImage rates");
+   
+    console.log(plages)
+   
+    if(plages.plages.length<5){
+
+    }
+
     p = [];
-    plages.forEach(plage => {
+    plages.plages.forEach(plage => {
       //plage = plage.toObject;
       const rates = plage.rates.map(rate => rate.rate);
       let rate = 2.5;
@@ -101,7 +116,6 @@ router.get("/recommanded/:idUser", async (req, res) => {
     res.status(500).send("server error");
   }
 });
-
 
 // @route   Get mob/plage/tag
 // @desc    Get tag
@@ -241,5 +255,24 @@ router.put("/rate", async (req, res) => {
     res.status(500).send("server error");
   }
 });
+
+function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
+  var R = 6371; // Radius of the earth in km
+  var dLat = deg2rad(lat2 - lat1); // deg2rad below
+  var dLon = deg2rad(lon2 - lon1);
+  var a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(deg2rad(lat1)) *
+      Math.cos(deg2rad(lat2)) *
+      Math.sin(dLon / 2) *
+      Math.sin(dLon / 2);
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  var d = R * c; // Distance in km
+  return d;
+}
+
+function deg2rad(deg) {
+  return deg * (Math.PI / 180);
+}
 
 module.exports = router;

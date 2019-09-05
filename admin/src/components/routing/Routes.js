@@ -15,6 +15,7 @@ import Profile from "../profile/Profile"
 import Mapp from "../plage/Map"
 import Members from "../member/Members"
 import Test from "../plage/Test";
+import Buoys from "../buoy/Buoys";
 
 
 
@@ -28,11 +29,12 @@ const Routes = () => {
                 <Redirect exact from="/" to="/dashboard" />
                 <PrivateRoute exact path="/dashboard" component={Dashboard} />
                 <PrivateRoute exact path="/profile" component={Profile} />
-                <PrivateRoute exact path="/plages" component={Plages} />
-                <PrivateRoute exact path="/add-plage" component={AddPlageForm} />
-                <PrivateRoute exact path="/editplage" component={EditPlageForm} />
+                <PrivateRoute exact path="/beaches" component={Plages} />
+                <PrivateRoute exact path="/add-beach" component={AddPlageForm} />
+                <PrivateRoute exact path="/edit-beach" component={EditPlageForm} />
                 <PrivateRoute exact path="/map" component={Mapp} />
-                <PrivateRoute exact path="/members" component={Members} />
+                <PrivateRoute exact path="/collaborators" component={Members} />
+                <PrivateRoute exact path="/buoys" component={Buoys} />
                 <PrivateRoute exact path="/test" component={Test} />
                 
                 <Route component={NotFound} />

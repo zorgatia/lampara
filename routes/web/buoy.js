@@ -16,7 +16,7 @@ const auth = require("../../middleware/auth");
 
 router.get("/location", async (req, res) => {
     try {
-        const buoys = await Buoy.find().select('-meteos -plage');
+        const buoys = await Buoy.find().populate('plage').select('-meteos');
         res.json(buoys);
     } catch (err) {
         console.log(err.message);

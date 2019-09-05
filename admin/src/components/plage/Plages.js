@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import Spinner from "../layout/Spinner";
 import PlageItem from "./PlageItem";
 import { getPlages } from "../../actions/plage";
-import {Link} from "react-router-dom"
+import { Link } from "react-router-dom";
 
 const Plages = ({ getPlages, plage: { plages, loading } }) => {
   useEffect(() => {
@@ -23,11 +23,13 @@ const Plages = ({ getPlages, plage: { plages, loading } }) => {
                 Hello, <span>Welcome to plages</span>
               </h4>
             </div>
-            
           </div>
           <div>
-                <Link to="/add-plage" className="btn"> Add </Link>
-            </div>
+            <Link to="/add-beach" className="btn">
+              {" "}
+              Add{" "}
+            </Link>
+          </div>
           {/* PlageItem */}
           <div className="row">
             {plages.map(plage => (

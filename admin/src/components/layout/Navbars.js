@@ -16,30 +16,10 @@ const Navbars = ({ auth: { isAuthenticated, loading }, logout }) => {
 
     return  loading ? <Spinner /> :(
         <Fragment>
-            <div className="header">
-                <div className="nav-header">
-                    <div className="brand-logo">
-                        <Link to="index.html">
-                            <b> {/** a changer ******************************************************************* */}
-                                <img
-                                    src="/assets/images/logo.png"
-                                    alt=""
-                                />{" "}
-                            </b>
-                            <span className="brand-title">
-                                <img
-                                    src="/assets/images/logo-text.png"
-                                    alt=""
-                                />
-                            </span>
-                        </Link>
-                    </div>
-                    <div className="nav-control">
-                        <div className="hamburger">
-                            <span className="line" /> <span className="line" />{" "}
-                            <span className="line" />
-                        </div>
-                    </div>
+            <div className="header" style={{zIndex: 9}}>
+                <div className="nav-header" style={{textAlign:'left'}}>
+                    
+                   
                 </div>
                 <div className="header-content">
                     <div className="header-left">

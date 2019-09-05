@@ -59,14 +59,14 @@ export const updatePlage = () => async dispatch => {
   }
 };
 
-export const addPlage = ({ nom, ville, region, mainImage, images, detail }) => async dispatch => {
+export const addPlage = ({ nom, ville, region, mainImage, images,lat,lng, detail }) => async dispatch => {
   try {
     const config = {
       headers: {
         "Content-Type": "Application/json"
       }
     };
-    const body = JSON.stringify({ nom, ville, region, mainImage, images, detail });
+    const body = JSON.stringify({ nom, ville, region, mainImage, images,lat,lng, detail });
     const res = await axios.post("/web/plage", body, config);
     console.log(res.data)  
     dispatch({

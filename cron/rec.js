@@ -1,8 +1,12 @@
 const cron = require("node-cron");
 const https = require("https");
 
+const Rec = require('../models/Rec')
+
 module.exports = () =>
-  cron.schedule("0 * * * *", () => {
+  cron.schedule("1 * * * *", async () => {
+
+    await Rec.deleteMany();
     console.log("running a task ");
     https
       .get("https://recodc.herokuapp.com", resp => {
@@ -14,8 +18,11 @@ module.exports = () =>
         });
         resp.on("end", () => {
           const rest =JSON.parse(data)
-            rest.array.forEach(e => {
+            rest.forEach(async e => {
+                const rec = new Rec(e);
                 
+                await rec.save();
+                console.log(e)
             });
 
 

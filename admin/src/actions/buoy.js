@@ -18,7 +18,7 @@ export const getBuoys = () => async dispatch => {
     }catch(err){
         dispatch({
             type: BUOY_ERROR,
-            payload: { msg: err.response.statusText, status: err.response.status}
+            //payload: { msg: err.response.statusText, status: err.response.status}
         })
     }
 }
