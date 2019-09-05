@@ -53,14 +53,6 @@ const PlageSchema = new Schema({
             type: Boolean,
             default: false
         },
-        cafe: {
-            type: Boolean,
-            default: false
-        },
-        beachTennis: {
-            type: Boolean,
-            default: false
-        },
         beachVolley: {
             type: Boolean,
             default: false
@@ -68,6 +60,10 @@ const PlageSchema = new Schema({
         chienAdmis: {
             type: Boolean,
             default: false
+        },
+        parasol:{
+            type:Boolean,
+            default:false
         }
     },
     rates:[{

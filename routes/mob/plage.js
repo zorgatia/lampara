@@ -84,7 +84,7 @@ router.get("/nearyou/:lat/:lng/:dist", async (req, res) => {
 router.get("/recommanded/:idUser", async (req, res) => {
   try {
     
-    const plages = await Rec.findOne({id: req.params.idUser}).populate({path:'plages',options:{limit:5}}).select("_id nom ville mainImage rates");
+    const plages = await Rec.findOne({id: req.params.idUser}).populate({path:'plages',select:"_id nom ville mainImage rates",options:{limit:5}}).select("_id nom ville mainImage rates");
    
     console.log(plages)
    
