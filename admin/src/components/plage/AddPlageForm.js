@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import Select from "react-select";
 import Autocomplete from "react-google-autocomplete";
+import styled from 'styled-components'
 
 import { addPlage } from "../../actions/plage";
 import { Carousel } from "react-bootstrap";
@@ -57,10 +58,9 @@ const AddPlageForm = ({ history, addPlage }) => {
       resto: false,
       wc: false,
       bar: false,
-      cafe: false,
-      beachTennis: false,
       beachVolley: false,
-      chienAdmis: false
+      chienAdmis: false,
+      parasol:false
     }
   });
 
@@ -77,13 +77,14 @@ const AddPlageForm = ({ history, addPlage }) => {
   const onSubmit = async e => {
     e.preventDefault();
     if (addPlage({ nom, ville, region, mainImage, images,lat,lng, detail }))
-      history.push("/plages");
+      history.push("/beaches");
   };
 
   const uploadWidget = e => {
     // if(delToken!==""){
     //  window.cloudinary.delete_by_token(delToken)  }
     // console.log(window.cloudinary)
+    e.preventDefault()
     window.cloudinary
       .createUploadWidget(
         {
@@ -105,6 +106,7 @@ const AddPlageForm = ({ history, addPlage }) => {
       .open();
   };
   const uploadWidget2 = e => {
+    e.preventDefault()
     // if(delToken!==""){
     //  window.cloudinary.delete_by_token(delToken)  }
     // console.log(window.cloudinary)
@@ -140,6 +142,15 @@ const AddPlageForm = ({ history, addPlage }) => {
       .open();
   };
 
+  const deleteImg = e => {
+    e.preventDefault()
+    setFormData({
+      ...formData,
+      images: images.filter(img=>img!==e.target.value)
+    });
+
+  }
+
   const [index, setIndex] = useState(0);
   const [direction, setDirection] = useState(null);
 
@@ -169,6 +180,7 @@ const AddPlageForm = ({ history, addPlage }) => {
       var longitude = event.latLng.lng();
       marker.setPosition(event.latLng);
 
+
       geocoder.geocode({'location': event.latLng}, function(results, status) {
         if (status === 'OK') {
           if (results[0]) {
@@ -187,7 +199,33 @@ const AddPlageForm = ({ history, addPlage }) => {
       console.log(maps)
     });
   };
-
+  const ButtonImg = styled.button`position: absolute;
+  top: 50%;
+  left: 45%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  background-color: #555;
+  color: white;
+  font-size: 12px;
+  padding: 12px 12px;
+  border: none;
+  cursor: pointer;
+  border-radius: 55px;
+  :hover {background-color: black;}`
+  const ButtonImg2 = styled.button`position: absolute;
+  top: 50%;
+  left: 45%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  background-color: #555;
+  color: white;
+  font-size: 12px;
+  padding: 12px 12px;
+  border: none;
+  cursor: pointer;
+  border-radius: 55px;
+  :hover {background-color: black;}`
+  
   return (
     <Fragment>
       <div className="content-body">
@@ -199,6 +237,21 @@ const AddPlageForm = ({ history, addPlage }) => {
                   <h4 className="card-title">Mon Profile</h4>
                   <div className="basic-form">
                     <form onSubmit={e => onSubmit(e)} name="fProfile">
+
+                         {/* Mainimage */}
+                      <div className="form-row">
+                        <div className="col-2"></div>
+                        <div className="from-group col-8">
+                          <img id="mainImg" src={mainImage}></img>
+                          
+                          <ButtonImg onClick={e => uploadWidget(e)}>
+                            Upload Main Image
+                          </ButtonImg>
+                        </div>
+                      </div>
+
+
+                      <br/>
                       <div className="form-row">
                         <div className="form-row col-md-6">
                           <div className="form-group col-md-12">
@@ -234,8 +287,10 @@ const AddPlageForm = ({ history, addPlage }) => {
                           </div>
 
                           {/* Detail */}
-                      <div className="form-group col-md-12">
-                        <div className="form-check form-check-inline">
+                          <div className="form-control col-md-12" >
+                      <div className="form-row col-md-12">
+                        
+                        <div className="form-check col-6">
                           <label className="form-check-label">
                             <input
                               type="checkbox"
@@ -247,7 +302,7 @@ const AddPlageForm = ({ history, addPlage }) => {
                             Parking
                           </label>
                         </div>
-                        <div className="form-check form-check-inline">
+                        <div className="form-check col-6">
                           <label className="form-check-label">
                             <input
                               type="checkbox"
@@ -259,7 +314,7 @@ const AddPlageForm = ({ history, addPlage }) => {
                             Shower
                           </label>
                         </div>
-                        <div className="form-check form-check-inline">
+                        <div className="form-check col-6">
                           <label className="form-check-label">
                             <input
                               type="checkbox"
@@ -271,7 +326,7 @@ const AddPlageForm = ({ history, addPlage }) => {
                             resto
                           </label>
                         </div>
-                        <div className="form-check form-check-inline">
+                        <div className="form-check col-6">
                           <label className="form-check-label">
                             <input
                               type="checkbox"
@@ -283,7 +338,7 @@ const AddPlageForm = ({ history, addPlage }) => {
                             wc
                           </label>
                         </div>
-                        <div className="form-check form-check-inline">
+                        <div className="form-check col-6">
                           <label className="form-check-label">
                             <input
                               type="checkbox"
@@ -295,46 +350,47 @@ const AddPlageForm = ({ history, addPlage }) => {
                             bar
                           </label>
                         </div>
-                        <div className="form-check form-check-inline">
+                        
+                        <div className="form-check col-6">
                           <label className="form-check-label">
                             <input
                               type="checkbox"
                               className="form-check-input"
-                              name="cafe"
-                              value="cafe"
+                              name="beachVolley"
+                              value="beachVolley"
                               onClick={e => onClickD(e)}
                             />
-                            cafe
+                            Beach Volley
                           </label>
                         </div>
-                        <div className="form-check form-check-inline">
+                        <div className="form-check col-6">
                           <label className="form-check-label">
                             <input
                               type="checkbox"
                               className="form-check-input"
-                              name="beachTennis"
-                              value="beachTennis"
+                              name="chienAdmis"
+                              value="chienAdmis"
                               onClick={e => onClickD(e)}
                             />
-                            beach Tennis
+                            chien Admis 
                           </label>
                         </div>
-                        <div className="form-check form-check-inline">
+                        <div className="form-check col-6">
                           <label className="form-check-label">
                             <input
                               type="checkbox"
                               className="form-check-input"
-                              name="beachTennis"
-                              value="beachTennis"
+                              name="parasol"
+                              value="parasol"
                               onClick={e => onClickD(e)}
                             />
-                            beach Tennis
+                            Parasol
                           </label>
                         </div>
                       </div>
-
+                      </div>
                         </div>
-                        <div className="form-row col-6">
+                        <div className="form-row col-6" >
                           <div>
                             <Autocomplete
                               style={{ width: "90%" }}
@@ -345,7 +401,7 @@ const AddPlageForm = ({ history, addPlage }) => {
                               componentRestrictions={{ country: "tu" }}
                             />
                           </div>
-                          <div style={{ height: "100vh", width: "100%" }}>
+                          <div style={{ height: "50vh", width: "100%" }}>
                             <GoogleMapReact
                               bootstrapURLKeys={MY_API_KEY}
                               defaultCenter={center}
@@ -359,16 +415,7 @@ const AddPlageForm = ({ history, addPlage }) => {
                         </div>
                       </div>
                       
-                      {/* Mainimage */}
-                      <div className="form-row">
-                        <div className="from-group">
-                          <img id="mainImg" src={mainImage}></img>
-                          <button type="button" onClick={e => uploadWidget(e)}>
-                            Upload Main Image
-                          </button>
-                        </div>
-                      </div>
-
+                      <br/><br/><br/><br/>
                       {/* images */}
 
                       <div className="form-row ">
@@ -394,15 +441,19 @@ const AddPlageForm = ({ history, addPlage }) => {
                                     src={img}
                                     alt=" "
                                   />
+                                  <Carousel.Caption>
+                                    <button value={img} className="btn btn-danger" type="button" onClick={e=>deleteImg(e)}>Delete</button>
+                                  </Carousel.Caption>
                                 </Carousel.Item>
                               ))
                             )}
                           </Carousel>
                         </div>
                         <div className="col-md-4">
-                          <button type="button" onClick={e => uploadWidget2(e)}>
-                            Upload Second Images
-                          </button>
+                          <ButtonImg2  onClick={e => uploadWidget2(e)}>
+                            Upload Others Images
+                          </ButtonImg2>
+                         
                         </div>
                       </div>
 

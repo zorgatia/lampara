@@ -104,7 +104,9 @@ const Members = ({ getMembers,registerMember, member: { members, loading } }) =>
                           onChange={e => onChange(e)}
                         >
                           <option value="ADMIN">ADMIN</option>
-                          <option value="ADMIN">asd</option>
+                          <option value="MUNIC">MUNICIPAL</option>
+                          <option value="ECO">ECOSYSTEM</option>
+                          
                         </select>
                       </div>
                       <div className="form-group col-md-2">

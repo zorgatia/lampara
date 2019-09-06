@@ -153,7 +153,7 @@ const Profile = ({
             <div className="col-lg-12">
               <div className="card">
                 <div className="card-body">
-                  <h4 className="card-title">Mon Profile</h4>
+                  <h4 className="card-title">My Profile</h4>
                   <div className="basic-form">
                     <form onSubmit={e => onSubmit(e)} name="fProfile">
                       <div className="form-row">
@@ -167,7 +167,7 @@ const Profile = ({
                             height="60%"
                           />
                           <ButtonImg onClick={e => uploadWidget(e)}>
-                              ajouter un image
+                             Add Profile Image
                           </ButtonImg>
                         </div>
                         <div className="form-row col-md-8">
@@ -183,34 +183,34 @@ const Profile = ({
                             />
                           </div>
                           <div className="form-group col-md-6">
-                            <label>Date de naissance</label>
+                            <label>birthday</label>
                             <input
                               type="date"
                               name="dateNaissance"
                               className="form-control"
-                              placeholder="dateNaissance"
+                              placeholder="birthday"
                               value={moment(dateNaissance).format("YYYY-MM-DD")}
                               onChange={e => onChange(e)}
                             />
                           </div>
                           <div className="form-group col-md-6">
-                            <label>Nom</label>
+                            <label>Last Name</label>
                             <input
                               type="text"
                               name="nom"
                               className="form-control"
-                              placeholder="nom"
+                              placeholder="Last Name"
                               value={nom}
                               onChange={e => onChange(e)}
                             />
                           </div>
                           <div className="form-group col-md-6">
-                            <label>Prenom</label>
+                            <label>First Name</label>
                             <input
                               type="text"
                               name="prenom"
                               className="form-control"
-                              placeholder="prenom"
+                              placeholder="First Name"
                               value={prenom}
                               onChange={e => onChange(e)}
                             />
@@ -231,17 +231,17 @@ const Profile = ({
                       </div>
                       <div className="form-row">
                         <div className="form-group col-md-6">
-                          <label>Citee</label>
+                          <label>City</label>
                           <input
                             type="text"
                             className="form-control"
-                            name="cite"
+                            name="city"
                             value={cite}
                             onChange={e => onChange(e)}
                           />
                         </div>
                         <div className="form-group col-md-4">
-                          <label>Region</label>
+                          <label>State</label>
                           <select
                             className="custom-select mr-sm-2-control"
                             id="inlineFormCustomSelect"
@@ -297,39 +297,39 @@ const Profile = ({
               </div>
               <div className="card">
                 <div className="card-body">
-                  <h4>Changer mot de passe</h4>
+                  <h4>Change password</h4>
                   <div className="basic-form">
                     <form onSubmit={e => onSubmit(e)} name="fModifier">
                       <div className="form-row">
                         <div className="form-group col-md-4">
-                          <label>ancien mot de passe</label>
+                          <label>Current Password</label>
                           <input
                             type="password"
                             name="oldPassword"
                             className="form-control"
-                            placeholder="nom"
+                            placeholder="Current Password"
                             value={oldPassword}
                             onChange={e => onChange(e)}
                           />
                         </div>
                         <div className="form-group col-md-4">
-                          <label>nouveau mot de passe</label>
+                          <label>New Password</label>
                           <input
                             type="password"
                             name="newPassword"
                             className="form-control"
-                            placeholder="nom"
+                            placeholder="New Password"
                             value={newPassword}
                             onChange={e => onChange(e)}
                           />
                         </div>
                         <div className="form-group col-md-4">
-                          <label>retaper nouveau mot de passe</label>
+                          <label>Confirm New Password</label>
                           <input
                             type="password"
                             name="newPassword2"
                             className="form-control"
-                            placeholder="nom"
+                            placeholder="Confirm New Password"
                             value={newPassword2}
                             onChange={e => onChange(e)}
                           />
