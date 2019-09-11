@@ -87,9 +87,10 @@ router.get("/recommanded/:idUser", async (req, res) => {
     const plages = await Rec.findOne({id: req.params.idUser}).populate({path:'plages',select:"_id nom ville mainImage rates",options:{limit:5}}).select("_id nom ville mainImage rates");
    
     console.log(plages)
-   
-    if(plages.plages.length<5){
-
+    const nn =plages.plages.length;
+    if(nn<5){
+      const pls =await Plage.find({id:{$nin:plages.plages.map(p=>p.id)}}).select("_id nom ville mainImage rates").sort({rate:-1}).limit(5-nn);
+      plages.plages.unshift(...pls)
     }
 
     p = [];
@@ -207,7 +208,10 @@ router.get("/:id/:idUser", async (req, res) => {
               viVent: res.viVent + curr.viVent,
               ph: res.ph + curr.ph,
               tempEau: res.tempEau + curr.tempEau,
-              data: res.date
+              data: res.date,
+              flag: res.flag+curr.flag,
+              cloudy: res.cloudy+curr.cloudy,
+              crowded: res.crowded+curr.crowded,
             };
           }, data[0])
         );

@@ -52,6 +52,18 @@ const MeteoSchema = new Schema({
     salerite: {
         type: Number,
         default:0
+    },
+    flag:{
+        type:Number,
+        enum:[1,2,3]
+    },
+    cloudy:{
+        type:Number,
+        enum:[1,2,3]
+    },
+    crowded:{
+        type:Number,
+        enum:[1,2,3]
     }
 });
 

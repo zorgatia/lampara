@@ -87,7 +87,16 @@ const PlageSchema = new Schema({
     buoys:[{
         type:Schema.Types.ObjectId,
         ref:'buoy'
-    }]
+    }],
+    desc:{
+        type: String
+    },
+    acti:[
+        {
+            type:String,
+            enum:['Swimming','Surfing','Kayaking','Diving','Fishing']
+        }
+    ]
     
 });
 

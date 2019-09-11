@@ -7,6 +7,7 @@ import Spinner from "../layout/Spinner";
 import { getBuoys } from "../../actions/buoy";
 import { connect } from "react-redux";
 
+
 const Buoys = ({ getBuoys, buoy: { buoys, loading } }) => {
   useEffect(() => {
     getBuoys();
@@ -38,6 +39,8 @@ const Buoys = ({ getBuoys, buoy: { buoys, loading } }) => {
       <div className="container">
         <div className="row">
           <div className="col-lg-12">
+           
+
             {groupBy(buoys, b => b.plage.region).map(r => (
               <div className="card">
                 <div className="card-body">
@@ -49,8 +52,8 @@ const Buoys = ({ getBuoys, buoy: { buoys, loading } }) => {
                           <tr>
                             <th scope="col">Serial Number</th>
                             <th scope="col">Beach</th>
+                            <th scope="col">Ville</th>
                             <th scope="col">Status</th>
-                            <th scope="col">Position</th>
                             <th scope="col">Action</th>
                           </tr>
                         </thead>

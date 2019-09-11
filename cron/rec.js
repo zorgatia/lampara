@@ -4,7 +4,7 @@ const https = require("https");
 const Rec = require('../models/Rec')
 
 module.exports = () =>
-  cron.schedule("1 * * * *", async () => {
+  cron.schedule("* * * * *", async () => {
 
     await Rec.deleteMany();
     console.log("running a task ");

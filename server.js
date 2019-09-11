@@ -52,6 +52,7 @@ app.use('/web/plage',require('./routes/web/plage'));
 app.use('/web/user',require('./routes/web/user'));
 app.use('/web/auth',require('./routes/web/auth'));
 app.use('/web/buoy',require('./routes/web/buoy'));
+app.use('/web/act',require('./routes/web/act'));
 
 
 app.use('/emb/buoy',require('./routes/emb/buoy'));

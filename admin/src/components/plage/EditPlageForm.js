@@ -3,8 +3,13 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { getPlage } from "../../actions/plage";
 import Spinner from "../layout/Spinner";
-import Select from 'react-select'
+import Select from "react-select";
 import { Carousel } from "react-bootstrap";
+import styled from 'styled-components'
+import Autocomplete from "react-google-autocomplete";
+import GoogleMapReact from "google-map-react";
+
+import { MY_API_KEY } from "../../utils/keys";
 const options = [
   { value: "Tunis", label: "Tunis" },
   { value: "Ariana", label: "Ariana" },
@@ -44,16 +49,17 @@ const EditPlageForm = ({ history, getPlage, plage: { plage, loading } }) => {
         region: plage.region,
         mainImage: plage.mainImage,
         images: plage.images,
+        lat: plage.lat,
+        lng: plage.lng,
         detail: {
           parking: plage.detail.parking,
           shower: plage.detail.shower,
           resto: plage.detail.resto,
           wc: plage.detail.wc,
           bar: plage.detail.bar,
-          cafe: plage.detail.cafe,
-          beachTennis: plage.detail.beachTennis,
           beachVolley: plage.detail.beachVolley,
           chienAdmis: plage.detail.chienAdmis,
+          parasol: plage.detail.parasol
         }
       });
     }
@@ -68,20 +74,21 @@ const EditPlageForm = ({ history, getPlage, plage: { plage, loading } }) => {
     mainImage:
       "https://res.cloudinary.com/orange-odc/image/upload/v1567503140/plages/no-image-selected_e4g058.png",
     images: [],
+    lat: 0,
+    lng: 0,
     detail: {
       parking: false,
       shower: false,
       resto: false,
       wc: false,
       bar: false,
-      cafe: false,
-      beachTennis: false,
       beachVolley: false,
-      chienAdmis: false
+      chienAdmis: false,
+      parasol:false
     }
   });
 
-  let { nom, ville, region, mainImage, images, detail } = formData;
+  let { nom, ville, region, mainImage, images,lat,lng, detail } = formData;
 
   const onChange = e =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -93,7 +100,6 @@ const EditPlageForm = ({ history, getPlage, plage: { plage, loading } }) => {
     });
 
   const onSubmit = e => e.preventDefault;
-
 
   const uploadWidget = e => {
     // if(delToken!==""){
@@ -156,6 +162,16 @@ const EditPlageForm = ({ history, getPlage, plage: { plage, loading } }) => {
       .open();
   };
 
+  const deleteImg = e => {
+    e.preventDefault()
+    setFormData({
+      ...formData,
+      images: images.filter(img=>img!==e.target.value)
+    });
+
+  }
+
+
   const [index, setIndex] = useState(0);
   const [direction, setDirection] = useState(null);
 
@@ -163,6 +179,75 @@ const EditPlageForm = ({ history, getPlage, plage: { plage, loading } }) => {
     setIndex(selectedIndex);
     setDirection(e.direction);
   };
+
+
+  // google map
+  const [center, setCenter] = useState({
+    lat: 36.81897,
+    lng: 10.16579
+  });
+  const [zoom, setZoom] = useState(11);
+
+  
+  const handleApiLoaded = (map, maps) => {
+    let marker = new maps.Marker({ map: map, position: maps.LatLng(center) });
+    const geocoder = new maps.Geocoder;
+    const infowindow = new maps.InfoWindow;
+   
+    //let autocomplete = new maps.places.Autocomplete(searchInput.current, {types: ['geocode']})
+    maps.event.addListener(map, "click", function(event) {
+      setFormData({...formData,lat:event.latLng.lat(),lng: event.latLng.lng()})
+
+      var latitude = event.latLng.lat();
+      var longitude = event.latLng.lng();
+      marker.setPosition(event.latLng);
+
+
+      geocoder.geocode({'location': event.latLng}, function(results, status) {
+        if (status === 'OK') {
+          if (results[0]) {
+            map.setZoom(11);
+            
+            infowindow.setContent(results[0].formatted_address);
+            infowindow.open(map, marker);
+          } else {
+            window.alert('No results found');
+          }
+        } else {
+          window.alert('Geocoder failed due to: ' + status);
+        }
+      });
+      //console.log(latitude + ", " + longitude);
+      console.log(maps)
+    });
+  };
+  const ButtonImg = styled.button`position: absolute;
+  top: 50%;
+  left: 45%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  background-color: #555;
+  color: white;
+  font-size: 12px;
+  padding: 12px 12px;
+  border: none;
+  cursor: pointer;
+  border-radius: 55px;
+  :hover {background-color: black;}`
+
+  const ButtonImg2 = styled.button`position: absolute;
+  top: 50%;
+  left: 45%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  background-color: #555;
+  color: white;
+  font-size: 12px;
+  padding: 12px 12px;
+  border: none;
+  cursor: pointer;
+  border-radius: 55px;
+  :hover {background-color: black;}`
 
   return loading || plage === null ? (
     <Spinner></Spinner>
@@ -177,41 +262,60 @@ const EditPlageForm = ({ history, getPlage, plage: { plage, loading } }) => {
                   <h4 className="card-title">Edit Beach</h4>
                   <div className="basic-form">
                     <form onSubmit={e => onSubmit(e)} name="fProfile">
+
+                         {/* Mainimage */}
                       <div className="form-row">
-                      <div className="form-group col-md-6">
-                          <label>nom</label>
-                          <input
-                            type="text"
-                            name="nom"
-                            className="form-control"
-                            placeholder="nom"
-                            value={nom}
-                            onChange={e => onChange(e)}
-                          />
-                        </div>
-                        <div className="form-group col-md-6">
-                          <label>ville</label>
-                          <input
-                            type="text"
-                            name="ville"
-                            className="form-control"
-                            placeholder="ville"
-                            value={ville}
-                            onChange={e => onChange(e)}
-                          />
-                        </div>
-                        
-                        <div className="form-group col-md-6">
-                          <label>region</label>
-                          <Select options={options} onChange={v => setFormData({ ...formData, region: v.value })} />
+                        <div className="col-2"></div>
+                        <div className="from-group col-8">
+                          <img id="mainImg" src={mainImage}></img>
+                          
+                          <ButtonImg onClick={e => uploadWidget(e)}>
+                            Upload Main Image
+                          </ButtonImg>
                         </div>
                       </div>
 
 
-                      
-                     {/* Detail */}
-                     <div className="form-group">
-                        <div className="form-check form-check-inline">
+                      <br/>
+                      <div className="form-row">
+                        <div className="form-row col-md-6">
+                          <div className="form-group col-md-12">
+                            <label>nom</label>
+                            <input
+                              type="text"
+                              name="nom"
+                              className="form-control"
+                              placeholder="nom"
+                              value={nom}
+                              onChange={e => onChange(e)}
+                            />
+                          </div>
+                          <div className="form-group col-md-12">
+                            <label>ville</label>
+                            <input
+                              type="text"
+                              name="ville"
+                              className="form-control"
+                              placeholder="ville"
+                              value={ville}
+                              onChange={e => onChange(e)}
+                            />
+                          </div>
+                          <div className="form-group col-md-12">
+                            <label>region</label>
+                            <Select
+                              options={options}
+                              onChange={v =>
+                                setFormData({ ...formData, region: v.value })
+                              }
+                            />
+                          </div>
+
+                          {/* Detail */}
+                          <div className="form-control col-md-12" >
+                      <div className="form-row col-md-12">
+                        
+                        <div className="form-check col-6">
                           <label className="form-check-label">
                             <input
                               type="checkbox"
@@ -223,7 +327,7 @@ const EditPlageForm = ({ history, getPlage, plage: { plage, loading } }) => {
                             Parking
                           </label>
                         </div>
-                        <div className="form-check form-check-inline">
+                        <div className="form-check col-6">
                           <label className="form-check-label">
                             <input
                               type="checkbox"
@@ -235,7 +339,7 @@ const EditPlageForm = ({ history, getPlage, plage: { plage, loading } }) => {
                             Shower
                           </label>
                         </div>
-                        <div className="form-check form-check-inline">
+                        <div className="form-check col-6">
                           <label className="form-check-label">
                             <input
                               type="checkbox"
@@ -247,7 +351,7 @@ const EditPlageForm = ({ history, getPlage, plage: { plage, loading } }) => {
                             resto
                           </label>
                         </div>
-                        <div className="form-check form-check-inline">
+                        <div className="form-check col-6">
                           <label className="form-check-label">
                             <input
                               type="checkbox"
@@ -259,7 +363,7 @@ const EditPlageForm = ({ history, getPlage, plage: { plage, loading } }) => {
                             wc
                           </label>
                         </div>
-                        <div className="form-check form-check-inline">
+                        <div className="form-check col-6">
                           <label className="form-check-label">
                             <input
                               type="checkbox"
@@ -271,42 +375,72 @@ const EditPlageForm = ({ history, getPlage, plage: { plage, loading } }) => {
                             bar
                           </label>
                         </div>
-                        <div className="form-check form-check-inline">
+                        
+                        <div className="form-check col-6">
                           <label className="form-check-label">
                             <input
                               type="checkbox"
                               className="form-check-input"
-                              name="cafe"
-                              value="cafe"
+                              name="beachVolley"
+                              value="beachVolley"
                               onClick={e => onClickD(e)}
                             />
-                            cafe
+                            Beach Volley
                           </label>
                         </div>
-                        <div className="form-check form-check-inline">
+                        <div className="form-check col-6">
                           <label className="form-check-label">
                             <input
                               type="checkbox"
                               className="form-check-input"
-                              name="beachTennis"
-                              value="beachTennis"
+                              name="chienAdmis"
+                              value="chienAdmis"
                               onClick={e => onClickD(e)}
                             />
-                            beach Tennis
+                            chien Admis 
+                          </label>
+                        </div>
+                        <div className="form-check col-6">
+                          <label className="form-check-label">
+                            <input
+                              type="checkbox"
+                              className="form-check-input"
+                              name="parasol"
+                              value="parasol"
+                              onClick={e => onClickD(e)}
+                            />
+                            Parasol
                           </label>
                         </div>
                       </div>
-
-                     {/* Mainimage */}
-                     <div className="form-row">
-                        <div className="from-group">
-                          <img id="mainImg" src={mainImage}></img>
-                          <button type="button" onClick={e => uploadWidget(e)}>
-                            Upload Main Image
-                          </button>
+                      </div>
+                        </div>
+                        <div className="form-row col-6" >
+                          <div>
+                            <Autocomplete
+                              style={{ width: "90%" }}
+                              onPlaceSelected={place => {
+                                console.log(place);
+                              }}
+                              types={["(regions)"]}
+                              componentRestrictions={{ country: "tu" }}
+                            />
+                          </div>
+                          <div style={{ height: "50vh", width: "100%" }}>
+                            <GoogleMapReact
+                              bootstrapURLKeys={MY_API_KEY}
+                              defaultCenter={center}
+                              defaultZoom={zoom}
+                              yesIWantToUseGoogleMapApiInternals
+                              onGoogleApiLoaded={({ map, maps }) =>
+                                handleApiLoaded(map, maps)
+                              }
+                            ></GoogleMapReact>
+                          </div>
                         </div>
                       </div>
-
+                      
+                      <br/><br/><br/><br/>
                       {/* images */}
 
                       <div className="form-row ">
@@ -332,22 +466,29 @@ const EditPlageForm = ({ history, getPlage, plage: { plage, loading } }) => {
                                     src={img}
                                     alt=" "
                                   />
+                                  <Carousel.Caption>
+                                    <button value={img} className="btn btn-danger" type="button" onClick={e=>deleteImg(e)}>Delete</button>
+                                  </Carousel.Caption>
                                 </Carousel.Item>
                               ))
                             )}
                           </Carousel>
                         </div>
                         <div className="col-md-4">
-                          <button type="button" onClick={e => uploadWidget2(e)}>
-                            Upload Second Images
-                          </button>
+                          <ButtonImg2  onClick={e => uploadWidget2(e)}>
+                            Upload Others Images
+                          </ButtonImg2>
+                         
                         </div>
                       </div>
-                    
-                    <button className="btn" onClick={e=>onSubmit(e)}> Add Beach</button>
-                    
+
+                      <button className="btn" onClick={e => onSubmit(e)}>
+                        {" "}
+                        Add Beach
+                      </button>
                     </form>
                   </div>
+               
                 </div>
               </div>
             </div>

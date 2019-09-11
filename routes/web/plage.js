@@ -19,7 +19,8 @@ router.post("/", async (req, res) => {
             capacite: req.body.capacite,
             mainImage: req.body.mainImage,
             images: req.body.images,
-            detail: req.body.detail
+            detail: req.body.detail,
+            desc: req.body.desc
         });
         
         const plage = await newPlage.save();

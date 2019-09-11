@@ -11,6 +11,7 @@ export default combineReducers({
     profile,
     plage,
     buoy,
-    member,
+    member
+  
    
 });

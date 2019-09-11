@@ -13,7 +13,7 @@ import { Carousel } from "react-bootstrap";
 
 import GoogleMapReact from "google-map-react";
 
-const MY_API_KEY = "AIzaSyAD3123Nam0a4qQLHom4cx--lY_Q1iSa4I"; // fake
+import {MY_API_KEY} from '../../utils/keys'
 
 const options = [
   { value: "Tunis", label: "Tunis" },
@@ -463,6 +463,7 @@ const AddPlageForm = ({ history, addPlage }) => {
                       </button>
                     </form>
                   </div>
+               
                 </div>
               </div>
             </div>
