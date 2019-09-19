@@ -7,7 +7,7 @@ module.exports = () =>
   cron.schedule("* * * * *", async () => {
 
     await Rec.deleteMany();
-    console.log("running a task ");
+    //console.log("running a task ");
     https
       .get("https://recodc.herokuapp.com", resp => {
         let data = '';
@@ -22,7 +22,7 @@ module.exports = () =>
                 const rec = new Rec(e);
                 
                 await rec.save();
-                console.log(e)
+                //console.log(e)
             });
 
 

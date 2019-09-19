@@ -7,6 +7,7 @@ import {
   GET_PLAGE,
   SET_PLAGE,
   ADD_PLAGE,
+  EDIT_PLAGE,
   LOAD_PLAGE
 } from "./types";
 
@@ -43,13 +44,19 @@ export const getPlage = id => async dispatch => {
   }
 };
 
-export const updatePlage = () => async dispatch => {
+export const editPlage = ({ id ,nom, ville, region, mainImage, images,lat,lng, detail }) => async dispatch => {
   try {
     //const res = await axios.get('/web/plage');
-
+    const config = {
+      headers: {
+        "Content-Type": "Application/json"
+      }
+    };
+    const body = JSON.stringify({ nom, ville, region, mainImage, images,lat,lng, detail });
+    const res = await axios.put(`/web/plage/${id}`, body, config);
     dispatch({
-      type: SET_PLAGE
-      //  payload: res.data
+      type: EDIT_PLAGE,
+      payload: res.data
     });
   } catch (err) {
     dispatch({
@@ -68,7 +75,7 @@ export const addPlage = ({ nom, ville, region, mainImage, images,lat,lng, detail
     };
     const body = JSON.stringify({ nom, ville, region, mainImage, images,lat,lng, detail });
     const res = await axios.post("/web/plage", body, config);
-    console.log(res.data)  
+    //console.log(res.data)  
     dispatch({
       type: ADD_PLAGE,
       payload: res.data

@@ -13,9 +13,10 @@ const PlageItem = ({
   const onEdit = e => {
     //e.preventDefault()
     loadPlage();
+    getPlage(_id);
     // console.log('asd')
   };
-  const onDetails = e => {};
+ // const onDetails = e => {};
   return (
     <div className="col-lg-4 no-card-border">
       <div className="card">

@@ -184,4 +184,15 @@ router.get("/:id/:idUser", async (req, res) => {
   }
 });
 
+router.delete("/:id",async(req,res)=>{
+  try {
+    const event = await Event.findByIdAndDelete(req.params.id);
+    console.log(event);
+    res.json(event)
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).send("server error");
+  }
+})
+
 module.exports = router;

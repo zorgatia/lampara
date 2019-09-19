@@ -1,11 +1,11 @@
 import React, { useEffect,useState } from 'react'
-import PropTypes from 'prop-types'
+//import PropTypes from 'prop-types'
 import {Line} from 'react-chartjs-2';
 import Axios from 'axios'
 
 const Linee = ({region}) => {
     
-    const [data, setdata] = useState({
+    const [data] = useState({
         labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
         datasets: [
           {
@@ -61,8 +61,5 @@ const Linee = ({region}) => {
     )
 }
 
-Linee.propTypes = {
-
-}
 
 export default Linee

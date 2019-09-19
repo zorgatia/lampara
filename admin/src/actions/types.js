@@ -21,6 +21,7 @@ export const GET_PLAGES = 'GET_PLAGES';
 export const PLAGE_ERROR = 'PLAGE_ERROR';
 export const ADD_PLAGE = 'ADD_PLAGE';
 export const LOAD_PLAGE = 'LOAD_PLAGE';
+export const EDIT_PLAGE = 'EDIT_PLAGE';
 
 
 export const GET_BUOYS = 'GET_BUOYS';

@@ -1,19 +1,20 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { Fragment, useState } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import Select from "react-select";
 import Autocomplete from "react-google-autocomplete";
-import styled from 'styled-components'
+import styled from "styled-components";
 
 import { addPlage } from "../../actions/plage";
 import { Carousel } from "react-bootstrap";
+import {FormControl} from 'react-bootstrap'
 //import { setAlert } from "../../actions/alert";
 //import Spinner from "../layout/Spinner";
 //import Profile from "../profile/Profile";
 
 import GoogleMapReact from "google-map-react";
 
-import {MY_API_KEY} from '../../utils/keys'
+import { MY_API_KEY } from "../../utils/keys";
 
 const options = [
   { value: "Tunis", label: "Tunis" },
@@ -50,8 +51,9 @@ const AddPlageForm = ({ history, addPlage }) => {
     mainImage:
       "https://res.cloudinary.com/orange-odc/image/upload/v1567503140/plages/no-image-selected_e4g058.png",
     images: [],
-    lat:0,
-    lng:0,
+    lat: 0,
+    lng: 0,
+    desc:"",
     detail: {
       parking: false,
       shower: false,
@@ -60,11 +62,11 @@ const AddPlageForm = ({ history, addPlage }) => {
       bar: false,
       beachVolley: false,
       chienAdmis: false,
-      parasol:false
+      parasol: false
     }
   });
 
-  let { nom, ville, region, mainImage, images,lat,lng, detail } = formData;
+  let { nom, ville, region, mainImage, images, lat, lng, detail,desc } = formData;
   const onChange = e =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
@@ -76,7 +78,7 @@ const AddPlageForm = ({ history, addPlage }) => {
 
   const onSubmit = async e => {
     e.preventDefault();
-    if (addPlage({ nom, ville, region, mainImage, images,lat,lng, detail }))
+    if (addPlage({ nom, ville, region, mainImage, images, lat, lng, detail,desc }))
       history.push("/beaches");
   };
 
@@ -84,7 +86,7 @@ const AddPlageForm = ({ history, addPlage }) => {
     // if(delToken!==""){
     //  window.cloudinary.delete_by_token(delToken)  }
     // console.log(window.cloudinary)
-    e.preventDefault()
+    e.preventDefault();
     window.cloudinary
       .createUploadWidget(
         {
@@ -106,7 +108,7 @@ const AddPlageForm = ({ history, addPlage }) => {
       .open();
   };
   const uploadWidget2 = e => {
-    e.preventDefault()
+    e.preventDefault();
     // if(delToken!==""){
     //  window.cloudinary.delete_by_token(delToken)  }
     // console.log(window.cloudinary)
@@ -143,13 +145,12 @@ const AddPlageForm = ({ history, addPlage }) => {
   };
 
   const deleteImg = e => {
-    e.preventDefault()
+    e.preventDefault();
     setFormData({
       ...formData,
-      images: images.filter(img=>img!==e.target.value)
+      images: images.filter(img => img !== e.target.value)
     });
-
-  }
+  };
 
   const [index, setIndex] = useState(0);
   const [direction, setDirection] = useState(null);
@@ -161,71 +162,82 @@ const AddPlageForm = ({ history, addPlage }) => {
 
   // google map
 
-  const [center, setCenter] = useState({
+  const [center] = useState({
     lat: 36.81897,
     lng: 10.16579
   });
-  const [zoom, setZoom] = useState(11);
+  const [zoom] = useState(11);
 
   const handleApiLoaded = (map, maps) => {
     let marker = new maps.Marker({ map: map, position: maps.LatLng(center) });
-    const geocoder = new maps.Geocoder;
-    const infowindow = new maps.InfoWindow;
-   
+    const geocoder = new maps.Geocoder();
+    const infowindow = new maps.InfoWindow();
+
     //let autocomplete = new maps.places.Autocomplete(searchInput.current, {types: ['geocode']})
     maps.event.addListener(map, "click", function(event) {
-      setFormData({...formData,lat:event.latLng.lat(),lng: event.latLng.lng()})
+      setFormData({
+        ...formData,
+        lat: event.latLng.lat(),
+        lng: event.latLng.lng()
+      });
 
-      var latitude = event.latLng.lat();
-      var longitude = event.latLng.lng();
+      // var latitude = event.latLng.lat();
+      // var longitude = event.latLng.lng();
       marker.setPosition(event.latLng);
 
-
-      geocoder.geocode({'location': event.latLng}, function(results, status) {
-        if (status === 'OK') {
+      geocoder.geocode({ location: event.latLng }, function(results, status) {
+        if (status === "OK") {
           if (results[0]) {
             map.setZoom(11);
-            
+
             infowindow.setContent(results[0].formatted_address);
             infowindow.open(map, marker);
           } else {
-            window.alert('No results found');
+            window.alert("No results found");
           }
         } else {
-          window.alert('Geocoder failed due to: ' + status);
+          window.alert("Geocoder failed due to: " + status);
         }
       });
       //console.log(latitude + ", " + longitude);
-      console.log(maps)
+      console.log(maps);
     });
   };
-  const ButtonImg = styled.button`position: absolute;
-  top: 50%;
-  left: 45%;
-  transform: translate(-50%, -50%);
-  -ms-transform: translate(-50%, -50%);
-  background-color: #555;
-  color: white;
-  font-size: 12px;
-  padding: 12px 12px;
-  border: none;
-  cursor: pointer;
-  border-radius: 55px;
-  :hover {background-color: black;}`
-  const ButtonImg2 = styled.button`position: absolute;
-  top: 50%;
-  left: 45%;
-  transform: translate(-50%, -50%);
-  -ms-transform: translate(-50%, -50%);
-  background-color: #555;
-  color: white;
-  font-size: 12px;
-  padding: 12px 12px;
-  border: none;
-  cursor: pointer;
-  border-radius: 55px;
-  :hover {background-color: black;}`
-  
+  const ButtonImg = styled.button`
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    background-color: #5559;
+    color: white;
+    font-size: 12px;
+    padding: 12px 12px;
+    border: none;
+    cursor: pointer;
+    border-radius: 55px;
+    :hover {
+      background-color: black;
+    }
+  `;
+  const ButtonImg2 = styled.button`
+    position: absolute;
+    top: 50%;
+    left: 45%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    background-color: #5559;
+    color: white;
+    font-size: 12px;
+    padding: 12px 12px;
+    border: none;
+    cursor: pointer;
+    border-radius: 55px;
+    :hover {
+      background-color: black;
+    }
+  `;
+
   return (
     <Fragment>
       <div className="content-body">
@@ -234,28 +246,22 @@ const AddPlageForm = ({ history, addPlage }) => {
             <div className="col-lg-12">
               <div className="card">
                 <div className="card-body">
-                  <h4 className="card-title">Mon Profile</h4>
+                  <h4 className="card-title">Add New Beach</h4>
                   <div className="basic-form">
                     <form onSubmit={e => onSubmit(e)} name="fProfile">
-
-                         {/* Mainimage */}
+                      {/* Mainimage */}
                       <div className="form-row">
-                        <div className="col-2"></div>
-                        <div className="from-group col-8">
-                          <img id="mainImg" src={mainImage}></img>
-                          
+                        
+                        <div className="from-group col-6">
+                          <img id="mainImg" src={mainImage} alt="" style={{height:'300px',inlineSize: 'inherit'}}></img>
+
                           <ButtonImg onClick={e => uploadWidget(e)}>
                             Upload Main Image
                           </ButtonImg>
                         </div>
-                      </div>
-
-
-                      <br/>
-                      <div className="form-row">
-                        <div className="form-row col-md-6">
-                          <div className="form-group col-md-12">
-                            <label>nom</label>
+                        <div className="form-row col-6">
+                        <div className="form-group col-md-12">
+                            <label>Name</label>
                             <input
                               type="text"
                               name="nom"
@@ -266,7 +272,18 @@ const AddPlageForm = ({ history, addPlage }) => {
                             />
                           </div>
                           <div className="form-group col-md-12">
-                            <label>ville</label>
+                            <label>Description</label>
+                            <FormControl as="textarea" aria-label="With textarea" placeholder="Description" style={{height: '172px'}} />
+                          </div>
+                        </div>
+                      </div>
+
+                      <br />
+                      <div className="form-row">
+                        <div className="col-md-6">
+                          
+                          <div className="form-group ">
+                            <label>City</label>
                             <input
                               type="text"
                               name="ville"
@@ -276,8 +293,8 @@ const AddPlageForm = ({ history, addPlage }) => {
                               onChange={e => onChange(e)}
                             />
                           </div>
-                          <div className="form-group col-md-12">
-                            <label>region</label>
+                          <div className="form-group">
+                            <label>State</label>
                             <Select
                               options={options}
                               onChange={v =>
@@ -287,111 +304,112 @@ const AddPlageForm = ({ history, addPlage }) => {
                           </div>
 
                           {/* Detail */}
-                          <div className="form-control col-md-12" >
-                      <div className="form-row col-md-12">
-                        
-                        <div className="form-check col-6">
-                          <label className="form-check-label">
-                            <input
-                              type="checkbox"
-                              name="parking"
-                              className="form-check-input"
-                              value="parking"
-                              onClick={e => onClickD(e)}
-                            />
-                            Parking
-                          </label>
+                          <div className="form-group ">
+                          <label>Details</label>
+                            <div className="form-row col-md-12">
+                              <div className="form-check col-6">
+                                <label className="form-check-label">
+                                  <input
+                                    type="checkbox"
+                                    name="parking"
+                                    className="form-check-input"
+                                    value="parking"
+                                    onClick={e => onClickD(e)}
+                                  />
+                                  Parking
+                                </label>
+                              </div>
+                              <div className="form-check col-6">
+                                <label className="form-check-label">
+                                  <input
+                                    type="checkbox"
+                                    className="form-check-input"
+                                    name="shower"
+                                    value="shower"
+                                    onClick={e => onClickD(e)}
+                                  />
+                                  Shower
+                                </label>
+                              </div>
+                              <div className="form-check col-6">
+                                <label className="form-check-label">
+                                  <input
+                                    type="checkbox"
+                                    className="form-check-input"
+                                    name="resto"
+                                    value="resto"
+                                    onClick={e => onClickD(e)}
+                                  />
+                                  resto
+                                </label>
+                              </div>
+                              <div className="form-check col-6">
+                                <label className="form-check-label">
+                                  <input
+                                    type="checkbox"
+                                    className="form-check-input"
+                                    name="wc"
+                                    value="wc"
+                                    onClick={e => onClickD(e)}
+                                  />
+                                  wc
+                                </label>
+                              </div>
+                              <div className="form-check col-6">
+                                <label className="form-check-label">
+                                  <input
+                                    type="checkbox"
+                                    className="form-check-input"
+                                    name="bar"
+                                    value="bar"
+                                    onClick={e => onClickD(e)}
+                                  />
+                                  bar
+                                </label>
+                              </div>
+
+                              <div className="form-check col-6">
+                                <label className="form-check-label">
+                                  <input
+                                    type="checkbox"
+                                    className="form-check-input"
+                                    name="beachVolley"
+                                    value="beachVolley"
+                                    onClick={e => onClickD(e)}
+                                  />
+                                  Beach Volley
+                                </label>
+                              </div>
+                              <div className="form-check col-6">
+                                <label className="form-check-label">
+                                  <input
+                                    type="checkbox"
+                                    className="form-check-input"
+                                    name="chienAdmis"
+                                    value="chienAdmis"
+                                    onClick={e => onClickD(e)}
+                                  />
+                                  chien Admis
+                                </label>
+                              </div>
+                              <div className="form-check col-6">
+                                <label className="form-check-label">
+                                  <input
+                                    type="checkbox"
+                                    className="form-check-input"
+                                    name="parasol"
+                                    value="parasol"
+                                    onClick={e => onClickD(e)}
+                                  />
+                                  Parasol
+                                </label>
+                              </div>
+                            </div>
+                          </div>
                         </div>
-                        <div className="form-check col-6">
-                          <label className="form-check-label">
-                            <input
-                              type="checkbox"
-                              className="form-check-input"
-                              name="shower"
-                              value="shower"
-                              onClick={e => onClickD(e)}
-                            />
-                            Shower
-                          </label>
-                        </div>
-                        <div className="form-check col-6">
-                          <label className="form-check-label">
-                            <input
-                              type="checkbox"
-                              className="form-check-input"
-                              name="resto"
-                              value="resto"
-                              onClick={e => onClickD(e)}
-                            />
-                            resto
-                          </label>
-                        </div>
-                        <div className="form-check col-6">
-                          <label className="form-check-label">
-                            <input
-                              type="checkbox"
-                              className="form-check-input"
-                              name="wc"
-                              value="wc"
-                              onClick={e => onClickD(e)}
-                            />
-                            wc
-                          </label>
-                        </div>
-                        <div className="form-check col-6">
-                          <label className="form-check-label">
-                            <input
-                              type="checkbox"
-                              className="form-check-input"
-                              name="bar"
-                              value="bar"
-                              onClick={e => onClickD(e)}
-                            />
-                            bar
-                          </label>
-                        </div>
-                        
-                        <div className="form-check col-6">
-                          <label className="form-check-label">
-                            <input
-                              type="checkbox"
-                              className="form-check-input"
-                              name="beachVolley"
-                              value="beachVolley"
-                              onClick={e => onClickD(e)}
-                            />
-                            Beach Volley
-                          </label>
-                        </div>
-                        <div className="form-check col-6">
-                          <label className="form-check-label">
-                            <input
-                              type="checkbox"
-                              className="form-check-input"
-                              name="chienAdmis"
-                              value="chienAdmis"
-                              onClick={e => onClickD(e)}
-                            />
-                            chien Admis 
-                          </label>
-                        </div>
-                        <div className="form-check col-6">
-                          <label className="form-check-label">
-                            <input
-                              type="checkbox"
-                              className="form-check-input"
-                              name="parasol"
-                              value="parasol"
-                              onClick={e => onClickD(e)}
-                            />
-                            Parasol
-                          </label>
-                        </div>
-                      </div>
-                      </div>
-                        </div>
-                        <div className="form-row col-6" >
+                        <div className="form-row col-6">
                           <div>
+                          <label>Select location on map:</label>
                             <Autocomplete
                               style={{ width: "90%" }}
                               onPlaceSelected={place => {
@@ -399,7 +417,7 @@ const AddPlageForm = ({ history, addPlage }) => {
                               }}
                               types={["(regions)"]}
                               componentRestrictions={{ country: "tu" }}
-                            />
+                            /> 
                           </div>
                           <div style={{ height: "50vh", width: "100%" }}>
                             <GoogleMapReact
@@ -414,8 +432,11 @@ const AddPlageForm = ({ history, addPlage }) => {
                           </div>
                         </div>
                       </div>
-                      
-                      <br/><br/><br/><br/>
+
+                      <br />
+                      <br />
+                      <br />
+                      <br />
                       {/* images */}
 
                       <div className="form-row ">
@@ -442,7 +463,14 @@ const AddPlageForm = ({ history, addPlage }) => {
                                     alt=" "
                                   />
                                   <Carousel.Caption>
-                                    <button value={img} className="btn btn-danger" type="button" onClick={e=>deleteImg(e)}>Delete</button>
+                                    <button
+                                      value={img}
+                                      className="btn btn-danger"
+                                      type="button"
+                                      onClick={e => deleteImg(e)}
+                                    >
+                                      Delete
+                                    </button>
                                   </Carousel.Caption>
                                 </Carousel.Item>
                               ))
@@ -450,10 +478,9 @@ const AddPlageForm = ({ history, addPlage }) => {
                           </Carousel>
                         </div>
                         <div className="col-md-4">
-                          <ButtonImg2  onClick={e => uploadWidget2(e)}>
+                          <ButtonImg2 onClick={e => uploadWidget2(e)}>
                             Upload Others Images
                           </ButtonImg2>
-                         
                         </div>
                       </div>
 
@@ -463,7 +490,6 @@ const AddPlageForm = ({ history, addPlage }) => {
                       </button>
                     </form>
                   </div>
-               
                 </div>
               </div>
             </div>
