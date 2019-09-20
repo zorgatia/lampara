@@ -224,10 +224,21 @@ router.get("/:id/:idUser", async (req, res) => {
       }
     }
 
+    const rates = plage.rates.map(rate => rate.rate);
+    let rate = 2.5;
+    rates.length !== 0
+      ? (rate = rates.reduce((previous, current) => (current += previous), 0) / rates.length)
+      : (rate = 2.5);
+    //console.log(rate);
+    
+
     const Oplage = plage.toObject();
     Oplage.meteo = meteo;
     Oplage.favoris = user.follows.filter(f => f.id === plage.id).length > 0;
     Oplage.prev = [meteo,meteo,meteo]
+    delete Oplage.rates;
+    Oplage.rate = rate;
+
     return res.json(Oplage);
   } catch (err) {
     console.log(err.message);
