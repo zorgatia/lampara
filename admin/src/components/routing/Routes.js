@@ -13,6 +13,7 @@ import NotFound from "../layout/NotFound"
 import Swal from "../layout/Swal"
 import Profile from "../profile/Profile"
 import Mapp from "../plage/Map"
+import Nap from '../buoy/Nap'
 import Members from "../member/Members"
 import Test from "../plage/Test";
 import Buoys from "../buoy/Buoys";
@@ -32,7 +33,7 @@ const Routes = () => {
                 <PrivateRoute exact path="/beaches" component={Plages} />
                 <PrivateRoute exact path="/add-beach" component={AddPlageForm} />
                 <PrivateRoute exact path="/edit-beach" component={EditPlageForm} />
-                <PrivateRoute exact path="/map" component={Mapp} />
+                <PrivateRoute exact path="/map" component={Nap} />
                 <PrivateRoute exact path="/collaborators" component={Members} />
                 <PrivateRoute exact path="/buoys" component={Buoys} />
                 <PrivateRoute exact path="/test" component={Test} />

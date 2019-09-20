@@ -44,7 +44,7 @@ export const getPlage = id => async dispatch => {
   }
 };
 
-export const editPlage = ({ id ,nom, ville, region, mainImage, images,lat,lng, detail }) => async dispatch => {
+export const editPlage = ({ id ,nom, ville, region, mainImage, images,lat,lng, detail ,desc}) => async dispatch => {
   try {
     //const res = await axios.get('/web/plage');
     const config = {
@@ -52,7 +52,7 @@ export const editPlage = ({ id ,nom, ville, region, mainImage, images,lat,lng, d
         "Content-Type": "Application/json"
       }
     };
-    const body = JSON.stringify({ nom, ville, region, mainImage, images,lat,lng, detail });
+    const body = JSON.stringify({ nom, ville, region, mainImage, images,lat,lng, detail,desc });
     const res = await axios.put(`/web/plage/${id}`, body, config);
     dispatch({
       type: EDIT_PLAGE,
@@ -66,14 +66,14 @@ export const editPlage = ({ id ,nom, ville, region, mainImage, images,lat,lng, d
   }
 };
 
-export const addPlage = ({ nom, ville, region, mainImage, images,lat,lng, detail }) => async dispatch => {
+export const addPlage = ({ nom, ville, region, mainImage, images,lat,lng, detail,desc }) => async dispatch => {
   try {
     const config = {
       headers: {
         "Content-Type": "Application/json"
       }
     };
-    const body = JSON.stringify({ nom, ville, region, mainImage, images,lat,lng, detail });
+    const body = JSON.stringify({ nom, ville, region, mainImage, images,lat,lng, detail,desc });
     const res = await axios.post("/web/plage", body, config);
     //console.log(res.data)  
     dispatch({

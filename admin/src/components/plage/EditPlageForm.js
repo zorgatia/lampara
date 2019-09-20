@@ -1,14 +1,14 @@
 import React, { Fragment, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { getPlage ,editPlage} from "../../actions/plage";
+import { getPlage, editPlage } from "../../actions/plage";
 import Spinner from "../layout/Spinner";
 import Select from "react-select";
 import { Carousel } from "react-bootstrap";
-import styled from 'styled-components'
+import styled from "styled-components";
 import Autocomplete from "react-google-autocomplete";
 import GoogleMapReact from "google-map-react";
-import {FormControl} from 'react-bootstrap'
+import { FormControl } from "react-bootstrap";
 import { MY_API_KEY } from "../../utils/keys";
 const options = [
   { value: "Tunis", label: "Tunis" },
@@ -36,13 +36,18 @@ const options = [
   //  { value: 'Tozeur', label: 'Tozeur' },
   // { value: 'Kebili', label: 'Kebili' },
 ];
-
-const EditPlageForm = ({ history,editPlage, getPlage, plage: { plage, loading } }) => {
+let defaultSt;
+const EditPlageForm = ({
+  history,
+  editPlage,
+  getPlage,
+  plage: { plage, loading }
+}) => {
   useEffect(() => {
-    
-    console.log(plage);
-    console.log(loading);
+    //console.log(plage);
+
     if (!loading) {
+      //console.log()
       setFormData({
         id: plage._id,
         nom: plage.nom,
@@ -61,15 +66,23 @@ const EditPlageForm = ({ history,editPlage, getPlage, plage: { plage, loading } 
           beachVolley: plage.detail.beachVolley,
           chienAdmis: plage.detail.chienAdmis,
           parasol: plage.detail.parasol
-        }
+        },
+        desc: plage.desc
       });
+
+      setCenter({ lat: plage.lat, lng: plage.lng });
+
+      console.log(region);
+      console.log(plage.region);
+      defaultSt = options.find(p => p.value === region);
+      console.log(defaultSt);
     }
     /* 
     })*/
   }, [loading]);
 
   const [formData, setFormData] = useState({
-    id:"",
+    id: "",
     nom: "",
     ville: "",
     region: "",
@@ -78,7 +91,7 @@ const EditPlageForm = ({ history,editPlage, getPlage, plage: { plage, loading } 
     images: [],
     lat: 0,
     lng: 0,
-    desc:"",
+    desc: "",
     detail: {
       parking: false,
       shower: false,
@@ -87,11 +100,22 @@ const EditPlageForm = ({ history,editPlage, getPlage, plage: { plage, loading } 
       bar: false,
       beachVolley: false,
       chienAdmis: false,
-      parasol:false
+      parasol: false
     }
   });
 
-  let {id, nom, ville, region, mainImage, images,lat,lng, detail,desc } = formData;
+  let {
+    id,
+    nom,
+    ville,
+    region,
+    mainImage,
+    images,
+    lat,
+    lng,
+    detail,
+    desc
+  } = formData;
 
   const onChange = e =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -102,17 +126,30 @@ const EditPlageForm = ({ history,editPlage, getPlage, plage: { plage, loading } 
       detail: { ...detail, [e.target.name]: e.target.checked }
     });
 
-  const onSubmit = e =>{
-    e.preventDefault()
-    if(editPlage({id, nom, ville, region, mainImage, images,lat,lng, detail,desc }))
-    history.push("/beaches");
+  const onSubmit = e => {
+    e.preventDefault();
+    if (
+      editPlage({
+        id,
+        nom,
+        ville,
+        region,
+        mainImage,
+        images,
+        lat,
+        lng,
+        detail,
+        desc
+      })
+    )
+      history.push("/beaches");
   };
 
   const uploadWidget = e => {
     // if(delToken!==""){
     //  window.cloudinary.delete_by_token(delToken)  }
     // console.log(window.cloudinary)
-    e.preventDefault()
+    e.preventDefault();
 
     window.cloudinary
       .createUploadWidget(
@@ -139,8 +176,7 @@ const EditPlageForm = ({ history,editPlage, getPlage, plage: { plage, loading } 
     // if(delToken!==""){
     //  window.cloudinary.delete_by_token(delToken)  }
     // console.log(window.cloudinary)
-    e.preventDefault()
-
+    e.preventDefault();
     window.cloudinary
       .createUploadWidget(
         {
@@ -154,19 +190,23 @@ const EditPlageForm = ({ history,editPlage, getPlage, plage: { plage, loading } 
         (error, result) => {
           if (!error && result && result.event === "success") {
             //delToken=result.info.delete_token
-            if (
-              images.length === 1 &&
+           if (
               images[0] ===
                 "https://res.cloudinary.com/orange-odc/image/upload/v1567503140/plages/no-image-selected_e4g058.png"
             ) {
               console.log("test dselele");
-              setFormData({ ...formData, images: [] });
+             setFormData({ ...formData, images: [] });
             }
-            setFormData({
-              ...formData,
-              images: [...images, result.info.secure_url]
-            });
-            console.log("Done! Here is the image info: ", result.info);
+            console.log(result.info.secure_url)
+            
+              setFormData({
+                ...formData,
+                images: [...images, result.info.secure_url]
+              });
+            
+          
+            
+            console.log("Done! H: ", result.info);
           }
         }
       )
@@ -174,14 +214,12 @@ const EditPlageForm = ({ history,editPlage, getPlage, plage: { plage, loading } 
   };
 
   const deleteImg = e => {
-    e.preventDefault()
+    e.preventDefault();
     setFormData({
       ...formData,
-      images: images.filter(img=>img!==e.target.value)
+      images: images.filter(img => img !== e.target.value)
     });
-
-  }
-
+  };
 
   const [index, setIndex] = useState(0);
   const [direction, setDirection] = useState(null);
@@ -191,74 +229,84 @@ const EditPlageForm = ({ history,editPlage, getPlage, plage: { plage, loading } 
     setDirection(e.direction);
   };
 
-
   // google map
-  const [center ] = useState({
+  const [center, setCenter] = useState({
     lat: 36.81897,
     lng: 10.16579
   });
-  const [zoom ] = useState(11);
+  const [zoom] = useState(11);
 
-  
   const handleApiLoaded = (map, maps) => {
     let marker = new maps.Marker({ map: map, position: maps.LatLng(center) });
-    const geocoder = new maps.Geocoder;
-    const infowindow = new maps.InfoWindow;
-   
+    marker.setPosition(center);
+    const geocoder = new maps.Geocoder();
+    const infowindow = new maps.InfoWindow();
+
     //let autocomplete = new maps.places.Autocomplete(searchInput.current, {types: ['geocode']})
     maps.event.addListener(map, "click", function(event) {
-      setFormData({...formData,lat:event.latLng.lat(),lng: event.latLng.lng()})
+      setFormData({
+        ...formData,
+        lat: event.latLng.lat(),
+        lng: event.latLng.lng()
+      });
 
-     // var latitude = event.latLng.lat();
-     // var longitude = event.latLng.lng();
+      // var latitude = event.latLng.lat();
+      // var longitude = event.latLng.lng();
       marker.setPosition(event.latLng);
 
-
-      geocoder.geocode({'location': event.latLng}, function(results, status) {
-        if (status === 'OK') {
+      geocoder.geocode({ location: event.latLng }, function(results, status) {
+        if (status === "OK") {
           if (results[0]) {
             map.setZoom(11);
-            
+
             infowindow.setContent(results[0].formatted_address);
             infowindow.open(map, marker);
           } else {
-            window.alert('No results found');
+            /// window.alert('No results found');
           }
         } else {
-          window.alert('Geocoder failed due to: ' + status);
+          // window.alert('Geocoder failed due to: ' + status);
         }
       });
       //console.log(latitude + ", " + longitude);
-      console.log(maps)
+      //console.log(maps)
     });
   };
-  const ButtonImg = styled.button`position: absolute;
-  top: 50%;
-  left: 45%;
-  transform: translate(-50%, -50%);
-  -ms-transform: translate(-50%, -50%);
-  background-color: #555;
-  color: white;
-  font-size: 12px;
-  padding: 12px 12px;
-  border: none;
-  cursor: pointer;
-  border-radius: 55px;
-  :hover {background-color: black;}`
+  const ButtonImg = styled.button`
+    position: absolute;
+    top: 50%;
+    left: 45%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    background-color: #555;
+    color: white;
+    font-size: 12px;
+    padding: 12px 12px;
+    border: none;
+    cursor: pointer;
+    border-radius: 55px;
+    :hover {
+      background-color: black;
+    }
+  `;
 
-  const ButtonImg2 = styled.button`position: absolute;
-  top: 50%;
-  left: 45%;
-  transform: translate(-50%, -50%);
-  -ms-transform: translate(-50%, -50%);
-  background-color: #555;
-  color: white;
-  font-size: 12px;
-  padding: 12px 12px;
-  border: none;
-  cursor: pointer;
-  border-radius: 55px;
-  :hover {background-color: black;}`
+  const ButtonImg2 = styled.button`
+    position: absolute;
+    top: 50%;
+    left: 45%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    background-color: #555;
+    color: white;
+    font-size: 12px;
+    padding: 12px 12px;
+    border: none;
+    cursor: pointer;
+    border-radius: 55px;
+    :hover {
+      background-color: black;
+    }
+  `;
 
   return loading || plage === null ? (
     <Spinner></Spinner>
@@ -275,16 +323,20 @@ const EditPlageForm = ({ history,editPlage, getPlage, plage: { plage, loading } 
                     <form onSubmit={e => onSubmit(e)} name="fProfile">
                       {/* Mainimage */}
                       <div className="form-row">
-                        
                         <div className="from-group col-6">
-                          <img id="mainImg" src={mainImage} alt="" style={{height:'300px',inlineSize: 'inherit'}}></img>
+                          <img
+                            id="mainImg"
+                            src={mainImage}
+                            alt=""
+                            style={{ height: "300px", inlineSize: "inherit" }}
+                          ></img>
 
                           <ButtonImg onClick={e => uploadWidget(e)}>
                             Upload Main Image
                           </ButtonImg>
                         </div>
                         <div className="form-row col-6">
-                        <div className="form-group col-md-12">
+                          <div className="form-group col-md-12">
                             <label>Name</label>
                             <input
                               type="text"
@@ -297,7 +349,14 @@ const EditPlageForm = ({ history,editPlage, getPlage, plage: { plage, loading } 
                           </div>
                           <div className="form-group col-md-12">
                             <label>Description</label>
-                            <FormControl as="textarea" aria-label="With textarea" placeholder="Description" style={{height: '172px'}} />
+                            <FormControl
+                              as="textarea"
+                              aria-label="With textarea"
+                              style={{ height: "172px" }}
+                              value={desc}
+                              name="desc"
+                              onChange={e => onChange(e)}
+                            />
                           </div>
                         </div>
                       </div>
@@ -305,7 +364,6 @@ const EditPlageForm = ({ history,editPlage, getPlage, plage: { plage, loading } 
                       <br />
                       <div className="form-row">
                         <div className="col-md-6">
-                          
                           <div className="form-group ">
                             <label>City</label>
                             <input
@@ -321,6 +379,7 @@ const EditPlageForm = ({ history,editPlage, getPlage, plage: { plage, loading } 
                             <label>State</label>
                             <Select
                               options={options}
+                              value={options.find(p => p.value === region)}
                               onChange={v =>
                                 setFormData({ ...formData, region: v.value })
                               }
@@ -329,7 +388,7 @@ const EditPlageForm = ({ history,editPlage, getPlage, plage: { plage, loading } 
 
                           {/* Detail */}
                           <div className="form-group ">
-                          <label>Details</label>
+                            <label>Details</label>
                             <div className="form-row col-md-12">
                               <div className="form-check col-6">
                                 <label className="form-check-label">
@@ -338,6 +397,7 @@ const EditPlageForm = ({ history,editPlage, getPlage, plage: { plage, loading } 
                                     name="parking"
                                     className="form-check-input"
                                     value="parking"
+                                    checked={detail.parking}
                                     onClick={e => onClickD(e)}
                                   />
                                   Parking
@@ -350,6 +410,7 @@ const EditPlageForm = ({ history,editPlage, getPlage, plage: { plage, loading } 
                                     className="form-check-input"
                                     name="shower"
                                     value="shower"
+                                    checked={detail.shower}
                                     onClick={e => onClickD(e)}
                                   />
                                   Shower
@@ -362,6 +423,7 @@ const EditPlageForm = ({ history,editPlage, getPlage, plage: { plage, loading } 
                                     className="form-check-input"
                                     name="resto"
                                     value="resto"
+                                    checked={detail.resto}
                                     onClick={e => onClickD(e)}
                                   />
                                   resto
@@ -374,6 +436,7 @@ const EditPlageForm = ({ history,editPlage, getPlage, plage: { plage, loading } 
                                     className="form-check-input"
                                     name="wc"
                                     value="wc"
+                                    checked={detail.wc}
                                     onClick={e => onClickD(e)}
                                   />
                                   wc
@@ -386,6 +449,7 @@ const EditPlageForm = ({ history,editPlage, getPlage, plage: { plage, loading } 
                                     className="form-check-input"
                                     name="bar"
                                     value="bar"
+                                    checked={detail.bar}
                                     onClick={e => onClickD(e)}
                                   />
                                   bar
@@ -399,6 +463,7 @@ const EditPlageForm = ({ history,editPlage, getPlage, plage: { plage, loading } 
                                     className="form-check-input"
                                     name="beachVolley"
                                     value="beachVolley"
+                                    checked={detail.beachVolley}
                                     onClick={e => onClickD(e)}
                                   />
                                   Beach Volley
@@ -411,6 +476,7 @@ const EditPlageForm = ({ history,editPlage, getPlage, plage: { plage, loading } 
                                     className="form-check-input"
                                     name="chienAdmis"
                                     value="chienAdmis"
+                                    checked={detail.chienAdmis}
                                     onClick={e => onClickD(e)}
                                   />
                                   chien Admis
@@ -423,6 +489,7 @@ const EditPlageForm = ({ history,editPlage, getPlage, plage: { plage, loading } 
                                     className="form-check-input"
                                     name="parasol"
                                     value="parasol"
+                                    checked={detail.parasol}
                                     onClick={e => onClickD(e)}
                                   />
                                   Parasol
@@ -433,7 +500,7 @@ const EditPlageForm = ({ history,editPlage, getPlage, plage: { plage, loading } 
                         </div>
                         <div className="form-row col-6">
                           <div>
-                          <label>Select location on map:</label>
+                            <label>Select location on map:</label>
                             <Autocomplete
                               style={{ width: "90%" }}
                               onPlaceSelected={place => {
@@ -441,7 +508,7 @@ const EditPlageForm = ({ history,editPlage, getPlage, plage: { plage, loading } 
                               }}
                               types={["(regions)"]}
                               componentRestrictions={{ country: "tu" }}
-                            /> 
+                            />
                           </div>
                           <div style={{ height: "50vh", width: "100%" }}>
                             <GoogleMapReact
@@ -480,7 +547,7 @@ const EditPlageForm = ({ history,editPlage, getPlage, plage: { plage, loading } 
                               </Carousel.Item>
                             ) : (
                               images.map((img, idx) => (
-                                <Carousel.Item>
+                                <Carousel.Item key={img}>
                                   <img
                                     className="d-block w-100"
                                     src={img}
@@ -514,7 +581,6 @@ const EditPlageForm = ({ history,editPlage, getPlage, plage: { plage, loading } 
                       </button>
                     </form>
                   </div>
-               
                 </div>
               </div>
             </div>
@@ -528,7 +594,7 @@ const EditPlageForm = ({ history,editPlage, getPlage, plage: { plage, loading } 
 EditPlageForm.propTypes = {
   plage: PropTypes.object.isRequired,
   getPlage: PropTypes.func.isRequired,
-  editPlage: PropTypes.func.isRequired,
+  editPlage: PropTypes.func.isRequired
 };
 const mapStateToProps = state => ({
   plage: state.plage
@@ -536,5 +602,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getPlage,editPlage }
+  { getPlage, editPlage }
 )(EditPlageForm);

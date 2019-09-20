@@ -223,10 +223,11 @@ router.get("/:id/:idUser", async (req, res) => {
         });
       }
     }
+
     const Oplage = plage.toObject();
     Oplage.meteo = meteo;
     Oplage.favoris = user.follows.filter(f => f.id === plage.id).length > 0;
-
+    Oplage.prev = [meteo,meteo,meteo]
     return res.json(Oplage);
   } catch (err) {
     console.log(err.message);

@@ -45,6 +45,8 @@ const getMapBounds = (map, maps, buoys) => {
   buoys.forEach(buoy => {
     bounds.extend(new maps.LatLng(buoy.lat, buoy.lng));
   });
+
+  
   return bounds;
 };
 
@@ -66,6 +68,7 @@ const handleApiLoaded = (map, maps, buoys) => {
 };
 
 const onClick = e => {
+  console.log(e.target.idbuoy);
   console.log(e);
 };
 
@@ -83,7 +86,7 @@ const Map = ({ getBuoys, buoy: { buoys, loading } }) => {
               bootstrapURLKeys={{
                 key: "AIzaSyAD3123Nam0a4qQLHom4cx--lY_Q1iSa4I"
               }}
-              defaultCenter={{ lat: 33.88, lng: 9.53 }}
+              defaultCenter={{ lat: 36.81897, lng: 10.16579 }}
               defaultZoom={10}
               yesIWantToUseGoogleMapApiInternals
               onGoogleApiLoaded={({ map, maps }) =>
@@ -96,7 +99,7 @@ const Map = ({ getBuoys, buoy: { buoys, loading } }) => {
                   lng={buoy.lng}
                   status={buoy.status}
                   idbuoy={buoy.id}
-                  
+                  //onClick={e=>onClick(e)}
                 />
               ))}
             </GoogleMapReact>
