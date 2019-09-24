@@ -108,6 +108,28 @@ router.get("/prev", async (req, res) => {
     }
   });
 
+// @route   GET /mob/event/plage
+// @desc    get special
+// @access  Public
+
+router.get("/plage/:idPlage/:idUser", async (req, res) => {
+  try {
+    const plage = await Plage.findById(req.params.idPlage);
+    const user = await User.findById(req.params.idUser);
+
+    const e = await Event.findOne({date:{$lt: new Date()},plage: plage,user:{$ne: user}}).populate('plage','nom').sort({date:-1});
+  
+      let ev = e.toObject();
+      ev.plage=ev.plage.nom;
+      
+    res.json(ev);
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).send("server error");
+  }
+});
+
+
 // @route   GET /mob/event/upcome
 // @desc    get all events
 // @access  Public

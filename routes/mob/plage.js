@@ -238,6 +238,7 @@ router.get("/:id/:idUser", async (req, res) => {
     Oplage.prev = [meteo,meteo,meteo]
     delete Oplage.rates;
     Oplage.rate = rate;
+    Oplage.acti = ['Swimming']
 
     return res.json(Oplage);
   } catch (err) {
