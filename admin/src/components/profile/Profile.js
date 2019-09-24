@@ -9,9 +9,35 @@ import {
 import { setAlert } from "../../actions/alert";
 import Spinner from "../layout/Spinner";
 import moment from "moment";
-import styled from 'styled-components';
+import styled from "styled-components";
+import Select from "react-select";
 //import "react-datepicker/dist/react-datepicker.css";
-
+const options = [
+  { value: "Tunis", label: "Tunis" },
+  { value: "Ariana", label: "Ariana" },
+  { value: "Ben Arous", label: "Ben Arous" },
+  { value: "Manouba", label: "Manouba" },
+  { value: "Nabeul", label: "Nabeul" },
+  { value: 'Zaghouan', label: 'Zaghouan' },
+  { value: "Bizerte", label: "Bizerte" },
+  { value: "Béja", label: "Béja" },
+  { value: "Jendouba", label: "Jendouba" },
+  { value: 'Kef', label: 'Kef' },
+  { value: 'Siliana', label: 'Siliana' },
+  { value: "Sousse", label: "Sousse" },
+  { value: "Monastir", label: "Monastir" },
+  { value: "Mahdia", label: "Mahdia" },
+  { value: "Sfax", label: "Sfax" },
+  { value: 'Kairouan', label: 'Kairouan' },
+  { value: 'Kasserine', label: 'Kasserine' },
+  { value: 'Sidi Bouzid', label: 'Sidi Bouzid' },
+  { value: "Gabès", label: "Gabès" },
+  { value: "Mednine", label: "Mednine" },
+  { value: "Tataouine", label: "Tataouine" },
+  { value: 'Gafsa', label: 'Gafsa' },
+  { value: 'Tozeur', label: 'Tozeur' },
+  { value: 'Kebili', label: 'Kebili' }
+];
 const Profile = ({
   setAlert,
   getCurrentProfile,
@@ -32,8 +58,8 @@ const Profile = ({
     cite: "",
     region: "",
     zip: "",
-    image:"",
-    delToken:""
+    image: "",
+    delToken: ""
   });
 
   useEffect(() => {
@@ -67,9 +93,8 @@ const Profile = ({
     cite,
     region,
     zip,
-    image,
+    image
     //delToken
-
   } = formData;
   const onChange = e =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -84,7 +109,7 @@ const Profile = ({
         changePassword({ oldPassword, newPassword });
       }
     } else if (e.target.name === "fProfile") {
-      console.log(image)
+      console.log(image);
       updateCurrentProfile({
         username,
         dateNaissance,
@@ -100,9 +125,9 @@ const Profile = ({
   };
 
   const uploadWidget = e => {
-   // if(delToken!==""){
+    // if(delToken!==""){
     //  window.cloudinary.delete_by_token(delToken)  }
-    console.log(window.cloudinary)
+    console.log(window.cloudinary);
     window.cloudinary
       .createUploadWidget(
         {
@@ -115,10 +140,9 @@ const Profile = ({
         },
         (error, result) => {
           if (!error && result && result.event === "success") {
-
             setFormData({ ...formData, image: result.info.secure_url });
-            
-            document.getElementById('imgprof').src=result.info.secure_url
+
+            document.getElementById("imgprof").src = result.info.secure_url;
 
             //delToken=result.info.delete_token
 
@@ -129,19 +153,23 @@ const Profile = ({
       .open();
   };
 
-  const ButtonImg = styled.button`position: absolute;
-  top: 50%;
-  left: 32%;
-  transform: translate(-50%, -50%);
-  -ms-transform: translate(-50%, -50%);
-  background-color: #555;
-  color: white;
-  font-size: 12px;
-  padding: 12px 12px;
-  border: none;
-  cursor: pointer;
-  border-radius: 55px;
-  :hover {background-color: black;}`
+  const ButtonImg = styled.button`
+    position: absolute;
+    top: 50%;
+    left: 32%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    background-color: #555;
+    color: white;
+    font-size: 12px;
+    padding: 12px 12px;
+    border: none;
+    cursor: pointer;
+    border-radius: 55px;
+    :hover {
+      background-color: black;
+    }
+  `;
 
   return loading && profile === null ? (
     <Spinner />
@@ -159,15 +187,15 @@ const Profile = ({
                       <div className="form-row">
                         <div className="form-group col-md-4">
                           <img
-                          id="imgprof"
+                            id="imgprof"
                             alt=""
                             className="rounded-circle"
                             src={image}
-                            width='60%'
+                            width="60%"
                             height="60%"
                           />
                           <ButtonImg onClick={e => uploadWidget(e)}>
-                             Add Profile Image
+                            Add Profile Image
                           </ButtonImg>
                         </div>
                         <div className="form-row col-md-8">
@@ -242,37 +270,13 @@ const Profile = ({
                         </div>
                         <div className="form-group col-md-4">
                           <label>State</label>
-                          <select
-                            className="custom-select mr-sm-2-control"
-                            id="inlineFormCustomSelect"
-                            value={region}
-                            name="region"
-                            onChange={e => onChange(e)}
-                          >
-                            <option value="Tunis">Tunis</option>
-                            <option value="Ariana">Ariana</option>
-                            <option value="Ben Arous">Ben Arous</option>
-                            <option value="Manouba">Manouba</option>
-                            <option value="Nabeul">Nabeul</option>
-                            <option value="Zaghouan">Zaghouan</option>
-                            <option value="Bizerte">Bizerte</option>
-                            <option value="Béja">Béja</option>
-                            <option value="Jendouba">Jendouba</option>
-                            <option value="Siliana">Siliana</option>
-                            <option value="Sousse">Sousse</option>
-                            <option value="Monastir">Monastir</option>
-                            <option value="Mahdia">Mahdia</option>
-                            <option value="Sfax">Sfax</option>
-                            <option value="Kairouan">Kairouan</option>
-                            <option value="Kasserine">Kasserine</option>
-                            <option value="Sidi Bouzid">Sidi Bouzid</option>
-                            <option value="Gabès">Gabès</option>
-                            <option value="Mednine">Mednine</option>
-                            <option value="Tataouine">Tataouine</option>
-                            <option value="Gafsa">Gafsa</option>
-                            <option value="Tozeur">Tozeur</option>
-                            <option value="Kebili">Kebili</option>
-                          </select>
+                          <Select
+                            options={options}
+                            value={options.find(p => p.value === region)}
+                            onChange={v =>
+                              setFormData({ ...formData, region: v.value })
+                            }
+                          />
                         </div>
                         <div className="form-group col-md-2">
                           <label>Zip</label>
@@ -343,8 +347,6 @@ const Profile = ({
                     </form>
                   </div>
                 </div>
-
-              
               </div>
             </div>
           </div>

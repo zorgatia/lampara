@@ -12,11 +12,12 @@ import Navbar from "../layout/Navbars";
 import NotFound from "../layout/NotFound"
 import Swal from "../layout/Swal"
 import Profile from "../profile/Profile"
-import Mapp from "../plage/Map"
+
 import Nap from '../buoy/Nap'
 import Members from "../member/Members"
-import Test from "../plage/Test";
+
 import Buoys from "../buoy/Buoys";
+import EcoSys from '../buoy/EcoSys'
 
 
 
@@ -36,7 +37,7 @@ const Routes = () => {
                 <PrivateRoute exact path="/map" component={Nap} />
                 <PrivateRoute exact path="/collaborators" component={Members} />
                 <PrivateRoute exact path="/buoys" component={Buoys} />
-                <PrivateRoute exact path="/test" component={Test} />
+                <PrivateRoute exact path="/ecosys" component={EcoSys} />
                 
                 <Route component={NotFound} />
             </Switch>

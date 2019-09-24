@@ -4,7 +4,9 @@ import {
   GET_PLAGES,
   PLAGE_ERROR,
   ADD_PLAGE,
-  LOAD_PLAGE
+  LOAD_PLAGE,
+  EDIT_PLAGE,
+  ADD_BUOY
 } from "../actions/types";
 
 const initialState = {
@@ -18,10 +20,10 @@ export default function(state = initialState, action) {
   const { type, payload } = action;
   switch (type) {
     case LOAD_PLAGE:
-      return{
+      return {
         ...state,
         loading: true
-      }
+      };
     case GET_PLAGE:
       return {
         ...state,
@@ -39,6 +41,22 @@ export default function(state = initialState, action) {
         ...state,
         error: payload,
         loading: false
+      };
+    case ADD_BUOY:
+      return {
+        ...state,
+        plages: state.plages.map(p => {
+          if (p._id === payload._id) return payload;
+          return p;
+        })
+      };
+    case EDIT_PLAGE:
+      return {
+        ...state,
+        plages: state.plages.map(p => {
+          if (p._id === payload._id) return payload;
+          return p;
+        })
       };
     case ADD_PLAGE:
       return {

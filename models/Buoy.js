@@ -28,7 +28,11 @@ const BuoySchema = new Schema({
     plage: {
         type: Schema.Types.ObjectId,
         ref: "plage"
-    }
+    },
+    detecs:[ {
+        type: Schema.Types.ObjectId,
+        ref: 'detec'
+    }]
 });
 
 module.exports = Buoy = mongoose.model("buoy", BuoySchema);

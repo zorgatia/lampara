@@ -54,7 +54,7 @@ const SideBar = () => {
             </li>
 
             <li>
-              <Link to="/test">
+              <Link to="/ecosys">
                 <i className=" mdi mdi-view-dashboard" />{" "}
                 <span className="nav-text">EcoSystem</span>
               </Link>

@@ -3,17 +3,27 @@ import PropTypes from "prop-types";
 import GoogleMapReact from "google-map-react";
 
 import { connect } from "react-redux";
-import { getBuoys } from "../../actions/buoy";
+import { getBuoys, removeBuoy } from "../../actions/buoy";
 import { MY_API_KEY } from "../../utils/keys";
 import Spinner from "../layout/Spinner";
 
-const Nap = ({ getBuoys, buoy: { buoys, loading } }) => {
+const Nap = ({ getBuoys, buoy: { buoys,buoy, loading } }) => {
   useEffect(() => {
     // console.log(buoys)
     getBuoys();
+    
   }, [getBuoys]);
-
-  const [center] = useState({
+  const [searchB, setSearchB] = useState("");
+  const onChange = e => {
+    setSearchB(e.target.value);
+  };
+  const onSubmit = e => {
+    e.preventDefault();
+    const buoy = buoys.find(b=>b.num===searchB);
+    console.log(buoy)
+    
+  };
+  const [center,setCenter] = useState({
     lat: 36.81897,
     lng: 10.16579
   });
@@ -24,7 +34,14 @@ const Nap = ({ getBuoys, buoy: { buoys, loading } }) => {
     const infowindow = new maps.InfoWindow();
 
     //let autocomplete = new maps.places.Autocomplete(searchInput.current, {types: ['geocode']})
+    console.log(buoy)
     setMarkers(map, maps);
+    if(buoy){
+      map.panTo({lat:buoy.lat,lng:buoy.lng})
+      removeBuoy()
+    }
+    
+    
   };
   const setMarkers = (map, maps) => {
     const image = {
@@ -53,7 +70,7 @@ const Nap = ({ getBuoys, buoy: { buoys, loading } }) => {
         zIndex: 10
       });
       marker.addListener("click", function() {
-        const infowindow=new maps.InfoWindow({
+        const infowindow = new maps.InfoWindow({
           content: b.status,
           maxWidth: 200
         });
@@ -67,6 +84,17 @@ const Nap = ({ getBuoys, buoy: { buoys, loading } }) => {
     <Fragment>
       <div className="content-body">
         <div className="container">
+          <div>
+            <form onSubmit={e => onSubmit(e)}>
+              <input
+                type="text"
+                name="searchB"
+                value={searchB}
+                onChange={e => onChange(e)}
+              />
+              <input type="submit"></input>
+            </form>
+          </div>
           <div style={{ height: "100vh", width: "100%" }}>
             <GoogleMapReact
               bootstrapURLKeys={MY_API_KEY}

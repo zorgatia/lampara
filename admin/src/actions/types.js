@@ -25,6 +25,9 @@ export const EDIT_PLAGE = 'EDIT_PLAGE';
 
 
 export const GET_BUOYS = 'GET_BUOYS';
+export const SET_BUOY = 'SET_BUOY';
+export const REMOVE_BUOY = 'REMOVE_BUOY';
+export const ADD_BUOY = 'ADD_BUOY';
 export const BUOY_ERROR = 'BUOY_ERROR';
 
 export const GET_MEMBER = 'GET_MEMBER';
