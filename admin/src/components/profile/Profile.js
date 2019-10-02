@@ -154,22 +154,22 @@ const Profile = ({
   };
 
   const ButtonImg = styled.button`
-    position: absolute;
-    top: 50%;
-    left: 32%;
-    transform: translate(-50%, -50%);
-    -ms-transform: translate(-50%, -50%);
-    background-color: #555;
-    color: white;
-    font-size: 12px;
-    padding: 12px 12px;
-    border: none;
-    cursor: pointer;
-    border-radius: 55px;
-    :hover {
-      background-color: black;
-    }
-  `;
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  background-color: #5559;
+  color: white;
+  font-size: 12px;
+  padding: 12px 12px;
+  border: none;
+  cursor: pointer;
+  border-radius: 55px;
+  :hover {
+    background-color: black;
+  }
+`;
 
   return loading && profile === null ? (
     <Spinner />
@@ -186,17 +186,19 @@ const Profile = ({
                     <form onSubmit={e => onSubmit(e)} name="fProfile">
                       <div className="form-row">
                         <div className="form-group col-md-4">
+                          <div style={{height:'220px',width:'auto'}}>
                           <img
                             id="imgprof"
                             alt=""
                             className="rounded-circle"
                             src={image}
-                            width="60%"
-                            height="60%"
+                            style={{inlineSize: 'inherit'}}
+                            
                           />
                           <ButtonImg onClick={e => uploadWidget(e)}>
                             Add Profile Image
                           </ButtonImg>
+                        </div>
                         </div>
                         <div className="form-row col-md-8">
                           <div className="form-group col-md-6">
@@ -263,7 +265,7 @@ const Profile = ({
                           <input
                             type="text"
                             className="form-control"
-                            name="city"
+                            name="cite"
                             value={cite}
                             onChange={e => onChange(e)}
                           />

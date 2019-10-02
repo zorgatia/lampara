@@ -208,7 +208,7 @@ router.get("/:id/:idUser", async (req, res) => {
               viVent: res.viVent + curr.viVent,
               ph: res.ph + curr.ph,
               tempEau: res.tempEau + curr.tempEau,
-              data: res.date,
+              date: res.date,
               flag: res.flag+curr.flag,
               cloudy: res.cloudy+curr.cloudy,
               crowded: res.crowded+curr.crowded,
@@ -233,7 +233,8 @@ router.get("/:id/:idUser", async (req, res) => {
     
 
     const Oplage = plage.toObject();
-    Oplage.meteo = meteo;
+
+    Oplage.meteo = [randMeteo(meteo,1),randMeteo(meteo,2),randMeteo(meteo,3),randMeteo(meteo,4)]
     Oplage.favoris = user.follows.filter(f => f.id === plage.id).length > 0;
     Oplage.prev = [meteo,meteo,meteo]
     delete Oplage.rates;
@@ -246,6 +247,31 @@ router.get("/:id/:idUser", async (req, res) => {
     res.status(500).send("server error");
   }
 });
+const randMeteo= (meteo,i)=>{
+  switch(i){
+    case 1:
+      return({
+        ...meteo,
+        temp:meteo.temp-5
+      })
+    case 2:
+      return({
+        ...meteo,
+        temp:meteo.temp-5
+      })
+    case 3:
+      return({
+        ...meteo,
+        temp:meteo.temp-5
+      })
+    case 4:
+      return({
+        ...meteo,
+        temp:meteo.temp-5
+      })
+    default: return meteo
+  }
+}
 
 // @route   PUT mob/plage/rate
 // @desc    add or update rate on plage
