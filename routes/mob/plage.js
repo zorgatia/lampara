@@ -47,11 +47,13 @@ router.get("/nearyou/:lat/:lng/:dist", async (req, res) => {
     const lng = req.params.lng;
     const dist = req.params.dist;
 
-    const plages = await Plage.find().select("_id nom ville mainImage rates lat lng  ");
+    const plages = await Plage.find().select(
+      "_id nom ville mainImage rates lat lng  "
+    );
     p = [];
     plages.forEach(plage => {
       //console.log(plage.lat)
-      console.log(getDistanceFromLatLonInKm(lat, lng, plage.lat, plage.lng))
+      console.log(getDistanceFromLatLonInKm(lat, lng, plage.lat, plage.lng));
       //plage = plage.toObject;
       if (getDistanceFromLatLonInKm(lat, lng, plage.lat, plage.lng) < dist) {
         const rates = plage.rates.map(rate => rate.rate);
@@ -83,14 +85,24 @@ router.get("/nearyou/:lat/:lng/:dist", async (req, res) => {
 
 router.get("/recommanded/:idUser", async (req, res) => {
   try {
-    
-    const plages = await Rec.findOne({id: req.params.idUser}).populate({path:'plages',select:"_id nom ville mainImage rates",options:{limit:5}}).select("_id nom ville mainImage rates");
-   
-    console.log(plages)
-    const nn =plages.plages.length;
-    if(nn<5){
-      const pls =await Plage.find({id:{$nin:plages.plages.map(p=>p.id)}}).select("_id nom ville mainImage rates").sort({rate:-1}).limit(5-nn);
-      plages.plages.unshift(...pls)
+    const plages = await Rec.findOne({ id: req.params.idUser })
+      .populate({
+        path: "plages",
+        select: "_id nom ville mainImage rates",
+        options: { limit: 5 }
+      })
+      .select("_id nom ville mainImage rates");
+
+    console.log(plages);
+    const nn = plages.plages.length;
+    if (nn < 5) {
+      const pls = await Plage.find({
+        id: { $nin: plages.plages.map(p => p.id) }
+      })
+        .select("_id nom ville mainImage rates")
+        .sort({ rate: -1 })
+        .limit(5 - nn);
+      plages.plages.unshift(...pls);
     }
 
     p = [];
@@ -187,7 +199,7 @@ router.get("/:id/:idUser", async (req, res) => {
       .select("buoys");
     let meteo = {};
     if (buoys.buoys.filter(buoy => buoy.status === "ON_LIGNE").length === 1) {
-       console.log(1)
+      console.log(1);
       meteo = buoys.buoys.shift().meteos.shift();
     } else if (
       buoys.buoys.filter(buoy => buoy.status === "ON_LIGNE").length > 1
@@ -195,57 +207,63 @@ router.get("/:id/:idUser", async (req, res) => {
       const data = buoys.buoys
         .filter(buoy => buoy.status === "ON_LIGNE" && buoy.meteos.length > 0)
         .map(buoy => buoy.meteos.shift());
-       console.log(2)
-       console.log(data)
+      console.log(2);
+      console.log(data);
       if (data.length > 0) {
-        const obj=data[0]
-        if(data.length>1){
-        obj = Object.entries(
-          data.slice(1).reduce((res, curr) => {
-            return {
-              temp: res.temp + curr.temp,
-              humi: res.humi + curr.humi,
-              press: res.press + curr.press,
-              uv: res.uv + curr.uv,
-              diVent: res.diVent,
-              viVent: res.viVent + curr.viVent,
-              ph: res.ph + curr.ph,
-              tempEau: res.tempEau + curr.tempEau,
-              date: res.date,
-              flag: res.flag+curr.flag,
-              cloudy: res.cloudy+curr.cloudy,
-              crowded: res.crowded+curr.crowded,
-            };
-          }, data[0])
-        );
-        obj.forEach(function(val) {
-          typeof val[1] === "number"
-            ? (meteo[val[0]] = val[1] / data.length)
-            : (meteo[val[0]] = val[1]);
-        });
-        }else meteo=obj
+        const obj = data[0];
+        if (data.length > 1) {
+          obj = Object.entries(
+            data.slice(1).reduce((res, curr) => {
+              return {
+                temp: res.temp + curr.temp,
+                humi: res.humi + curr.humi,
+                press: res.press + curr.press,
+                uv: res.uv + curr.uv,
+                diVent: res.diVent,
+                viVent: res.viVent + curr.viVent,
+                ph: res.ph + curr.ph,
+                tempEau: res.tempEau + curr.tempEau,
+                date: res.date,
+                flag: res.flag + curr.flag,
+                cloudy: res.cloudy + curr.cloudy,
+                crowded: res.crowded + curr.crowded
+              };
+            }, data[0])
+          );
+          obj.forEach(function(val) {
+            typeof val[1] === "number"
+              ? (meteo[val[0]] = val[1] / data.length)
+              : (meteo[val[0]] = val[1]);
+          });
+        } else meteo = obj;
         //return res.json(meteo)
-        console.log(obj)
-        
+        console.log(obj);
       }
     }
 
     const rates = plage.rates.map(rate => rate.rate);
     let rate = 2.5;
     rates.length !== 0
-      ? (rate = rates.reduce((previous, current) => (current += previous), 0) / rates.length)
+      ? (rate =
+          rates.reduce((previous, current) => (current += previous), 0) /
+          rates.length)
       : (rate = 2.5);
     //console.log(rate);
-    
-    
+
     const Oplage = plage.toObject();
-    
-    Oplage.meteo = [randMeteo(meteo,1),randMeteo(meteo,2),randMeteo(meteo,3),randMeteo(meteo,4)]
+
+    Oplage.meteo = [
+      randMeteo(meteo, 1),
+      randMeteo(meteo, 2),
+      randMeteo(meteo, 3),
+      randMeteo(meteo, 4)
+    ];
+
     Oplage.favoris = user.follows.filter(f => f.id === plage.id).length > 0;
-    Oplage.prev = [meteo,meteo,meteo]
+    Oplage.prev = [meteo, meteo, meteo];
     delete Oplage.rates;
     Oplage.rate = rate;
-    Oplage.acti = ['Swimming']
+    Oplage.acti = ["Swimming"];
 
     return res.json(Oplage);
   } catch (err) {
@@ -253,24 +271,81 @@ router.get("/:id/:idUser", async (req, res) => {
     res.status(500).send("server error");
   }
 });
-const randMeteo= (meteo,i)=>{
-  
-  switch(i){
-    case 1:{
-      meteo.temp = 9;
-      return meteo}
-    case 2:{
-        meteo.temp=meteo.temp+2;
-        return meteo}
-    case 3:{
-        meteo.temp=meteo.temp+3;
-        return meteo}
-    case 4:{
-        meteo.temp=meteo.temp-4;
-        return meteo}
-    default: return meteo
-  }
-}
+const randMeteo = (meteo, i) => {
+  const obj = {};
+  if (i == 1) {
+    obj.uv = meteo.uv;
+    obj.salerite = meteo.salerite;
+    obj._id = meteo._id ;
+    obj.temp = meteo.temp - 5;
+    obj.humi = meteo.humi ;
+    obj.press = meteo.press ;
+    obj.diVent = meteo.diVent;
+    obj.viVent = meteo.viVent;
+    obj.ph = meteo.ph;
+    obj.tempEau = meteo.tempEau;
+    obj.flag = meteo.flag ;
+    obj.cloudy = meteo.cloudy ;
+    obj.crowded = meteo.crowded ;
+    obj.date = meteo.date ;
+    obj.__v = meteo.__v ;
+
+  } else if (i == 2) {
+    obj.uv = meteo.uv;
+    obj.salerite = meteo.salerite;
+    obj._id = meteo._id ;
+    obj.temp = meteo.temp +2;
+    obj.humi = meteo.humi ;
+    obj.press = meteo.press ;
+    obj.diVent = meteo.diVent;
+    obj.viVent = meteo.viVent;
+    obj.ph = meteo.ph;
+    obj.tempEau = meteo.tempEau;
+    obj.flag = meteo.flag ;
+    obj.cloudy = meteo.cloudy ;
+    obj.crowded = meteo.crowded ;
+    obj.date = meteo.date ;
+    obj.__v = meteo.__v ;
+
+  } 
+  else if (i == 3) {
+    obj.uv = meteo.uv;
+    obj.salerite = meteo.salerite;
+    obj._id = meteo._id ;
+    obj.temp = meteo.temp +3;
+    obj.humi = meteo.humi ;
+    obj.press = meteo.press ;
+    obj.diVent = meteo.diVent;
+    obj.viVent = meteo.viVent;
+    obj.ph = meteo.ph;
+    obj.tempEau = meteo.tempEau;
+    obj.flag = meteo.flag ;
+    obj.cloudy = meteo.cloudy ;
+    obj.crowded = meteo.crowded ;
+    obj.date = meteo.date ;
+    obj.__v = meteo.__v ;
+
+  } 
+  else{
+    obj.uv = meteo.uv;
+    obj.salerite = meteo.salerite;
+    obj._id = meteo._id ;
+    obj.temp = meteo.temp -4;
+    obj.humi = meteo.humi ;
+    obj.press = meteo.press ;
+    obj.diVent = meteo.diVent;
+    obj.viVent = meteo.viVent;
+    obj.ph = meteo.ph;
+    obj.tempEau = meteo.tempEau;
+    obj.flag = meteo.flag ;
+    obj.cloudy = meteo.cloudy ;
+    obj.crowded = meteo.crowded ;
+    obj.date = meteo.date ;
+    obj.__v = meteo.__v ;
+
+  } 
+  return obj;
+};
 
 // @route   PUT mob/plage/rate
 // @desc    add or update rate on plage
