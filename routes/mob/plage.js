@@ -187,7 +187,7 @@ router.get("/:id/:idUser", async (req, res) => {
       .select("buoys");
     let meteo = {};
     if (buoys.buoys.filter(buoy => buoy.status === "ON_LIGNE").length === 1) {
-      // console.log(1)
+       console.log(1)
       meteo = buoys.buoys.shift().meteos.shift();
     } else if (
       buoys.buoys.filter(buoy => buoy.status === "ON_LIGNE").length > 1
@@ -195,9 +195,12 @@ router.get("/:id/:idUser", async (req, res) => {
       const data = buoys.buoys
         .filter(buoy => buoy.status === "ON_LIGNE" && buoy.meteos.length > 0)
         .map(buoy => buoy.meteos.shift());
-      // console.log(2)
+       console.log(2)
+       console.log(data)
       if (data.length > 0) {
-        const obj = Object.entries(
+        const obj=data[0]
+        if(data.length>1){
+        obj = Object.entries(
           data.slice(1).reduce((res, curr) => {
             return {
               temp: res.temp + curr.temp,
@@ -215,12 +218,15 @@ router.get("/:id/:idUser", async (req, res) => {
             };
           }, data[0])
         );
-
         obj.forEach(function(val) {
           typeof val[1] === "number"
             ? (meteo[val[0]] = val[1] / data.length)
             : (meteo[val[0]] = val[1]);
         });
+        }else meteo=obj
+        //return res.json(meteo)
+        console.log(obj)
+        
       }
     }
 
@@ -231,9 +237,9 @@ router.get("/:id/:idUser", async (req, res) => {
       : (rate = 2.5);
     //console.log(rate);
     
-
+    
     const Oplage = plage.toObject();
-
+    
     Oplage.meteo = [randMeteo(meteo,1),randMeteo(meteo,2),randMeteo(meteo,3),randMeteo(meteo,4)]
     Oplage.favoris = user.follows.filter(f => f.id === plage.id).length > 0;
     Oplage.prev = [meteo,meteo,meteo]
@@ -248,27 +254,20 @@ router.get("/:id/:idUser", async (req, res) => {
   }
 });
 const randMeteo= (meteo,i)=>{
+  
   switch(i){
-    case 1:
-      return({
-        ...meteo,
-        temp:meteo.temp-5
-      })
-    case 2:
-      return({
-        ...meteo,
-        temp:meteo.temp-5
-      })
-    case 3:
-      return({
-        ...meteo,
-        temp:meteo.temp-5
-      })
-    case 4:
-      return({
-        ...meteo,
-        temp:meteo.temp-5
-      })
+    case 1:{
+      meteo.temp = 9;
+      return meteo}
+    case 2:{
+        meteo.temp=meteo.temp+2;
+        return meteo}
+    case 3:{
+        meteo.temp=meteo.temp+3;
+        return meteo}
+    case 4:{
+        meteo.temp=meteo.temp-4;
+        return meteo}
     default: return meteo
   }
 }
