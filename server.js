@@ -35,7 +35,7 @@ const app = express();
 
 
 connectDB();
-rec()
+//rec()
 
 app.use(express.json({ extended: false}));
 

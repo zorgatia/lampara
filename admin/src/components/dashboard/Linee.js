@@ -57,7 +57,8 @@ const Linee = ({region}) => {
 
     
     return (
-        <Line data={data} />
+        <Line data={data} legend={{display: true,
+          position: 'bottom'}} />
     )
 }
 

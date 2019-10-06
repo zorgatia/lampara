@@ -26,13 +26,8 @@ const Top = props => {
                 <h2 className="m-t-15 m-b-0">
                   { load ? ( 0 ) : ( <CountUp end={data.buoys} duration={3}></CountUp>) } Buoys
                 </h2>
-                <p className="f-s-12">deployed</p>
-                <a
-                  href="#"
-                  className="btn btn-success btn-rounded p-l-30 p-r-30 m-t-5 m-b-10"
-                >
-                  Download now
-                </a>
+                <p className="f-s-12"></p>
+                
               </div>
             </div>
           </div>
@@ -41,15 +36,10 @@ const Top = props => {
           <div className="card">
             <div className="card-body">
               <div className="text-center m-t-10">
-                <i className="icon-diamond f-s-50 text-warning"></i>
+                <i className="icon-diamond f-s-50 text-cost2" style={{color: '#f4ad1c'}}></i>
                 <h2 className="m-t-15 m-b-0">{ load ? ( 0 ) : ( <CountUp end={data.plages} duration={3}></CountUp>) } Beaches</h2>
                 <p className="f-s-12"></p>
-                <a
-                  href="#"
-                  className="btn btn-warning btn-rounded p-l-30 p-r-30 m-t-5 m-b-10"
-                >
-                  Redeem now
-                </a>
+               
               </div>
             </div>
           </div>
@@ -61,12 +51,7 @@ const Top = props => {
                 <i className="icon-user f-s-50 text-primary"></i>
                 <h2 className="m-t-15 m-b-0">{ load ? ( 0 ) : ( <CountUp end={data.users} duration={3}></CountUp>) } Users </h2>
                 <p className="f-s-12"></p>
-                <a
-                  href="#"
-                  className="btn btn-primary btn-rounded p-l-30 p-r-30 m-t-5 m-b-10"
-                >
-                  Add more
-                </a>
+                
               </div>
             </div>
           </div>

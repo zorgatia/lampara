@@ -577,7 +577,7 @@ const EditPlageForm = ({
 
                       <button className="btn" onClick={e => onSubmit(e)}>
                         {" "}
-                        Edit
+                        Done
                       </button>
                     </form>
                   </div>

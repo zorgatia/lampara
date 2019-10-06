@@ -64,12 +64,14 @@ router.post("/:id", async (req, res) => {
 router.put('/detec/:id',async (req,res)=>{
 
     try {
+        
         const buoy = await Buoy.findOne({num: req.params.id})
-        if(buoy) return res.status(404).json('error buoy');
+        if(!buoy) return res.status(404).json('error buoy');
 
         const detec = new Detec({
             type: req.body.type
         })
+
         buoy.detecs.unshift(detec);
         await buoy.save();
         res.json(buoy)
