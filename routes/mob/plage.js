@@ -377,12 +377,14 @@ router.put("/rate", async (req, res) => {
     const plage = await Plage.findById(req.body.idPlage);
     if (!plage) return res.status(404).json({ msg: "Plage not found" });
     //check plage have been alredy rated
-    const ind=plage.rates.indexOf(rate => rate.user.toString() === req.body.idUser)
+    const ind=plage.rates.map(rate => rate.user.toString()).indexOf(req.body.idUser)
+    console.log(ind)
     if (
      ind!==-1
     ) {
+      console.log( plage.rates[ind].rate)
       plage.rates[ind].rate=req.body.rate
-      
+ 
     } else {
       plage.rates.unshift({ user: req.body.idUser, rate: req.body.rate });
     }
