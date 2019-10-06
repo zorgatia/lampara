@@ -39,12 +39,14 @@ const Login = ({ login, isAuthenticated }) => {
                         style={{ width: "200px", height: "auto" }}
                       />
                     </div>
-                    <h4 className="text-center m-t-15">
+                    <br></br>
+                    <br></br>
+                    <h4 className=" m-t-15">
                       Log into Your Account
                     </h4>
                     <form className="m-t-30 m-b-30" onSubmit={e => onSubmit(e)}>
                       <div className="form-group">
-                        <label>Email</label>
+                        
                         <input
                           type="email"
                           className="form-control"
@@ -56,7 +58,7 @@ const Login = ({ login, isAuthenticated }) => {
                         />
                       </div>
                       <div className="form-group">
-                        <label>Password</label>
+                        
                         <input
                           type="password"
                           className="form-control"
@@ -66,11 +68,7 @@ const Login = ({ login, isAuthenticated }) => {
                           onChange={e => onChange(e)}
                         />
                       </div>
-                      <div className="form-row">
-                        <div className="form-group col-md-6 text-right">
-                          <Link to="#">Forgot Password?</Link>
-                        </div>
-                      </div>
+                      <br></br>
                       <div className="text-center m-b-15 m-t-15">
                         <button type="submit" className="btn btn-primary">
                           Sign in
