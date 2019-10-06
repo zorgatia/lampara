@@ -46,6 +46,7 @@ app.use('/mob/user',require('./routes/mob/user'));
 app.use('/mob/auth',require('./routes/mob/auth'));
 app.use('/mob/plage',require('./routes/mob/plage'));
 app.use('/mob/event',require('./routes/mob/event'));
+app.use('/mob/rate',require('./routes/mob/rate'));
 
 
 app.use('/web/plage',require('./routes/web/plage'));
