@@ -14,8 +14,8 @@ router.get('/:idUser/:idPlage',async(req,res)=>{
     if(!plage) return res.status(404).json({msg:'error'})
 
     rate = plage.rates.map(r=>r.user).indexOf(user.id)
-    if(rate!= -1) return res.json(plage.rates[rate])
-    else return res.json(rate.rate)
+    if(rate!= -1) return res.json(plage.rates[rate].rate)
+    else return res.json(rate)
 })
 
 module.exports = router
