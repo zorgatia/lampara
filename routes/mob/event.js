@@ -112,13 +112,15 @@ router.get("/prev", async (req, res) => {
 // @desc    get special
 // @access  Public
 
-router.get("/plage/:idPlage/:idUser", async (req, res) => {
+router.get("/plage/:idPlage", async (req, res) => {
   try {
+    console.log(2222222)
     const plage = await Plage.findById(req.params.idPlage);
-    const user = await User.findById(req.params.idUser);
+    //const user = await User.findById(req.params.idUser);
 
-    const e = await Event.findOne({date:{$lt: new Date()},plage: plage,user:{$ne: user}}).populate('plage','nom').sort({date:-1});
-  
+    const e = await Event.findOne({date:{$gte: new Date()},plage: plage}).populate('plage','nom').sort({date:-1});
+  if(e===null)
+return res.json(e)
       let ev = e.toObject();
       ev.plage=ev.plage.nom;
       
