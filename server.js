@@ -1,7 +1,7 @@
 const express = require('express')
 const connectDB = require('./config/db')
 const path = require('path');
-const rec = require('./cron/rec')
+//const rec = require('./cron/rec')
 
 /*
 const mqtt = require('mqtt');
@@ -35,7 +35,7 @@ const app = express();
 
 
 connectDB();
-rec()
+//rec()
 
 app.use(express.json({ extended: false}));
 
