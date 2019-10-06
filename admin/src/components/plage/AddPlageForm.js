@@ -273,7 +273,8 @@ const AddPlageForm = ({ history, addPlage }) => {
                           </div>
                           <div className="form-group col-md-12">
                             <label>Description</label>
-                            <FormControl as="textarea" aria-label="With textarea" placeholder="Description" style={{height: '172px'}} />
+                            <FormControl as="textarea" aria-label="With textarea" value={desc}
+                              name="desc" placeholder="Description" style={{height: '172px'}} />
                           </div>
                         </div>
                       </div>
