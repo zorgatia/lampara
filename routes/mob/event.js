@@ -186,7 +186,9 @@ router.get("/:id/:idUser", async (req, res) => {
     
     if (!simEvent|| simEvent.length===0) {
       simEvent = await Event.find({ type: event.type });
-      ev.simEvent = simEvent.indexOf(0);
+      simEvent = simEvent.filter(e=>e.id!==event.id)
+      console.log(simEvent)
+      ev.simEvent = simEvent.shift()
     } else {
       const simType = simEvent.find(e => e.type === event.type);
       if (simType) {
