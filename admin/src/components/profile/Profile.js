@@ -192,7 +192,7 @@ const Profile = ({
                             alt=""
                             className="rounded-circle"
                             src={image}
-                            style={{inlineSize: 'inherit'}}
+                           
                             
                           />
                           <ButtonImg onClick={e => uploadWidget(e)}>
