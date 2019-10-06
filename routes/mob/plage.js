@@ -199,7 +199,7 @@ router.get("/:id/:idUser", async (req, res) => {
       .select("buoys");
     let meteo = {};
     if (buoys.buoys.filter(buoy => buoy.status === "ON_LIGNE").length === 1) {
-      console.log(1);
+     // console.log(1);
       meteo = buoys.buoys.shift().meteos.shift();
     } else if (
       buoys.buoys.filter(buoy => buoy.status === "ON_LIGNE").length > 1
@@ -207,7 +207,7 @@ router.get("/:id/:idUser", async (req, res) => {
       const data = buoys.buoys
         .filter(buoy => buoy.status === "ON_LIGNE" && buoy.meteos.length > 0)
         .map(buoy => buoy.meteos.shift());
-      console.log(2);
+     // console.log(2);
       console.log(data);
       if (data.length > 0) {
         const obj = data[0];

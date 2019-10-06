@@ -40,12 +40,12 @@ const PlageItem = ({
         </div>
         <div className="card-footer">
           <div className="row justify-content-end">
-            <div className="col-4">
+            <div className="col-6">
               <Link to="/edit-beach" className="btn" onClick={e => onEdit(e)}>
                 Edit
               </Link>
             </div>
-            <div className="col-4">
+            <div className="col-6">
               <AddBuoy plage={_id}></AddBuoy>
             </div>
           </div>

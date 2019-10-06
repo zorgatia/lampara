@@ -184,7 +184,7 @@ router.get("/:id/:idUser", async (req, res) => {
     simEvent = simEvent.filter(e=>e.id!==event.id)
     let ev = event.toObject();
     
-    if (!simEvent) {
+    if (!simEvent|| simEvent.length===0) {
       simEvent = await Event.find({ type: event.type });
       ev.simEvent = simEvent.indexOf(0);
     } else {
@@ -195,6 +195,7 @@ router.get("/:id/:idUser", async (req, res) => {
       } else {
         console.log("22");
         simEvent = simEvent.find(e => e.type !== event.type);
+       
         ev.simEvent = simEvent;
       }
     }
