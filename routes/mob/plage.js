@@ -94,36 +94,63 @@ router.get("/recommanded/:idUser", async (req, res) => {
       .select("_id nom ville mainImage rates");
 
     console.log(plages);
-    const nn = plages.plages.length;
-    if (nn < 5) {
-      const pls = await Plage.find({
-        id: { $nin: plages.plages.map(p => p.id) }
-      })
+    if (!plages) {
+      console.log(1)
+      const pls = await Plage.find()
         .select("_id nom ville mainImage rates")
         .sort({ rate: -1 })
-        .limit(5 - nn);
-      plages.plages.unshift(...pls);
+        .limit(5);
+      p = [];
+      pls.forEach(plage => {
+        //plage = plage.toObject;
+        const rates = plage.rates.map(rate => rate.rate);
+        let rate = 2.5;
+        rates.length !== 0
+          ? (rate =
+              rates.reduce((previous, current) => (current += previous), 0) /
+              rates.length)
+          : (rate = 2.5);
+        plage = plage.toObject();
+        //console.log(rate);
+        delete plage.rates;
+        plage.rate = rate;
+        p.unshift(plage);
+      });
+      // const obj = plages.rates.map(rate=>rate.rate).reduce((previous, current) => current += previous)/palge.rates.length();
+
+      res.json(p);
+    } else {
+      const nn = plages.plages.length;
+      if (nn < 5) {
+        const pls = await Plage.find({
+          id: { $nin: plages.plages.map(p => p.id) }
+        })
+          .select("_id nom ville mainImage rates")
+          .sort({ rate: -1 })
+          .limit(5 - nn);
+        plages.plages.unshift(...pls);
+      }
+
+      p = [];
+      plages.plages.forEach(plage => {
+        //plage = plage.toObject;
+        const rates = plage.rates.map(rate => rate.rate);
+        let rate = 2.5;
+        rates.length !== 0
+          ? (rate =
+              rates.reduce((previous, current) => (current += previous), 0) /
+              rates.length)
+          : (rate = 2.5);
+        plage = plage.toObject();
+        //console.log(rate);
+        delete plage.rates;
+        plage.rate = rate;
+        p.unshift(plage);
+      });
+      // const obj = plages.rates.map(rate=>rate.rate).reduce((previous, current) => current += previous)/palge.rates.length();
+
+      res.json(p);
     }
-
-    p = [];
-    plages.plages.forEach(plage => {
-      //plage = plage.toObject;
-      const rates = plage.rates.map(rate => rate.rate);
-      let rate = 2.5;
-      rates.length !== 0
-        ? (rate =
-            rates.reduce((previous, current) => (current += previous), 0) /
-            rates.length)
-        : (rate = 2.5);
-      plage = plage.toObject();
-      //console.log(rate);
-      delete plage.rates;
-      plage.rate = rate;
-      p.unshift(plage);
-    });
-    // const obj = plages.rates.map(rate=>rate.rate).reduce((previous, current) => current += previous)/palge.rates.length();
-
-    res.json(p);
   } catch (err) {
     console.log(err.message);
     res.status(500).send("server error");
@@ -199,7 +226,7 @@ router.get("/:id/:idUser", async (req, res) => {
       .select("buoys");
     let meteo = {};
     if (buoys.buoys.filter(buoy => buoy.status === "ON_LIGNE").length === 1) {
-     // console.log(1);
+      // console.log(1);
       meteo = buoys.buoys.shift().meteos.shift();
     } else if (
       buoys.buoys.filter(buoy => buoy.status === "ON_LIGNE").length > 1
@@ -207,7 +234,7 @@ router.get("/:id/:idUser", async (req, res) => {
       const data = buoys.buoys
         .filter(buoy => buoy.status === "ON_LIGNE" && buoy.meteos.length > 0)
         .map(buoy => buoy.meteos.shift());
-     // console.log(2);
+      // console.log(2);
       console.log(data);
       if (data.length > 0) {
         const obj = data[0];
@@ -276,74 +303,68 @@ const randMeteo = (meteo, i) => {
   if (i == 1) {
     obj.uv = meteo.uv;
     obj.salerite = meteo.salerite;
-    obj._id = meteo._id ;
+    obj._id = meteo._id;
     obj.temp = meteo.temp - 5;
-    obj.humi = meteo.humi ;
-    obj.press = meteo.press ;
+    obj.humi = meteo.humi;
+    obj.press = meteo.press;
     obj.diVent = meteo.diVent;
     obj.viVent = meteo.viVent;
     obj.ph = meteo.ph;
     obj.tempEau = meteo.tempEau;
-    obj.flag = meteo.flag ;
-    obj.cloudy = meteo.cloudy ;
-    obj.crowded = meteo.crowded ;
-    obj.date = meteo.date ;
-    obj.__v = meteo.__v ;
-
+    obj.flag = meteo.flag;
+    obj.cloudy = meteo.cloudy;
+    obj.crowded = meteo.crowded;
+    obj.date = meteo.date;
+    obj.__v = meteo.__v;
   } else if (i == 2) {
     obj.uv = meteo.uv;
     obj.salerite = meteo.salerite;
-    obj._id = meteo._id ;
-    obj.temp = meteo.temp +2;
-    obj.humi = meteo.humi ;
-    obj.press = meteo.press ;
+    obj._id = meteo._id;
+    obj.temp = meteo.temp + 2;
+    obj.humi = meteo.humi;
+    obj.press = meteo.press;
     obj.diVent = meteo.diVent;
     obj.viVent = meteo.viVent;
     obj.ph = meteo.ph;
     obj.tempEau = meteo.tempEau;
-    obj.flag = meteo.flag ;
-    obj.cloudy = meteo.cloudy ;
-    obj.crowded = meteo.crowded ;
-    obj.date = meteo.date ;
-    obj.__v = meteo.__v ;
-
-  } 
-  else if (i == 3) {
+    obj.flag = meteo.flag;
+    obj.cloudy = meteo.cloudy;
+    obj.crowded = meteo.crowded;
+    obj.date = meteo.date;
+    obj.__v = meteo.__v;
+  } else if (i == 3) {
     obj.uv = meteo.uv;
     obj.salerite = meteo.salerite;
-    obj._id = meteo._id ;
-    obj.temp = meteo.temp +3;
-    obj.humi = meteo.humi ;
-    obj.press = meteo.press ;
+    obj._id = meteo._id;
+    obj.temp = meteo.temp + 3;
+    obj.humi = meteo.humi;
+    obj.press = meteo.press;
     obj.diVent = meteo.diVent;
     obj.viVent = meteo.viVent;
     obj.ph = meteo.ph;
     obj.tempEau = meteo.tempEau;
-    obj.flag = meteo.flag ;
-    obj.cloudy = meteo.cloudy ;
-    obj.crowded = meteo.crowded ;
-    obj.date = meteo.date ;
-    obj.__v = meteo.__v ;
-
-  } 
-  else{
+    obj.flag = meteo.flag;
+    obj.cloudy = meteo.cloudy;
+    obj.crowded = meteo.crowded;
+    obj.date = meteo.date;
+    obj.__v = meteo.__v;
+  } else {
     obj.uv = meteo.uv;
     obj.salerite = meteo.salerite;
-    obj._id = meteo._id ;
-    obj.temp = meteo.temp -4;
-    obj.humi = meteo.humi ;
-    obj.press = meteo.press ;
+    obj._id = meteo._id;
+    obj.temp = meteo.temp - 4;
+    obj.humi = meteo.humi;
+    obj.press = meteo.press;
     obj.diVent = meteo.diVent;
     obj.viVent = meteo.viVent;
     obj.ph = meteo.ph;
     obj.tempEau = meteo.tempEau;
-    obj.flag = meteo.flag ;
-    obj.cloudy = meteo.cloudy ;
-    obj.crowded = meteo.crowded ;
-    obj.date = meteo.date ;
-    obj.__v = meteo.__v ;
-
-  } 
+    obj.flag = meteo.flag;
+    obj.cloudy = meteo.cloudy;
+    obj.crowded = meteo.crowded;
+    obj.date = meteo.date;
+    obj.__v = meteo.__v;
+  }
   return obj;
 };
 
