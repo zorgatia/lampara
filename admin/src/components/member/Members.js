@@ -137,11 +137,7 @@ const Members = ({ getMembers,registerMember, member: { members, loading } }) =>
                         placeholder="search"
                       />
                     </div>
-                    <div className="col-md-4 ">
-                      <button className="btn btn-primary">
-                        Add new Members
-                      </button>
-                    </div>
+                    
                   </div>
                 </h4>
                 <div className="table-responsive">

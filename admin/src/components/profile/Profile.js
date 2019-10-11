@@ -186,7 +186,7 @@ const Profile = ({
                     <form onSubmit={e => onSubmit(e)} name="fProfile">
                       <div className="form-row">
                         <div className="form-group col-md-4">
-                          <div style={{height:'220px',width:'auto'}}>
+                          
                           <img
                             id="imgprof"
                             alt=""
@@ -198,7 +198,7 @@ const Profile = ({
                           <ButtonImg onClick={e => uploadWidget(e)}>
                             Add Profile Image
                           </ButtonImg>
-                        </div>
+                        
                         </div>
                         <div className="form-row col-md-8">
                           <div className="form-group col-md-6">

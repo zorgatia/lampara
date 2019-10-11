@@ -5,7 +5,7 @@ const Plage = require("../../models/Plage");
 const Buoy = require("../../models/Buoy");
 const auth = require("../../middleware/auth");
 const Detec = require("../../models/Detec");
-
+const Prev = require("../../models/Prev")
 
 
 
@@ -80,6 +80,48 @@ router.put('/detec/:id',async (req,res)=>{
         console.log(err.message);
         res.status(500).send("server error");
     }
+})
+
+router.put('/prev/:id',async(req,res)=>{
+    try {
+        const plage = await Plage.findById(req.params.id)
+        // console.log(buoy);
+        let flag, cloudy;
+    
+        if (!plage) {
+          return res.status(404).json({ msg: "no meteo" });
+        }
+      
+        const met = {
+          temp: req.body.temp,
+          humi: req.body.humi,
+          press: req.body.press,
+          uv: req.body.uv,
+          diVent: req.body.diVent,
+          viVent: req.body.viVent,
+          ph: req.body.ph,
+          tempEau: req.body.tempEau,
+          salarite: req.body.salarite,
+          flag: req.body.flag,
+          cloudy: req.body.cloudy,
+          crowded: req.body.crowded
+        };
+
+        let prev = await Prev.find({plage: plage.id})
+        if(!prev){
+            prev = new Prev({
+                plage: plage,
+                prevs:[met]
+            })
+        }else{
+            prev.prevs.unshift(met)
+        }
+        
+       const ress= await prev.save()
+        res.json(ress)
+      } catch (err) {
+        console.error(err.message);
+      }
 })
 
 
