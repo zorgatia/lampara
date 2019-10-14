@@ -287,7 +287,8 @@ router.get("/:id/:idUser", async (req, res) => {
     ];
 
     Oplage.favoris = user.follows.filter(f => f.id === plage.id).length > 0;
-    Oplage.prev = [meteo, meteo, meteo];
+    const prevvv= await Prev.findOne({plage: req.params.id}).select('prevs')
+    Oplage.prev = prevvv.prevs;
     delete Oplage.rates;
     Oplage.rate = rate;
     Oplage.acti = ["Swimming"];

@@ -107,13 +107,14 @@ router.put('/prev/:id',async(req,res)=>{
           crowded: req.body.crowded
         };
 
-        let prev = await Prev.find({plage: plage.id})
+        let prev = await Prev.findOne({plage: plage.id})
         if(!prev){
             prev = new Prev({
                 plage: plage,
                 prevs:[met]
             })
         }else{
+            console.log(prev)
             prev.prevs.unshift(met)
         }
         
