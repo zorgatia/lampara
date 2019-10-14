@@ -157,9 +157,9 @@ const Profile = ({
   position: absolute;
   top: 45%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%);
   -ms-transform: translate(-50%, -50%);
-  background-color: #5559;
+  background-color: #5555552e;
   color: white;
   font-size: 12px;
   padding: 12px 12px;
@@ -185,22 +185,21 @@ const Profile = ({
                   <div className="basic-form">
                     <form onSubmit={e => onSubmit(e)} name="fProfile">
                       <div className="form-row">
-                        <div className="form-group col-md-4">
+                        <div className="form-group col-md-3 " >
                           
                           <img
                             id="imgprof"
                             alt=""
-                            className="rounded-circle"
+                            className="rounded-circle m-t-15"
+                            style={{inlineSize: 'inherit'}}
                             src={image}
-                           
-                            
                           />
                           <ButtonImg onClick={e => uploadWidget(e)}>
                             Add Profile Image
                           </ButtonImg>
                         
                         </div>
-                        <div className="form-row col-md-8">
+                        <div className="form-row col-md-9">
                           <div className="form-group col-md-6">
                             <label>Username</label>
                             <input
