@@ -121,6 +121,7 @@ const Members = ({ getMembers,registerMember, member: { members, loading } }) =>
                   </form>
                 </div>
               </div>
+              
             </div>
           </div>
           <div className="col-lg-12">
