@@ -46,12 +46,7 @@ const SideBar = () => {
               </Link>
             </li>
 
-            <li>
-              <Link to="/alert">
-                <i className=" mdi mdi-view-dashboard" />{" "}
-                <span className="nav-text">Alerts</span>
-              </Link>
-            </li>
+            
 
             <li>
               <Link to="/ecosys">
@@ -73,12 +68,7 @@ const SideBar = () => {
                 <span className="nav-text">Collaborators</span>
               </Link>
             </li>
-            <li>
-              <Link to="/test">
-                <i className=" mdi mdi-view-dashboard" />{" "}
-                <span className="nav-text">Test</span>
-              </Link>
-            </li>
+            
           </ul>
         </div>
       </div>
